@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="TCP," />
 
 
 
@@ -90,15 +90,17 @@
 
 
 
-<meta name="description" content="原来你是我最想留住的幸运">
-<meta property="og:type" content="website">
-<meta property="og:title" content="越努力 | 越幸运">
-<meta property="og:url" content="http://yoursite.com/archives/2017/index.html">
+<meta name="description" content="socket编程中，关于connect函数的分析。">
+<meta name="keywords" content="TCP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="connect函数">
+<meta property="og:url" content="http://yoursite.com/2017/05/14/connect函数/index.html">
 <meta property="og:site_name" content="越努力 | 越幸运">
-<meta property="og:description" content="原来你是我最想留住的幸运">
+<meta property="og:description" content="socket编程中，关于connect函数的分析。">
+<meta property="og:updated_time" content="2017-05-14T13:09:16.232Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="越努力 | 越幸运">
-<meta name="twitter:description" content="原来你是我最想留住的幸运">
+<meta name="twitter:title" content="connect函数">
+<meta name="twitter:description" content="socket编程中，关于connect函数的分析。">
 
 
 
@@ -126,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/archives/2017/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/05/14/connect函数/"/>
 
 
 
 
 
-  <title>归档 | 越努力 | 越幸运</title>
+  <title>connect函数 | 越努力 | 越幸运</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -158,7 +160,7 @@
     
   
 
-  <div class="container sidebar-position-left  page-archive  ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -262,403 +264,191 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-    <span class="archive-page-counter">
-      
-      
-      
-        
-      
-      嗯..! 目前共计 16 篇日志。 继续努力。
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/14/connect函数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jeff Lai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力 | 越幸运">
     </span>
 
     
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">connect函数</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-14T21:07:19+08:00">
+                2017-05-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/网络编程/" itemprop="url" rel="index">
+                    <span itemprop="name">网络编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
 
       
       
-      
 
+      
+        <p>socket编程中，关于connect函数的分析。<br><a id="more"></a></p>
+<ul>
+<li><p>TCP客户用connect函数来建立与TCP服务器的连接：</p>
+  <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#include&lt;sys/socket.h&gt;</div><div class="line">int connect(int sockfd, const struct sockaddr *servaddr, socklen_t addrlen)</div><div class="line">返回：若成功则为0，若出错则为-1</div></pre></td></tr></table></figure>
+</li>
+<li><p>sockfd是由socket函数返回的套接字描述符，第二个、第三个参数分别是一个指向套接字地址结构的指针和该结构的大小。套接字地址结构必须含有服务器的IP地址和端口号。</p>
+</li>
+<li>客户在调用connect之前不必非得调用bind函数，因为如果需要的话，内核会确定源IP地址并选择一个临时端口作为端口号。</li>
+<li><p><strong>如果是TCP套接字，调用connect函数将激发TCP的三次握手过程，而且仅在连接建立成功或出错时才返回</strong>，其中，出错返回的可能情况有以下几种：</p>
+<ul>
+<li>若TCP客户没有收到SYN分节的相应，则返回ETIMEDOUT错误。举例，调用connect函数时，4.4BSD内核发送一个SYN，若无响应则等待6s后再发送一个，若仍无响应则等待24s后再发送一个。若总共等待了75s后仍未收到响应则返回本错误。</li>
+<li>若对客户的SYN的响应是RST(表示复位)，则表明该服务器主机在我们指定的端口上没有进程在等待与之连接。这是一种硬错误，客户一收到RST就马上返回ECONNREFUSED错误。</li>
+<li>若客户发出的SYN在中间的某个路由器上引发了一个“destination unreachable”(目的地不可达)ICMP错误，则认为是一个软错误。客户主机内核保存该消息，并按第一种情况所述的时间间隔继续发送SYN。若在某个规定的时间内仍无响应，则把保存的信息(即ICMP错误)作为EHOSTUNREACH或ENETUNREACH错误返回给进程。以下两种情况是有可能的：一是按照本地系统的转发表，根本没有到达远程系统的路径；二是connect调用根本不等待就返回。</li>
+</ul>
+</li>
+<li><p>按照TCP状态转换图，connect函数导致当前套接字从CLOSED状态转移到SYN_SENT状态，若成功再转移到ESTABLISHED状态。若connect失败，则该套接字不再可用，必须关闭，我们不能对这样的套接字再次调用connect函数。</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    <div>
       
         
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2017">2017</h2>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/TCP/" rel="tag"># TCP</a>
+          
         </div>
       
+
+      
+        
       
 
       
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/14/TCP：传输控制协议/" rel="next" title="TCP：传输控制协议">
+                <i class="fa fa-chevron-left"></i> TCP：传输控制协议
+              </a>
+            
+          </div>
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          <span class="post-nav-divider"></span>
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/05/14/IO多路复用/" itemprop="url">
-              
-                <span itemprop="name">网络编程：I/O多路复用</span>
-              
-            </a>
-        
-      </h2>
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/14/listen函数/" rel="prev" title="listen函数">
+                listen函数 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-05-14T21:18:10+08:00"
-              content="2017-05-14" >
-          05-14
-        </time>
-      </div>
-
-    </header>
+      
+      
+    </footer>
   </article>
 
 
 
-    
-
+    <div class="post-spread">
       
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/05/14/IO模型/" itemprop="url">
-              
-                <span itemprop="name">网络编程：五类I/O模型</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-05-14T21:15:28+08:00"
-              content="2017-05-14" >
-          05-14
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/05/14/处理僵死进程和被中断的系统调用/" itemprop="url">
-              
-                <span itemprop="name">处理僵死进程和被中断的系统调用</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-05-14T21:12:50+08:00"
-              content="2017-05-14" >
-          05-14
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/05/14/listen函数/" itemprop="url">
-              
-                <span itemprop="name">listen函数</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-05-14T21:10:08+08:00"
-              content="2017-05-14" >
-          05-14
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/05/14/connect函数/" itemprop="url">
-              
-                <span itemprop="name">connect函数</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-05-14T21:07:19+08:00"
-              content="2017-05-14" >
-          05-14
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/05/14/TCP：传输控制协议/" itemprop="url">
-              
-                <span itemprop="name">TCP：传输控制协议</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-05-14T21:04:18+08:00"
-              content="2017-05-14" >
-          05-14
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/05/14/腾讯实习生面经/" itemprop="url">
-              
-                <span itemprop="name">腾讯实习生面经</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-05-14T21:01:16+08:00"
-              content="2017-05-14" >
-          05-14
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/05/14/今日头条实习生面经/" itemprop="url">
-              
-                <span itemprop="name">今日头条实习生面经</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-05-14T20:58:36+08:00"
-              content="2017-05-14" >
-          05-14
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/05/14/Libevent浅析/" itemprop="url">
-              
-                <span itemprop="name">Libevent浅析</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-05-14T20:54:26+08:00"
-              content="2017-05-14" >
-          05-14
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/05/14/常考面试题2/" itemprop="url">
-              
-                <span itemprop="name">C/C++ 常考面试题(二)</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-05-14T20:50:36+08:00"
-              content="2017-05-14" >
-          05-14
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-  </section>
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/2017/page/2/">2</a><a class="extend next" rel="next" href="/archives/2017/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
-
-
+    </div>
+  </div>
 
 
           </div>
@@ -666,6 +456,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -868,11 +662,9 @@
 
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
 
 
   

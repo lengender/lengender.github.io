@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="拷贝控制,析构函数," />
+  <meta name="keywords" content="RTTI," />
 
 
 
@@ -90,17 +90,17 @@
 
 
 
-<meta name="description" content="C++ 拷贝构造函数、拷贝赋值运算符、析构函数">
-<meta name="keywords" content="拷贝控制,析构函数">
+<meta name="description" content="网上看到的面经，说是dynamic_cast的实现，和RTTI的相关，这才发现原来对这个概念这么模糊，所以作了这个总结。">
+<meta name="keywords" content="RTTI">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C++ 拷贝构造函数、拷贝赋值运算符、析构函数">
-<meta property="og:url" content="http://yoursite.com/2017/05/14/Cpp拷贝构造函数、拷贝赋值运算符、析构函数/index.html">
+<meta property="og:title" content="C&#x2F;C++ 常考面试题(二)">
+<meta property="og:url" content="http://yoursite.com/2017/05/14/常考面试题2/index.html">
 <meta property="og:site_name" content="越努力 | 越幸运">
-<meta property="og:description" content="C++ 拷贝构造函数、拷贝赋值运算符、析构函数">
-<meta property="og:updated_time" content="2017-05-14T12:49:16.252Z">
+<meta property="og:description" content="网上看到的面经，说是dynamic_cast的实现，和RTTI的相关，这才发现原来对这个概念这么模糊，所以作了这个总结。">
+<meta property="og:updated_time" content="2017-05-14T12:52:48.177Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C++ 拷贝构造函数、拷贝赋值运算符、析构函数">
-<meta name="twitter:description" content="C++ 拷贝构造函数、拷贝赋值运算符、析构函数">
+<meta name="twitter:title" content="C&#x2F;C++ 常考面试题(二)">
+<meta name="twitter:description" content="网上看到的面经，说是dynamic_cast的实现，和RTTI的相关，这才发现原来对这个概念这么模糊，所以作了这个总结。">
 
 
 
@@ -128,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/05/14/Cpp拷贝构造函数、拷贝赋值运算符、析构函数/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/05/14/常考面试题2/"/>
 
 
 
 
 
-  <title>C++ 拷贝构造函数、拷贝赋值运算符、析构函数 | 越努力 | 越幸运</title>
+  <title>C/C++ 常考面试题(二) | 越努力 | 越幸运</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -274,7 +274,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/14/Cpp拷贝构造函数、拷贝赋值运算符、析构函数/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/14/常考面试题2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jeff Lai">
@@ -291,7 +291,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">C++ 拷贝构造函数、拷贝赋值运算符、析构函数</h1>
+          <h1 class="post-title" itemprop="name headline">C/C++ 常考面试题(二)</h1>
         
 
         <div class="post-meta">
@@ -303,7 +303,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-14T16:19:56+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-14T20:50:36+08:00">
                 2017-05-14
               </time>
             
@@ -326,8 +326,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index">
-                    <span itemprop="name">C++</span>
+                  <a href="/categories/面试面经/" itemprop="url" rel="index">
+                    <span itemprop="name">面试面经</span>
                   </a>
                 </span>
 
@@ -360,59 +360,42 @@
       
 
       
-        <p>C++ 拷贝构造函数、拷贝赋值运算符、析构函数<br><a id="more"></a></p>
-<h3 id="拷贝构造函数"><a href="#拷贝构造函数" class="headerlink" title="拷贝构造函数"></a>拷贝构造函数</h3><ul>
-<li>第一个参数必须是自身类类型的引用，且任何额外参数都有默认值。(为什么必须是引用？见后解释)</li>
-<li>合成拷贝构造函数：如果我们没有为一个类定义拷贝构造函数，则编译器会为我们定义一个。同合成的默认构造函数不同的是，即使我们定义了其他构造函数，编译器也会为我们合成一个拷贝构造函数。(一旦自己定义了构造函数，则不会合成默认构造函数)</li>
-<li><p>拷贝初始化与直接初始化</p>
+        <p>网上看到的面经，说是dynamic_cast的实现，和RTTI的相关，这才发现原来对这个概念这么模糊，所以作了这个总结。</p>
+<a id="more"></a>
+<h3 id="C-C-常考面试题-二"><a href="#C-C-常考面试题-二" class="headerlink" title="C/C++常考面试题(二)"></a>C/C++常考面试题(二)</h3><ol>
+<li><p>RTTI(Runtime Type Information, 运行时类型信息)</p>
 <ul>
-<li>直接初始化：要求编译器使用普通的函数匹配来选择与我们提供的参数最匹配的构造函数。</li>
-<li><p>拷贝初始化：要求编译器将右侧运算对象拷贝到正在创建的对象中，如果需要的话，还要进行类型转换。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="built_in">string</span> <span class="title">dots</span><span class="params">(<span class="number">10</span>, <span class="string">'.'</span>)</span></span>;               <span class="comment">//直接初始化</span></div><div class="line"><span class="function"><span class="built_in">string</span> <span class="title">s</span><span class="params">(dots)</span></span>;                     <span class="comment">//直接初始化</span></div><div class="line"><span class="built_in">string</span> s2 = dots;                   <span class="comment">//拷贝初始化</span></div><div class="line"><span class="built_in">string</span> null_book = <span class="string">"9-999-8999"</span>;    <span class="comment">//拷贝初始化</span></div><div class="line"><span class="built_in">string</span> nines = <span class="built_in">string</span>(<span class="number">100</span>, <span class="string">'9'</span>);    <span class="comment">//拷贝初始化</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>使用‘=’号的是拷贝初始化，不使用等号的是直接初始化。</p>
-</li>
-<li><p><strong>拷贝初始化发生在以下情况</strong></p>
-<pre><code>1. 用 = 定义变量时发生。
-2. 将一个对象作为实参传递给一个非引用类型的形参。
-3. 从一个返回类型为非引用类型的函数返回一个对象。
-4. 用花括号列表初始化一个数组中的元素或一个聚合类中的成员。(聚合类是指没有用户定义的构造函数，没有私有和保护的非静态数据成员，没有基类，没有虚函数)。
-</code></pre></li>
+<li>它提供了运行时确定对象类型的方法。通过运行时类型信息，程序能够使用基类的指针或引用来检查这些指针或引用所指的对象的实际派生类型。</li>
+<li>RTTI提供了以下两个非常有用的操作符：<ul>
+<li>typeid操作符，返回指针和引用所指的实际类型</li>
+<li>dynamic_cast操作符，将基类类型的指针或引用安全的转换为派生类型的指针或引用</li>
 </ul>
 </li>
-<li><p>拷贝构造函数第一个参数必须是引用原因：由于拷贝构造函数被用来初始化非引用类类型的参数。如果其自身参数不是引用类型，则调用永远也不会成功——为了调用拷贝构造函数，我们必须拷贝它的实参，但为了拷贝实参，我们又必须调用拷贝构造函数，如此无限循环。</p>
+<li><p>在C++中存在虚函数，也就存在了多态性。对于多态性的对象，在程序编译时可能会出现无法确定对象的类型的情况。当类中含有虚函数时，其基类的指针就可以指向任何派生类的对象，这时就有可能不知道基类指针到底指向哪个对象的情况，类型的确定要在运行时利用运行时类型标识做出。</p>
 </li>
-</ul>
-<h3 id="拷贝赋值运算符"><a href="#拷贝赋值运算符" class="headerlink" title="拷贝赋值运算符"></a>拷贝赋值运算符</h3><ul>
-<li><p>与类控制其对象如何初始化一样，类也可以控制器对象如何赋值：</p>
-  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Sales_data trans, accum;</div><div class="line">trans = accum;  <span class="comment">//使用Sales_data的拷贝赋值运算符</span></div></pre></td></tr></table></figure>
-<p>  与拷贝构造函数一样，如果类未定义自己的拷贝赋值运算符，编译器也会为它合成一个。</p>
-</li>
-<li><p>重载赋值运算符</p>
+<li><p><strong>typeid关键字</strong>，</p>
 <ul>
-<li>重载运算符本质上是函数，其名字由operator关键字后接表示要定义的运算符的符号组成。因此，赋值运算符就是一个名为operator=的函数。类似于任何其他函数，运算符函数也有一个返回类型和一个参数列表。</li>
-<li>如果是一个运算符是一个成员函数，其左侧运算对象就绑定到隐式的this参数。对于一个二元运算符，例如赋值运算符，其右侧运算对象作为显式参数传递。</li>
-<li><p>拷贝赋值运算符接受一个与其类相同类型的参数：</p>
-  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span>&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    Foo&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> Foo&amp;);  <span class="comment">//赋值运算符</span></div><div class="line">    <span class="comment">//...</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-<p>  为了与内置类型的赋值保持一致，赋值运算符通常返回一个指向其左侧运算对象的引用。注意，标准库通常要求保存在容器中的类型要有其赋值运算符，且其返回值是左侧运算对象的引用。</p>
+<li><p>该关键字的主要作用是让用户知道当前变量是什么类型的。比如使用typeid(a).name()就可以知道变量a的类型，typeid()返回的是一个const type_info&amp;类型的函数，其头文件为 &lt;typeinfo&gt;现对type_info作一个介绍：</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">type_info</span></span></div><div class="line">&#123;</div><div class="line"><span class="keyword">private</span>:</div><div class="line">    type_info(<span class="keyword">const</span> type_info&amp;);</div><div class="line"></div><div class="line">    <span class="comment">//type_info类的复制构造函数和赋值运算符是私有的。</span></div><div class="line">    type_info&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> type_info&amp;);</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">virtual</span> ~type_info();<span class="comment">//析构函数</span></div><div class="line"></div><div class="line">    <span class="comment">//在type_info类中重载了==运算符,该运算符可以比较两个对象的类型是否相等。</span></div><div class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span>==(<span class="keyword">const</span> type_info&amp;)<span class="keyword">const</span>;</div><div class="line"></div><div class="line">    <span class="comment">//重载的!=运算符，以比较两个对象的类型是否不相等</span></div><div class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span>!=(<span class="keyword">const</span> type_info&amp;)<span class="keyword">const</span>;</div><div class="line"></div><div class="line">    <span class="comment">//使用得较多的成员函数name，该函数返回对象的类型的名字。</span></div><div class="line">    <span class="comment">//前面使用的typeid(a).name()就调用了该成员函数</span></div><div class="line">    <span class="function"><span class="keyword">const</span> <span class="keyword">char</span>* <span class="title">name</span><span class="params">()</span><span class="keyword">const</span></span>;</div><div class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">before</span><span class="params">(<span class="keyword">const</span> type_info&amp;)</span></span>;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>  因为type_info的构造函数和赋值运算符都是私有的，所以不允许用户自己创建type_info的对象。唯一要使用type_info的方法就是使用typeid关键字。</p>
 </li>
 </ul>
 </li>
+<li><p><strong>dynamic_cast操作符</strong></p>
+<ul>
+<li>该转换符用于将一个指向派生类的基类指针或引用转换为派生类的指针或引用，<strong>注意，dynamic_cast只能用于含有虚函数的类，其表达式为dynamic_cast&lt;类型&gt;(表达式)，其中的类型是指要将表达式转换成的目标类型。</strong></li>
+<li>dynamic_cast不是一个常量时间的操作，为了确定是否能完成强制类型转换，它必须在运行时进行一些转换细节操作。因此在使用dynamic_cast时，应该权衡对性能的影响。</li>
 </ul>
-<h3 id="析构函数"><a href="#析构函数" class="headerlink" title="析构函数"></a>析构函数</h3><ul>
-<li><p>析构函是类的一个成员函数，名字由波浪号接类名构成。它没有返回值，也不接受参数：</p>
-  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span>&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    ~Foo();   <span class="comment">//析构函数</span></div><div class="line">    <span class="comment">//...</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-<p>  由于析构函数不接受参数，因此它不能被重载。对于一个给定类，只会由唯一一个析构函数。</p>
 </li>
-<li>在一个构造函数中，成员的初始化时在函数体执行之前完成的，且按照它们在类中出现的顺序进行初始化。在一个析构函数中，首先执行函数体，然后销毁成员。<strong>成员按初始化顺序的逆序进行销毁</strong>。</li>
-<li><p>无论何时一个对象被销毁，就会自动调用其析构函数：</p>
-<pre><code>1. 变量在离开其作用域时被销毁
-2. 当一个对象被销毁时，其成员被销毁
-3. 容器(无论是标准容器还是数组)被销毁时，其元素被销毁
-4. 对于动态分配的对象，当对指向它的指针应用delete运算符时被销毁
-5. 对于临时对象，当创建它的完整表达式结束时被销毁
-</code></pre></li>
+<li><p><strong>RTTI实现</strong></p>
+<ul>
+<li>典型的RTTI是通过VTable中放一个额外的指针来实现的。这个指针指向一个描述该特定类型的typeinfo结构(此结构是否与前面的type_info相同，有待商榷)(每个新类只产生一个typeinfo实例)，所以typeid()表达式的作用其实很简单，VPtr用来取typeinfo的指针，然后产生一个typeinfo结构的引用，然后调用库中的一个例程来判断原typeinfo是否与目标typeinfo相同，或者是目标typeinfo的派生类。</li>
+<li>dynamic_cast的实现也是类似的，通过VTable的一个额外指针来实现的。</li>
 </ul>
+</li>
+</ul>
+</li>
+</ol>
 
       
     </div>
@@ -442,9 +425,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/拷贝控制/" rel="tag"># 拷贝控制</a>
-          
-            <a href="/tags/析构函数/" rel="tag"># 析构函数</a>
+            <a href="/tags/RTTI/" rel="tag"># RTTI</a>
           
         </div>
       
@@ -457,14 +438,18 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/05/14/C、Cpp常考面试题-一/" rel="next" title="C/C++ 常考面试题(一)">
+                <i class="fa fa-chevron-left"></i> C/C++ 常考面试题(一)
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/05/14/Cpp拷贝控制和资源管理，智能指针的简单实现/" rel="prev" title="C++ 拷贝控制和资源管理，智能指针的简单实现">
-                C++ 拷贝控制和资源管理，智能指针的简单实现 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/05/14/Libevent浅析/" rel="prev" title="Libevent浅析">
+                Libevent浅析 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -594,7 +579,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#拷贝构造函数"><span class="nav-number">1.</span> <span class="nav-text">拷贝构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拷贝赋值运算符"><span class="nav-number">2.</span> <span class="nav-text">拷贝赋值运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#析构函数"><span class="nav-number">3.</span> <span class="nav-text">析构函数</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#C-C-常考面试题-二"><span class="nav-number">1.</span> <span class="nav-text">C/C++常考面试题(二)</span></a></li></ol></div>
             
 
           </div>

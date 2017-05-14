@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="拷贝控制,析构函数," />
+  <meta name="keywords" content="I/O模型," />
 
 
 
@@ -90,17 +90,24 @@
 
 
 
-<meta name="description" content="C++ 拷贝构造函数、拷贝赋值运算符、析构函数">
-<meta name="keywords" content="拷贝控制,析构函数">
+<meta name="description" content="关于网络编程中可能使用到的5种I/O模型的简介">
+<meta name="keywords" content="I&#x2F;O模型">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C++ 拷贝构造函数、拷贝赋值运算符、析构函数">
-<meta property="og:url" content="http://yoursite.com/2017/05/14/Cpp拷贝构造函数、拷贝赋值运算符、析构函数/index.html">
+<meta property="og:title" content="网络编程：五类I&#x2F;O模型">
+<meta property="og:url" content="http://yoursite.com/2017/05/14/IO模型/index.html">
 <meta property="og:site_name" content="越努力 | 越幸运">
-<meta property="og:description" content="C++ 拷贝构造函数、拷贝赋值运算符、析构函数">
-<meta property="og:updated_time" content="2017-05-14T12:49:16.252Z">
+<meta property="og:description" content="关于网络编程中可能使用到的5种I/O模型的简介">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170510161705957-505899389.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170510161714566-491967015.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170510161722160-1458835804.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170510161729019-342907503.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170510161743160-1311939863.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170510161755097-691792396.png">
+<meta property="og:updated_time" content="2017-05-14T13:17:13.707Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C++ 拷贝构造函数、拷贝赋值运算符、析构函数">
-<meta name="twitter:description" content="C++ 拷贝构造函数、拷贝赋值运算符、析构函数">
+<meta name="twitter:title" content="网络编程：五类I&#x2F;O模型">
+<meta name="twitter:description" content="关于网络编程中可能使用到的5种I/O模型的简介">
+<meta name="twitter:image" content="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170510161705957-505899389.png">
 
 
 
@@ -128,13 +135,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/05/14/Cpp拷贝构造函数、拷贝赋值运算符、析构函数/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/05/14/IO模型/"/>
 
 
 
 
 
-  <title>C++ 拷贝构造函数、拷贝赋值运算符、析构函数 | 越努力 | 越幸运</title>
+  <title>网络编程：五类I/O模型 | 越努力 | 越幸运</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -274,7 +281,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/14/Cpp拷贝构造函数、拷贝赋值运算符、析构函数/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/14/IO模型/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jeff Lai">
@@ -291,7 +298,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">C++ 拷贝构造函数、拷贝赋值运算符、析构函数</h1>
+          <h1 class="post-title" itemprop="name headline">网络编程：五类I/O模型</h1>
         
 
         <div class="post-meta">
@@ -303,7 +310,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-14T16:19:56+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-14T21:15:28+08:00">
                 2017-05-14
               </time>
             
@@ -326,8 +333,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index">
-                    <span itemprop="name">C++</span>
+                  <a href="/categories/网络编程/" itemprop="url" rel="index">
+                    <span itemprop="name">网络编程</span>
                   </a>
                 </span>
 
@@ -360,59 +367,58 @@
       
 
       
-        <p>C++ 拷贝构造函数、拷贝赋值运算符、析构函数<br><a id="more"></a></p>
-<h3 id="拷贝构造函数"><a href="#拷贝构造函数" class="headerlink" title="拷贝构造函数"></a>拷贝构造函数</h3><ul>
-<li>第一个参数必须是自身类类型的引用，且任何额外参数都有默认值。(为什么必须是引用？见后解释)</li>
-<li>合成拷贝构造函数：如果我们没有为一个类定义拷贝构造函数，则编译器会为我们定义一个。同合成的默认构造函数不同的是，即使我们定义了其他构造函数，编译器也会为我们合成一个拷贝构造函数。(一旦自己定义了构造函数，则不会合成默认构造函数)</li>
-<li><p>拷贝初始化与直接初始化</p>
+        <p>关于网络编程中可能使用到的5种I/O模型的简介<br><a id="more"></a></p>
+<h3 id="I-O模型"><a href="#I-O模型" class="headerlink" title="I/O模型"></a>I/O模型</h3><ul>
+<li><p>Unix下可用的5种I/O模型有：</p>
 <ul>
-<li>直接初始化：要求编译器使用普通的函数匹配来选择与我们提供的参数最匹配的构造函数。</li>
-<li><p>拷贝初始化：要求编译器将右侧运算对象拷贝到正在创建的对象中，如果需要的话，还要进行类型转换。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="built_in">string</span> <span class="title">dots</span><span class="params">(<span class="number">10</span>, <span class="string">'.'</span>)</span></span>;               <span class="comment">//直接初始化</span></div><div class="line"><span class="function"><span class="built_in">string</span> <span class="title">s</span><span class="params">(dots)</span></span>;                     <span class="comment">//直接初始化</span></div><div class="line"><span class="built_in">string</span> s2 = dots;                   <span class="comment">//拷贝初始化</span></div><div class="line"><span class="built_in">string</span> null_book = <span class="string">"9-999-8999"</span>;    <span class="comment">//拷贝初始化</span></div><div class="line"><span class="built_in">string</span> nines = <span class="built_in">string</span>(<span class="number">100</span>, <span class="string">'9'</span>);    <span class="comment">//拷贝初始化</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>使用‘=’号的是拷贝初始化，不使用等号的是直接初始化。</p>
-</li>
-<li><p><strong>拷贝初始化发生在以下情况</strong></p>
-<pre><code>1. 用 = 定义变量时发生。
-2. 将一个对象作为实参传递给一个非引用类型的形参。
-3. 从一个返回类型为非引用类型的函数返回一个对象。
-4. 用花括号列表初始化一个数组中的元素或一个聚合类中的成员。(聚合类是指没有用户定义的构造函数，没有私有和保护的非静态数据成员，没有基类，没有虚函数)。
-</code></pre></li>
+<li>阻塞式I/O</li>
+<li>非阻塞式I/O</li>
+<li>I/O复用(select和poll,epoll)</li>
+<li>信号驱动式I/O</li>
+<li>异步I/O(POSIX的aio_系列函数)</li>
 </ul>
 </li>
-<li><p>拷贝构造函数第一个参数必须是引用原因：由于拷贝构造函数被用来初始化非引用类类型的参数。如果其自身参数不是引用类型，则调用永远也不会成功——为了调用拷贝构造函数，我们必须拷贝它的实参，但为了拷贝实参，我们又必须调用拷贝构造函数，如此无限循环。</p>
+<li><p>一个输入操作通常包括两个不同的阶段：<br>  (1) 等待数据准备好<br>  (2) 从内核向进程复制数据<br>  对于一个套接字上的输入操作，第一步通常涉及等待数据从网络中到达。当所有分组到达时，它被复制到内核中的某个缓冲区，第二步就是把数据从内核缓冲区复制到应用进程缓冲区。</p>
 </li>
 </ul>
-<h3 id="拷贝赋值运算符"><a href="#拷贝赋值运算符" class="headerlink" title="拷贝赋值运算符"></a>拷贝赋值运算符</h3><ul>
-<li><p>与类控制其对象如何初始化一样，类也可以控制器对象如何赋值：</p>
-  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Sales_data trans, accum;</div><div class="line">trans = accum;  <span class="comment">//使用Sales_data的拷贝赋值运算符</span></div></pre></td></tr></table></figure>
-<p>  与拷贝构造函数一样，如果类未定义自己的拷贝赋值运算符，编译器也会为它合成一个。</p>
-</li>
-<li><p>重载赋值运算符</p>
+<h4 id="阻塞式I-O模型"><a href="#阻塞式I-O模型" class="headerlink" title="阻塞式I/O模型"></a>阻塞式I/O模型</h4><ul>
+<li>最流行的I/O模型时阻塞式I/O(blocking I/O)模型。默认情况下，所有套接字都是阻塞的。以数据报套接字为例：</li>
+</ul>
+<p><img src="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170510161705957-505899389.png" alt=""></p>
+<h4 id="非阻塞式I-O模型"><a href="#非阻塞式I-O模型" class="headerlink" title="非阻塞式I/O模型"></a>非阻塞式I/O模型</h4><ul>
+<li>进程把一个套接字设置成非阻塞是在通知内核：当所有请求的I/O操作非得把本地进程投入睡眠才能完成时，不要把本进程投入睡眠，而是返回一个错误。</li>
+</ul>
+<p><img src="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170510161714566-491967015.png" alt=""></p>
 <ul>
-<li>重载运算符本质上是函数，其名字由operator关键字后接表示要定义的运算符的符号组成。因此，赋值运算符就是一个名为operator=的函数。类似于任何其他函数，运算符函数也有一个返回类型和一个参数列表。</li>
-<li>如果是一个运算符是一个成员函数，其左侧运算对象就绑定到隐式的this参数。对于一个二元运算符，例如赋值运算符，其右侧运算对象作为显式参数传递。</li>
-<li><p>拷贝赋值运算符接受一个与其类相同类型的参数：</p>
-  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span>&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    Foo&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> Foo&amp;);  <span class="comment">//赋值运算符</span></div><div class="line">    <span class="comment">//...</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-<p>  为了与内置类型的赋值保持一致，赋值运算符通常返回一个指向其左侧运算对象的引用。注意，标准库通常要求保存在容器中的类型要有其赋值运算符，且其返回值是左侧运算对象的引用。</p>
-</li>
+<li>前三次调用recvfrom时没有数据可返回，因此内核转而立即返回一个EWOULDBLOCK错误。第四次调用recvfrom时已有一个数据报准备好，它被复制到应用进程缓冲区，于是recvfrom成功返回。我们接着处理数据。</li>
+<li>当一个应用进程像这样对一个非阻塞描述符循环调用recvfrom时，我们称之为轮询(polling)。</li>
+</ul>
+<h4 id="I-O复用模型"><a href="#I-O复用模型" class="headerlink" title="I/O复用模型"></a>I/O复用模型</h4><ul>
+<li>有了I/O复用(I/O multiplexing)，我们就可以调用select、poll或epoll，阻塞在这三个系统调用的某一个上，而不是阻塞在真正的I/O系统调用上。</li>
+</ul>
+<p><img src="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170510161722160-1458835804.png" alt=""></p>
+<h4 id="信号驱动式I-O模型"><a href="#信号驱动式I-O模型" class="headerlink" title="信号驱动式I/O模型"></a>信号驱动式I/O模型</h4><ul>
+<li>我们也可以用信号，让内核在描述符就绪时发送SIGIO信号通知我们，称这种模型为信号驱动式I/O。</li>
+</ul>
+<p><img src="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170510161729019-342907503.png" alt=""></p>
+<ul>
+<li>使用这种模型的方法：首先开启套接字的信号驱动I/O功能，并通过sigaction系统调用安装一个信号处理函数。该系统调用将立即返回，我们的进程继续工作，即进程没有被阻塞。当数据报准备好读取时，内核就为该进程产生一个SIGIO信号。我们随后可以在信号处理函数中调用recvfrom读取数据报，并通知主循环数据已准备好待处理，也可以立即通知主循环，让它读取数据报</li>
+<li>无论如何处理SIGIO信号，这种模型的优势在于等待数据报到达期间进程不被阻塞。主循环可以继续执行，只要等待来自信号处理函数的通知：既可以是数据报已准备好被处理，也可以是数据报已准备好被读取。</li>
+</ul>
+<h4 id="异步I-O模型"><a href="#异步I-O模型" class="headerlink" title="异步I/O模型"></a>异步I/O模型</h4><ul>
+<li>异步I/O(asynchronous I/O)由POSIX规范定义。演变成当前POSIX规范的各种早起标准所定义的实时函数中存在的差异已经取得一致。一般来说，这些函数的工作机制是：告知内核启动某个操作，并让内核在整个操作(包括将数据从内核复制到我们自己的缓冲区)完成后通知我们。</li>
+<li>这一模型与信号驱动模型的主要区别在于：信号驱动式I/O是内核通知我们何时可以启动一个I/O操作，而异步I/O模型是由内核通知我们I/O操作何时完成。</li>
+</ul>
+<p><img src="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170510161743160-1311939863.png" alt=""></p>
+<h3 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h3><ul>
+<li>上面所描述的5中I/O模型，前4种的主要区别在于第一阶段，因为它们的第二阶段是一样的：在数据从内核复制到调用者的缓冲区期间，进程阻塞于recvfrom调用。相反，异步I/O模型在这两个阶段都要处理，从而不同于其他4种模型。</li>
+<li>POSIX定义两个术语：<ul>
+<li>同步I/O操作(synchronous I/O operation)导致进程阻塞，直到I/O操作完成。</li>
+<li>异步I/O操作(asynchronous I/O operation)不导致请求进程阻塞</li>
 </ul>
 </li>
 </ul>
-<h3 id="析构函数"><a href="#析构函数" class="headerlink" title="析构函数"></a>析构函数</h3><ul>
-<li><p>析构函是类的一个成员函数，名字由波浪号接类名构成。它没有返回值，也不接受参数：</p>
-  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span>&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    ~Foo();   <span class="comment">//析构函数</span></div><div class="line">    <span class="comment">//...</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-<p>  由于析构函数不接受参数，因此它不能被重载。对于一个给定类，只会由唯一一个析构函数。</p>
-</li>
-<li>在一个构造函数中，成员的初始化时在函数体执行之前完成的，且按照它们在类中出现的顺序进行初始化。在一个析构函数中，首先执行函数体，然后销毁成员。<strong>成员按初始化顺序的逆序进行销毁</strong>。</li>
-<li><p>无论何时一个对象被销毁，就会自动调用其析构函数：</p>
-<pre><code>1. 变量在离开其作用域时被销毁
-2. 当一个对象被销毁时，其成员被销毁
-3. 容器(无论是标准容器还是数组)被销毁时，其元素被销毁
-4. 对于动态分配的对象，当对指向它的指针应用delete运算符时被销毁
-5. 对于临时对象，当创建它的完整表达式结束时被销毁
-</code></pre></li>
-</ul>
+<p><img src="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170510161755097-691792396.png" alt=""></p>
 
       
     </div>
@@ -442,9 +448,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/拷贝控制/" rel="tag"># 拷贝控制</a>
-          
-            <a href="/tags/析构函数/" rel="tag"># 析构函数</a>
+            <a href="/tags/I-O模型/" rel="tag"># I/O模型</a>
           
         </div>
       
@@ -457,14 +461,18 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/05/14/处理僵死进程和被中断的系统调用/" rel="next" title="处理僵死进程和被中断的系统调用">
+                <i class="fa fa-chevron-left"></i> 处理僵死进程和被中断的系统调用
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/05/14/Cpp拷贝控制和资源管理，智能指针的简单实现/" rel="prev" title="C++ 拷贝控制和资源管理，智能指针的简单实现">
-                C++ 拷贝控制和资源管理，智能指针的简单实现 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/05/14/IO多路复用/" rel="prev" title="网络编程：I/O多路复用">
+                网络编程：I/O多路复用 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -594,7 +602,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#拷贝构造函数"><span class="nav-number">1.</span> <span class="nav-text">拷贝构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拷贝赋值运算符"><span class="nav-number">2.</span> <span class="nav-text">拷贝赋值运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#析构函数"><span class="nav-number">3.</span> <span class="nav-text">析构函数</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#I-O模型"><span class="nav-number">1.</span> <span class="nav-text">I/O模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#阻塞式I-O模型"><span class="nav-number">1.1.</span> <span class="nav-text">阻塞式I/O模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#非阻塞式I-O模型"><span class="nav-number">1.2.</span> <span class="nav-text">非阻塞式I/O模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#I-O复用模型"><span class="nav-number">1.3.</span> <span class="nav-text">I/O复用模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#信号驱动式I-O模型"><span class="nav-number">1.4.</span> <span class="nav-text">信号驱动式I/O模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异步I-O模型"><span class="nav-number">1.5.</span> <span class="nav-text">异步I/O模型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#比较"><span class="nav-number">2.</span> <span class="nav-text">比较</span></a></li></ol></div>
             
 
           </div>

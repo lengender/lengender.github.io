@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="拷贝控制,析构函数," />
+  <meta name="keywords" content="虚函数,进程和线程,数据结构," />
 
 
 
@@ -90,17 +90,17 @@
 
 
 
-<meta name="description" content="C++ 拷贝构造函数、拷贝赋值运算符、析构函数">
-<meta name="keywords" content="拷贝控制,析构函数">
+<meta name="description" content="这算是一个系列吧，记录一下在准备秋招期间，所准备的C++面试题，望秋招顺利。所有的面试题均来源于各大论坛，网络。">
+<meta name="keywords" content="虚函数,进程和线程,数据结构">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C++ 拷贝构造函数、拷贝赋值运算符、析构函数">
-<meta property="og:url" content="http://yoursite.com/2017/05/14/Cpp拷贝构造函数、拷贝赋值运算符、析构函数/index.html">
+<meta property="og:title" content="C&#x2F;C++ 常考面试题(一)">
+<meta property="og:url" content="http://yoursite.com/2017/05/14/C、Cpp常考面试题-一/index.html">
 <meta property="og:site_name" content="越努力 | 越幸运">
-<meta property="og:description" content="C++ 拷贝构造函数、拷贝赋值运算符、析构函数">
-<meta property="og:updated_time" content="2017-05-14T12:49:16.252Z">
+<meta property="og:description" content="这算是一个系列吧，记录一下在准备秋招期间，所准备的C++面试题，望秋招顺利。所有的面试题均来源于各大论坛，网络。">
+<meta property="og:updated_time" content="2017-05-14T12:48:04.630Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C++ 拷贝构造函数、拷贝赋值运算符、析构函数">
-<meta name="twitter:description" content="C++ 拷贝构造函数、拷贝赋值运算符、析构函数">
+<meta name="twitter:title" content="C&#x2F;C++ 常考面试题(一)">
+<meta name="twitter:description" content="这算是一个系列吧，记录一下在准备秋招期间，所准备的C++面试题，望秋招顺利。所有的面试题均来源于各大论坛，网络。">
 
 
 
@@ -128,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/05/14/Cpp拷贝构造函数、拷贝赋值运算符、析构函数/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/05/14/C、Cpp常考面试题-一/"/>
 
 
 
 
 
-  <title>C++ 拷贝构造函数、拷贝赋值运算符、析构函数 | 越努力 | 越幸运</title>
+  <title>C/C++ 常考面试题(一) | 越努力 | 越幸运</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -274,7 +274,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/14/Cpp拷贝构造函数、拷贝赋值运算符、析构函数/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/14/C、Cpp常考面试题-一/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jeff Lai">
@@ -291,7 +291,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">C++ 拷贝构造函数、拷贝赋值运算符、析构函数</h1>
+          <h1 class="post-title" itemprop="name headline">C/C++ 常考面试题(一)</h1>
         
 
         <div class="post-meta">
@@ -303,7 +303,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-14T16:19:56+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-14T20:41:34+08:00">
                 2017-05-14
               </time>
             
@@ -326,8 +326,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index">
-                    <span itemprop="name">C++</span>
+                  <a href="/categories/面试面经/" itemprop="url" rel="index">
+                    <span itemprop="name">面试面经</span>
                   </a>
                 </span>
 
@@ -360,59 +360,57 @@
       
 
       
-        <p>C++ 拷贝构造函数、拷贝赋值运算符、析构函数<br><a id="more"></a></p>
-<h3 id="拷贝构造函数"><a href="#拷贝构造函数" class="headerlink" title="拷贝构造函数"></a>拷贝构造函数</h3><ul>
-<li>第一个参数必须是自身类类型的引用，且任何额外参数都有默认值。(为什么必须是引用？见后解释)</li>
-<li>合成拷贝构造函数：如果我们没有为一个类定义拷贝构造函数，则编译器会为我们定义一个。同合成的默认构造函数不同的是，即使我们定义了其他构造函数，编译器也会为我们合成一个拷贝构造函数。(一旦自己定义了构造函数，则不会合成默认构造函数)</li>
-<li><p>拷贝初始化与直接初始化</p>
+        <p>这算是一个系列吧，记录一下在准备秋招期间，所准备的C++面试题，望秋招顺利。所有的面试题均来源于各大论坛，网络。</p>
+<a id="more"></a>
+<h3 id="C-C-常考面试题-一"><a href="#C-C-常考面试题-一" class="headerlink" title="C/C++常考面试题(一)"></a>C/C++常考面试题(一)</h3><ol>
+<li>常用的C++数据结构有哪些？<ul>
+<li>vector，序列式容器，相当于数组，顺序表；</li>
+<li>list, 双向链表</li>
+<li>deque,双端队列，queue，队列，stack，栈，priority_queue,优先级队列</li>
+<li>map,set,multimap,multiset</li>
+<li>hashtable,散列表</li>
+<li>图，树等等</li>
+</ul>
+</li>
+</ol>
+<ol>
+<li><p>什么是虚函数，多继承有什么问题</p>
 <ul>
-<li>直接初始化：要求编译器使用普通的函数匹配来选择与我们提供的参数最匹配的构造函数。</li>
-<li><p>拷贝初始化：要求编译器将右侧运算对象拷贝到正在创建的对象中，如果需要的话，还要进行类型转换。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="built_in">string</span> <span class="title">dots</span><span class="params">(<span class="number">10</span>, <span class="string">'.'</span>)</span></span>;               <span class="comment">//直接初始化</span></div><div class="line"><span class="function"><span class="built_in">string</span> <span class="title">s</span><span class="params">(dots)</span></span>;                     <span class="comment">//直接初始化</span></div><div class="line"><span class="built_in">string</span> s2 = dots;                   <span class="comment">//拷贝初始化</span></div><div class="line"><span class="built_in">string</span> null_book = <span class="string">"9-999-8999"</span>;    <span class="comment">//拷贝初始化</span></div><div class="line"><span class="built_in">string</span> nines = <span class="built_in">string</span>(<span class="number">100</span>, <span class="string">'9'</span>);    <span class="comment">//拷贝初始化</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>使用‘=’号的是拷贝初始化，不使用等号的是直接初始化。</p>
-</li>
-<li><p><strong>拷贝初始化发生在以下情况</strong></p>
-<pre><code>1. 用 = 定义变量时发生。
-2. 将一个对象作为实参传递给一个非引用类型的形参。
-3. 从一个返回类型为非引用类型的函数返回一个对象。
-4. 用花括号列表初始化一个数组中的元素或一个聚合类中的成员。(聚合类是指没有用户定义的构造函数，没有私有和保护的非静态数据成员，没有基类，没有虚函数)。
-</code></pre></li>
+<li>被virtual关键字修饰的成员函数，就是虚函数</li>
+<li>多继承可能会发生重复继承的情况，从不同途径继承来的同名的数据成员在内存中有不同的拷贝造成数据不一致的问题，二义性的问题。解决办法虚继承</li>
 </ul>
 </li>
-<li><p>拷贝构造函数第一个参数必须是引用原因：由于拷贝构造函数被用来初始化非引用类类型的参数。如果其自身参数不是引用类型，则调用永远也不会成功——为了调用拷贝构造函数，我们必须拷贝它的实参，但为了拷贝实参，我们又必须调用拷贝构造函数，如此无限循环。</p>
-</li>
-</ul>
-<h3 id="拷贝赋值运算符"><a href="#拷贝赋值运算符" class="headerlink" title="拷贝赋值运算符"></a>拷贝赋值运算符</h3><ul>
-<li><p>与类控制其对象如何初始化一样，类也可以控制器对象如何赋值：</p>
-  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Sales_data trans, accum;</div><div class="line">trans = accum;  <span class="comment">//使用Sales_data的拷贝赋值运算符</span></div></pre></td></tr></table></figure>
-<p>  与拷贝构造函数一样，如果类未定义自己的拷贝赋值运算符，编译器也会为它合成一个。</p>
-</li>
-<li><p>重载赋值运算符</p>
+<li><p>为什么要用虚析构函数，什么是多态</p>
 <ul>
-<li>重载运算符本质上是函数，其名字由operator关键字后接表示要定义的运算符的符号组成。因此，赋值运算符就是一个名为operator=的函数。类似于任何其他函数，运算符函数也有一个返回类型和一个参数列表。</li>
-<li>如果是一个运算符是一个成员函数，其左侧运算对象就绑定到隐式的this参数。对于一个二元运算符，例如赋值运算符，其右侧运算对象作为显式参数传递。</li>
-<li><p>拷贝赋值运算符接受一个与其类相同类型的参数：</p>
-  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span>&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    Foo&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> Foo&amp;);  <span class="comment">//赋值运算符</span></div><div class="line">    <span class="comment">//...</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-<p>  为了与内置类型的赋值保持一致，赋值运算符通常返回一个指向其左侧运算对象的引用。注意，标准库通常要求保存在容器中的类型要有其赋值运算符，且其返回值是左侧运算对象的引用。</p>
+<li>在多态中，当用基类操作派生类，在析构时防止只析构基类而不析构派生类的状况发生</li>
+<li>多态可以简单地概括为“一个接口，多种方法”，在程序运行的过程中才决定调用的函数。多态性是面向对象编程领域的核心概念。多态性是允许你将父对象设置成为和它的一个或更多的子对象相等的技术，赋值之后，父对象就可以根据当前赋值给它的子对象的特性以不同的方式运作。简单地说就是一句话，允许将子类类型的指针赋值给父类类型的指针。多态性在C++中都是通过虚函数(Virtual Function)实现的。</li>
+</ul>
 </li>
+</ol>
+<ol>
+<li><p>进程和线程的区别和联系</p>
+<ul>
+<li><p>定义</p>
+<ul>
+<li>进程是程序的一次执行，是程序在一个数据集合上运行的过程，是一个动态概念，是系统进行资源分配和管理的基本单位。</li>
+<li>线程是进程的一个实体，是CPU调度和分派的基本单位，是比进程更小的能独立运行的基本单位，也称为轻型进程，是可执行的实体单元。</li>
+</ul>
+</li>
+<li><p>区别</p>
+<ul>
+<li>地址空间和其他资源：进程间相互独立，同一进程的各线程间共享。某进程的线程在其他进程中不可见。<ul>
+<li>每一个进程都有一个自己的地址空间，即进程空间。进程空间的大小只与机器位数有关。一个进程崩溃后，在保护模式下不会对其他进程产生影响。而线程只是一个进程中的不同执行路径，每一个线程有自己的堆栈和局部变量，但是没有自己独立的地址空间，每个线程共享其所属进程的资源。一个线程死掉等于整个进程死掉，所以多进程的程序要比多线程的程序健壮。</li>
+</ul>
+</li>
+<li>通信：进程间通信IPC，线程间可以直接读写进程数据段（如全局变量）来进行通信，但是需要相关同步和互斥手段的辅助，以保证数据的一致性。</li>
+<li>调度和切换：线程的上下文切换比进程的上下文切换快得多。</li>
+<li>一个程序至少有一个进程，一个进程至少有一个线程</li>
+<li>从逻辑角度来看，多线程的意义在于一个应用程序中，有多个执行部分可以同时执行。但操作系统并没有将多个线程看做多个独立的应用，来实现进程的调度和管理以及资源分配。这就是进程和线程的重要区别。</li>
 </ul>
 </li>
 </ul>
-<h3 id="析构函数"><a href="#析构函数" class="headerlink" title="析构函数"></a>析构函数</h3><ul>
-<li><p>析构函是类的一个成员函数，名字由波浪号接类名构成。它没有返回值，也不接受参数：</p>
-  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span>&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    ~Foo();   <span class="comment">//析构函数</span></div><div class="line">    <span class="comment">//...</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-<p>  由于析构函数不接受参数，因此它不能被重载。对于一个给定类，只会由唯一一个析构函数。</p>
 </li>
-<li>在一个构造函数中，成员的初始化时在函数体执行之前完成的，且按照它们在类中出现的顺序进行初始化。在一个析构函数中，首先执行函数体，然后销毁成员。<strong>成员按初始化顺序的逆序进行销毁</strong>。</li>
-<li><p>无论何时一个对象被销毁，就会自动调用其析构函数：</p>
-<pre><code>1. 变量在离开其作用域时被销毁
-2. 当一个对象被销毁时，其成员被销毁
-3. 容器(无论是标准容器还是数组)被销毁时，其元素被销毁
-4. 对于动态分配的对象，当对指向它的指针应用delete运算符时被销毁
-5. 对于临时对象，当创建它的完整表达式结束时被销毁
-</code></pre></li>
-</ul>
+</ol>
 
       
     </div>
@@ -442,9 +440,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/拷贝控制/" rel="tag"># 拷贝控制</a>
+            <a href="/tags/虚函数/" rel="tag"># 虚函数</a>
           
-            <a href="/tags/析构函数/" rel="tag"># 析构函数</a>
+            <a href="/tags/进程和线程/" rel="tag"># 进程和线程</a>
+          
+            <a href="/tags/数据结构/" rel="tag"># 数据结构</a>
           
         </div>
       
@@ -457,14 +457,18 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/05/14/Cpp进制转换/" rel="next" title="C++ 进制转换">
+                <i class="fa fa-chevron-left"></i> C++ 进制转换
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/05/14/Cpp拷贝控制和资源管理，智能指针的简单实现/" rel="prev" title="C++ 拷贝控制和资源管理，智能指针的简单实现">
-                C++ 拷贝控制和资源管理，智能指针的简单实现 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/05/14/常考面试题2/" rel="prev" title="C/C++ 常考面试题(二)">
+                C/C++ 常考面试题(二) <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -594,7 +598,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#拷贝构造函数"><span class="nav-number">1.</span> <span class="nav-text">拷贝构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拷贝赋值运算符"><span class="nav-number">2.</span> <span class="nav-text">拷贝赋值运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#析构函数"><span class="nav-number">3.</span> <span class="nav-text">析构函数</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#C-C-常考面试题-一"><span class="nav-number">1.</span> <span class="nav-text">C/C++常考面试题(一)</span></a></li></ol></div>
             
 
           </div>

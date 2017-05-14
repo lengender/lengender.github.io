@@ -1,0 +1,777 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="进制转换," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="一直在刷题的时候，都会遇到一个坑，就是进制转换的问题。而每一次都傻乎乎的自己去实现一个。所以算是对以前的坑的一个总结。">
+<meta name="keywords" content="进制转换">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ 进制转换">
+<meta property="og:url" content="http://yoursite.com/2017/05/14/Cpp进制转换/index.html">
+<meta property="og:site_name" content="越努力 | 越幸运">
+<meta property="og:description" content="一直在刷题的时候，都会遇到一个坑，就是进制转换的问题。而每一次都傻乎乎的自己去实现一个。所以算是对以前的坑的一个总结。">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201704/1122912-20170405112418644-988455913.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201704/1122912-20170405112431769-466813679.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201704/1122912-20170405112442472-366390568.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201704/1122912-20170405112455707-2138465461.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201704/1122912-20170405112505410-1413869481.png">
+<meta property="og:updated_time" content="2017-05-14T12:48:29.097Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++ 进制转换">
+<meta name="twitter:description" content="一直在刷题的时候，都会遇到一个坑，就是进制转换的问题。而每一次都傻乎乎的自己去实现一个。所以算是对以前的坑的一个总结。">
+<meta name="twitter:image" content="http://images2015.cnblogs.com/blog/1122912/201704/1122912-20170405112418644-988455913.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/05/14/Cpp进制转换/"/>
+
+
+
+
+
+  <title>C++ 进制转换 | 越努力 | 越幸运</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">越努力 | 越幸运</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/14/Cpp进制转换/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jeff Lai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力 | 越幸运">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C++ 进制转换</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-14T20:08:47+08:00">
+                2017-05-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C++</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>一直在刷题的时候，都会遇到一个坑，就是进制转换的问题。而每一次都傻乎乎的自己去实现一个。所以算是对以前的坑的一个总结。</p>
+<a id="more"></a>
+<ul>
+<li><p><strong>itoa 函数</strong></p>
+<ul>
+<li><p>itoa是广泛应用的非标准C语言和C++语言扩展函数。由于它不是标准C/C++语言函数，所以不能在所有的编译器中使用。但是，大多数的编译器(如Windows上的)通常在&lt;stdlib.h&gt;/&lt;cstdlib&gt;头文件中包含这个函数。</p>
+  <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">//函数原型</div><div class="line">char *itoa(int value, char *str, int radix)</div><div class="line"></div><div class="line">value 是被转换的整数</div><div class="line">str 转换后存储的字符数组</div><div class="line">radix 转换进制数，可以是 2， 8， 10， 16 等等</div></pre></td></tr></table></figure>
+<p>  由上可知，itoa可以实现10到2、8、16的转换，8到2、10、16的转换，16到2、8、10的转换，唯独没有2进制到其他进制的转换</p>
+</li>
+<li><p>相关测试如下：</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">   <span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line">   <span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></div><div class="line">   <span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"></div><div class="line">   <span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">   &#123;</div><div class="line"><span class="keyword">char</span> str[<span class="number">25</span>];</div><div class="line"></div><div class="line"><span class="built_in">memset</span>(str, <span class="number">0</span>, <span class="keyword">sizeof</span>(str));</div><div class="line">       itoa(<span class="number">98</span>, str, <span class="number">2</span>);</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"10--2进制： %s\n"</span>, str);</div><div class="line">    </div><div class="line">    <span class="built_in">memset</span>(str, <span class="number">0</span>, <span class="keyword">sizeof</span>(str));</div><div class="line">    itoa(<span class="number">98</span>, str, <span class="number">8</span>);</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"10--8进制： %s\n"</span>, str);</div><div class="line">    </div><div class="line">    <span class="built_in">memset</span>(str, <span class="number">0</span>, <span class="keyword">sizeof</span>(str));</div><div class="line">    itoa(<span class="number">98</span>, str, <span class="number">16</span>);</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"10--16进制： %s\n"</span>, str);</div><div class="line">    </div><div class="line">    <span class="built_in">memset</span>(str, <span class="number">0</span>, <span class="keyword">sizeof</span>(str));</div><div class="line">    itoa(<span class="number">076</span>, str, <span class="number">2</span>);</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"8--2进制： %s\n"</span>, str);</div><div class="line">    </div><div class="line">    <span class="built_in">memset</span>(str, <span class="number">0</span>, <span class="keyword">sizeof</span>(str));</div><div class="line">    itoa(<span class="number">076</span>, str, <span class="number">10</span>);</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"8--10进制： %s\n"</span>, str);</div><div class="line">    </div><div class="line">    <span class="built_in">memset</span>(str, <span class="number">0</span>, <span class="keyword">sizeof</span>(str));</div><div class="line">    itoa(<span class="number">076</span>, str, <span class="number">16</span>);</div><div class="line">   	<span class="built_in">printf</span>(<span class="string">"8--16进制： %s\n"</span>, str);</div><div class="line">   </div><div class="line">    <span class="built_in">memset</span>(str, <span class="number">0</span>, <span class="keyword">sizeof</span>(str));</div><div class="line">    itoa(<span class="number">0xffff</span>, str, <span class="number">2</span>);</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"16--2进制： %s\n"</span>, str);</div><div class="line">    </div><div class="line">    <span class="built_in">memset</span>(str, <span class="number">0</span>, <span class="keyword">sizeof</span>(str));</div><div class="line">    itoa(<span class="number">0xffff</span>, str, <span class="number">8</span>);</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"16--8进制： %s\n"</span>, str);</div><div class="line">    </div><div class="line">    <span class="built_in">memset</span>(str, <span class="number">0</span>, <span class="keyword">sizeof</span>(str));</div><div class="line">    itoa(<span class="number">0xffff</span>, str, <span class="number">10</span>);</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"16--10进制： %s\n"</span>, str);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>  程序运行结果如下：<br><img src="http://images2015.cnblogs.com/blog/1122912/201704/1122912-20170405112418644-988455913.png" alt=""></p>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p><strong>sprintf 函数</strong></p>
+<ul>
+<li><p>把格式化数据写入某个字符缓冲区中，头文件为&lt;stdio.h&gt;/&lt;cstdio&gt;</p>
+  <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">//函数原型</div><div class="line">int sprintf(char *buffer, const char *format, [argument]...)</div><div class="line"></div><div class="line">buffer: char*型数组，指向将要写入的字符串的缓冲区</div><div class="line">format: 格式化字符串</div><div class="line">[argument]...: 可选参数，就是任何类型的数据</div></pre></td></tr></table></figure>
+<p>  sprintf可完成8,10,16进制间的互相转换。</p>
+</li>
+<li><p>相关测试如下：</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">char</span> str[<span class="number">25</span>];</div><div class="line"></div><div class="line"> <span class="built_in">memset</span>(str, <span class="number">0</span>, <span class="keyword">sizeof</span>(str));</div><div class="line"> <span class="built_in">sprintf</span>(str, <span class="string">"%o"</span>, <span class="number">1024</span>);</div><div class="line"> <span class="built_in">printf</span>(<span class="string">"8进制： %s\n"</span>, str);</div><div class="line"></div><div class="line"> <span class="built_in">memset</span>(str, <span class="number">0</span>, <span class="keyword">sizeof</span>(str));</div><div class="line"> <span class="built_in">sprintf</span>(str, <span class="string">"%x"</span>, <span class="number">1024</span>);</div><div class="line"> <span class="built_in">printf</span>(<span class="string">"16进制： %s\n"</span>, str);</div><div class="line"></div><div class="line"> <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>  程序结果如下：<br> <img src="http://images2015.cnblogs.com/blog/1122912/201704/1122912-20170405112431769-466813679.png" alt=""></p>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p><strong>stoi, stol, stoll, stof, stod, stold</strong></p>
+<ul>
+<li><p>C++11新引入的string的api, 完成string向数值类型的转换<br><img src="http://images2015.cnblogs.com/blog/1122912/201704/1122912-20170405112442472-366390568.png" alt=""></p>
+</li>
+<li><p><strong>stoi</strong>：可实现任意进制数转10进制数，返回一个int数</p>
+  <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">      //函数原型</div><div class="line">      int stoi(const string &amp;str, size_t* idx = 0, int base = 10)</div><div class="line">      </div><div class="line">      str: 要转换的string</div><div class="line">      idx: 为size_t*类型，是从str中解析出一个整数后的下一个字符的位置</div><div class="line">      base: 指出string中要转换的数的进制，即str所代表的是个什么进制的数,如是base默认为10， </div><div class="line">若base = 0, 表示由编译器自动判定str所代表的数的进制</div></pre></td></tr></table></figure>
+<p>测试如下：</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line"> <span class="built_in">string</span> str_dec = <span class="string">"2048,hello world"</span>;</div><div class="line"> <span class="built_in">string</span> str_hex = <span class="string">"40c3"</span>;</div><div class="line"> <span class="built_in">string</span> str_bin = <span class="string">"-10010110001"</span>;</div><div class="line"> <span class="built_in">string</span> str_auto = <span class="string">"0x7f"</span>;</div><div class="line"></div><div class="line"> <span class="keyword">size_t</span> sz;   <span class="comment">// alias of size_t</span></div><div class="line"> <span class="keyword">int</span> i_dec = <span class="built_in">std</span>::stoi(str_dec, &amp;sz);</div><div class="line"> <span class="keyword">int</span> i_hex = <span class="built_in">std</span>::stoi(str_hex, <span class="literal">nullptr</span>, <span class="number">16</span>);</div><div class="line"> <span class="keyword">int</span> i_bin = <span class="built_in">std</span>::stoi(str_bin, <span class="literal">nullptr</span>, <span class="number">2</span>);</div><div class="line"> <span class="keyword">int</span> i_auto = <span class="built_in">std</span>::stoi(str_auto, <span class="literal">nullptr</span>, <span class="number">0</span>);</div><div class="line"></div><div class="line"> <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; str_dec &lt;&lt; <span class="string">": "</span> &lt;&lt; i_dec &lt;&lt; <span class="string">" and ["</span> &lt;&lt; str_dec.substr(sz) &lt;&lt; <span class="string">"]\n"</span>;</div><div class="line"> <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; str_hex &lt;&lt; <span class="string">": "</span> &lt;&lt; i_hex &lt;&lt; <span class="string">'\n'</span>;</div><div class="line"> <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; str_bin &lt;&lt; <span class="string">": "</span> &lt;&lt; i_bin &lt;&lt; <span class="string">'\n'</span>;</div><div class="line"> <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; str_auto &lt;&lt; <span class="string">": "</span> &lt;&lt; i_auto &lt;&lt; <span class="string">'\n'</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>  结果如下：<br> <img src="http://images2015.cnblogs.com/blog/1122912/201704/1122912-20170405112455707-2138465461.png" alt=""></p>
+</li>
+</ul>
+</li>
+<li><p><strong>stod</strong>:将str转为double</p>
+  <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">//函数原型</div><div class="line">double stod(const string &amp;str, size_t *idx = 0)</div><div class="line"></div><div class="line">str: 要转换的string</div><div class="line">idex: 保存转换后的下一个字符位置</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>测试如下：</p>
+<pre><code><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">orbits</span> <span class="params">(<span class="string">"365.24 29.53"</span>)</span></span>;</div><div class="line">    <span class="built_in">std</span>::<span class="built_in">string</span>::size_type sz;     <span class="comment">// alias of size_t</span></div><div class="line"></div><div class="line">    <span class="keyword">double</span> earth = <span class="built_in">std</span>::stod (orbits,&amp;sz);</div><div class="line">    <span class="keyword">double</span> moon = <span class="built_in">std</span>::stod (orbits.substr(sz));</div><div class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"The moon completes "</span> &lt;&lt; (earth/moon) &lt;&lt; <span class="string">" orbits per Earth year.\n"</span>;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><p>结果如下：<br>       <img src="http://images2015.cnblogs.com/blog/1122912/201704/1122912-20170405112505410-1413869481.png" alt=""></p>
+<ul>
+<li><p><strong>其他函数可以根据这两个类推出来，不再赘述。</strong></p>
+</li>
+<li><p>总结：</p>
+<ul>
+<li>stoi,stod等函数为C++11新加入，应该掌握</li>
+<li>sprintf 功能略强大，值得研究注意</li>
+<li>itoa  非标准库函数</li>
+<li>下一次，我不希望看到你再写跟进制转换相关的东西了，有现成的就该用。</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/进制转换/" rel="tag"># 进制转换</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/14/Cpp虚函数相关，从头到尾捋一遍/" rel="next" title="C++ 虚函数相关，从头到尾捋一遍">
+                <i class="fa fa-chevron-left"></i> C++ 虚函数相关，从头到尾捋一遍
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/14/C、Cpp常考面试题-一/" rel="prev" title="C/C++ 常考面试题(一)">
+                C/C++ 常考面试题(一) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Jeff Lai" />
+          <p class="site-author-name" itemprop="name">Jeff Lai</p>
+           
+              <p class="site-description motion-element" itemprop="description">原来你是我最想留住的幸运</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jeff Lai</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

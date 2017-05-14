@@ -1,0 +1,818 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="虚函数," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="众所周知，C++虚函数是一大难点，也是面试过程中必考部分。此次，从虚函数的相关概念、虚函数表、纯虚函数、再到虚继承等等跟虚函数相关部分，做一个比较细致的整理和复习。">
+<meta name="keywords" content="虚函数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ 虚函数相关，从头到尾捋一遍">
+<meta property="og:url" content="http://yoursite.com/2017/05/14/Cpp虚函数相关，从头到尾捋一遍/index.html">
+<meta property="og:site_name" content="越努力 | 越幸运">
+<meta property="og:description" content="众所周知，C++虚函数是一大难点，也是面试过程中必考部分。此次，从虚函数的相关概念、虚函数表、纯虚函数、再到虚继承等等跟虚函数相关部分，做一个比较细致的整理和复习。">
+<meta property="og:updated_time" content="2017-05-14T12:49:29.830Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++ 虚函数相关，从头到尾捋一遍">
+<meta name="twitter:description" content="众所周知，C++虚函数是一大难点，也是面试过程中必考部分。此次，从虚函数的相关概念、虚函数表、纯虚函数、再到虚继承等等跟虚函数相关部分，做一个比较细致的整理和复习。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/05/14/Cpp虚函数相关，从头到尾捋一遍/"/>
+
+
+
+
+
+  <title>C++ 虚函数相关，从头到尾捋一遍 | 越努力 | 越幸运</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">越努力 | 越幸运</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/14/Cpp虚函数相关，从头到尾捋一遍/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jeff Lai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力 | 越幸运">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C++ 虚函数相关，从头到尾捋一遍</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-14T20:06:00+08:00">
+                2017-05-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C++</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>众所周知，C++虚函数是一大难点，也是面试过程中必考部分。此次，从虚函数的相关概念、虚函数表、纯虚函数、再到虚继承等等跟虚函数相关部分，做一个比较细致的整理和复习。</p>
+<a id="more"></a>
+<ul>
+<li><p><strong>虚函数</strong></p>
+<ul>
+<li>OOP的核心思想是多态性(polymorphism)。把具有继承关系的多个类型称为多态类型。引用或指针的静态类型与动态类型不同这一事实正是C++实现多态性的根本。</li>
+<li>C++ 的多态实现即是通过虚函数。在C++中，基类将类型相关的函数与派生类不做改变直接继承的函数区别对待。对于某些函数，基类希望它的派生类各自定义适合自身的版本，此时基类就将这些函数声明为虚函数(virtual function)。</li>
+<li>C++在使用基类的引用或指针调用一个虚函数成员函数时会执行动态绑定。因为只有直到运行时才能知道调用了那个版本的虚函数，所以<strong>所有的虚函数必须有定义。</strong></li>
+<li><strong>动态绑定只有当通过指针或引用调用虚函数时才会发生。</strong></li>
+<li>一旦某个函数被声明为虚函数，则在所有派生类中它都是虚函数。所以在派生类中可以再一次使用virtual指出，也可以不用。</li>
+<li>如果某次函数调用使用了默认实参，则该实参值由本次调用的静态类型决定。换句话说，如果我们通过基类的引用或指针调用函数，则使用基类中定义的默认实参，即使实际运行的是派生类的函数版本也是如此。此时，传入派生类函数的将是基类函数定义的默认实参。</li>
+<li><p>在某些情况下，我们希望对虚函数的调用不进行动态绑定，而是强迫其执行虚函数的某个特定版本。</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//强行调用基类中定义的函数版本而不管baseP的动态类型到底是什么</span></div><div class="line"><span class="keyword">double</span> price = basePtr-&gt;Base::net_price();</div></pre></td></tr></table></figure>
+<p>  通常情况下，只有成员函数(或友元)中的代码才需要使用作用域运算符来回避虚函数的机制。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>抽象基类</strong></p>
+<ul>
+<li>纯虚函数：一个纯虚函数无须定义。通过在函数体的位置(即在声明语句的分号之前)书写 =0 将一个虚函数说明为纯虚函数。其中 =0 只能出现在类内部的虚函数声明语句处。</li>
+<li>值得注意的是，我们也可以为纯虚函数提供定义，不过函数体必须定义在类的外部，不能在类的内部为一个 =0 的函数提供函数体。</li>
+<li><strong>含有纯虚函数的类是抽象基类。</strong><ul>
+<li>含有(或者未经覆盖直接继承)纯虚函数的类是抽象基类。<strong>抽象基类负责定义接口，而后续的类可以覆盖接口。我们不能(直接)创建一个抽象基类的对象。</strong>  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Base 声明了纯虚函数，而 Derive将覆盖该函数</span></div><div class="line">Base b;         <span class="comment">//错误，不能定义Base的对象</span></div><div class="line">Derive d;       <span class="comment">//正确，Derive中没有纯虚函数</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p><strong>虚函数表指针和虚函数表</strong></p>
+<ul>
+<li>对于每一个定义了虚函数的类，编译器会为其创建一个虚函数表，该虚函数表被所有的类对象所共享，即它不是跟着对象走的，而是相当于静态成员变量，是跟着类走的。</li>
+<li>虚函数表指针vptr，每一个类的对象都有一个虚函数表指针，该指针指向类的虚函数表的位置。为了实现多态，当一个对象调用某个虚函数时，实际上是根据该虚函数指针vptr所指向的虚函数表vtable里找到相应的函数指针并调用之。</li>
+<li>关于vptr在对象内存布局中的存放位置，一般都是放在内存布局的最前面，当然，也可能有其他实现方式。</li>
+<li><p><strong>基类定义如下所示：</strong></p>
+ <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span>&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line"> Base()</div><div class="line">     :a(<span class="number">0</span>), b(<span class="number">0</span>), c(<span class="string">'\0'</span>)&#123;&#125;</div><div class="line">     </div><div class="line"> <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun1</span><span class="params">()</span></span>&#123;</div><div class="line">     <span class="built_in">cout</span> &lt;&lt; <span class="string">"Base::fun1()"</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line"> &#125;</div><div class="line"> </div><div class="line"> <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun2</span><span class="params">()</span></span>&#123;</div><div class="line">     <span class="built_in">cout</span> &lt;&lt; <span class="string">"Base::fun2()"</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line"> &#125;</div><div class="line"><span class="keyword">private</span>:</div><div class="line"> <span class="keyword">int</span> a;</div><div class="line"> <span class="keyword">double</span> b;</div><div class="line"> <span class="keyword">char</span> c;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p> 类Base对象其内存布局方式为：</p>
+<pre><code>![](http://images2015.cnblogs.com/blog/1122912/201704/1122912-20170404221911269-1589292925.png)![](http://images2015.cnblogs.com/blog/1122912/201704/1122912-20170404221920863-344078323.png)
+</code></pre></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>* **考虑继承的情况，如下所示**：
+    <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derive</span> :</span> <span class="keyword">public</span> Base&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    Derive()</div><div class="line">        :Base()，d(<span class="number">0</span>), f(<span class="number">0</span>)&#123;&#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun1</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"Derive::fun1()"</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun3</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"Derive::fun3()"</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    &#125;</div><div class="line"><span class="keyword">private</span>:</div><div class="line">    <span class="keyword">int</span> d;</div><div class="line">    <span class="keyword">float</span> f;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+
+    类Derive对象其内存布局如下所示：
+   ![](http://images2015.cnblogs.com/blog/1122912/201704/1122912-20170404222225832-1147058287.png)![](http://images2015.cnblogs.com/blog/1122912/201704/1122912-20170404222252878-1598131968.png)
+
+
+    * 其实Derive对象的内存布局是可以这样理解，但是也不是很准确。
+    如上所示，在Derive的定义中，我重新实现了Base的fun1(),直接继承了Base::fun2(),再新定义了 Derive::fun3()
+    通过调试，即上面的右图发现，在Derive的对象中，能够看到的虚函数表是从Base继承而来的，其中里面覆写fun1(),继承了fun2()，但是并没有fun3()的函数指针。所以按照上边的左图，给出内存布局的话，可能会有一些误导。 
+
+    * 当派生类继承基类时，如果覆写了基类中的虚函数，在基类的虚函数表中，会使用覆写的函数覆盖基类对应的虚函数，如果没有覆写，则直接继承基类的虚函数。如上图所示的fun1 和 fun2 则是这种情况。
+    * 当派生类再定义新的虚函数时，此时在基类的虚函数表中是无法体现出来的。所以，此时编译器会为派生类维护不止一个属于派生类的虚函数表，其中的有从基类继承而来的虚函数表，但是跟基类的不同，因为其中可能有函数覆写。另外则有一个用来记录当前派生类新定义的虚函数，函数 fun3即属于这种情况。**当然，新维护的虚函数表的位置由编译器决定，也可以直接接到继承而来的虚函数表的后面，即也就只有一个表，但是这跟编译器的具体实现有关。所以，有那个意思就行了，不用太过深究具体实现细节。一般情况下，按照上面左图形式理解即可。**
+    * 由上可知，派生类如果没有定义新的虚函数，则直接继承虚类的虚函数表，并在其中做相应修改。如果定义了新的虚函数，不止要继承虚类的，还要维护自己的。
+    所以上面的Derive的内存布局的另一种情况可能是：
+    ![](http://images2015.cnblogs.com/blog/1122912/201704/1122912-20170404222339910-477620496.png)
+
+
+
+* **下面给出一个多重继承的讨论情况：**
+    <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base1</span>&#123;</span></div><div class="line"><span class="keyword">public</span>: </div><div class="line">    Base1()</div><div class="line">        &#123;&#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun1</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"Base1::fun1()"</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun2</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"Base1::fun2()"</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base2</span>&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    Base2()&#123;&#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun3</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"Base2::fun3()"</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun4</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"Base2::fun4()"</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derive</span> :</span> <span class="keyword">public</span> Base1, <span class="function"><span class="keyword">public</span> <span class="title">Base2</span><span class="params">()</span></span>&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    Derive()</div><div class="line">        :Base1(), Base2() &#123;&#125;</div><div class="line">        </div><div class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun2</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"Derive::fun2()"</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun3</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"Derive::fun3()"</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun5</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"Derive::fun5()"</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+    Derive的对象内存布局如下：
+    ![](http://images2015.cnblogs.com/blog/1122912/201704/1122912-20170404222444582-1165184009.png)
+    ![](http://images2015.cnblogs.com/blog/1122912/201704/1122912-20170404222838269-1886300436.png)
+
+
+    **注意：**
+    * 注意派生类和基类的覆盖关系和继承关系
+    * 关于字节对齐问题，**虚函数表指针，作为隐藏成员加入到类对象中，而隐藏成员的加入不能影响其后成员的字节对齐，所以，虚函数表指针总是占有最大字节对齐数的内存。**
+</code></pre><ul>
+<li><p><strong>虚继承</strong></p>
+<ul>
+<li><p>这是篇好文章[C++ 多继承和虚继承的内存布局][1]，虽然不是很懂，但是确实有帮助。下面在给出一些相关概念。</p>
+</li>
+<li><p>概念：为了解决从不同途径继承来的同名的数据成员在内存中有不同的拷贝造成数据不一致的问题，将共同基类设置为虚基类。此时，从不同途径继承过来的同名数据成员在内存中只有一个拷贝，同一个函数名也只有一个映射。解决了二义性问题，同时，也节省了内存，避免了数据不一致的问题。</p>
+</li>
+<li>：[C++ 对象的内存布局（下）][2]关于虚拟继承的例子部从这篇文章学习，推荐。</li>
+</ul>
+</li>
+</ul>
+<pre><code>[1]: http://www.oschina.net/translate/cpp-virtual-inheritance
+[2]: http://blog.csdn.net/haoel/article/details/3081385
+</code></pre><ul>
+<li>总结如下：<ul>
+<li>无论是GCC还是VC++，除了一些细节上的不同，其大体上的对象布局是一样的。都是从Base1, 到Base2, 再到 Derive, 最后是虚基类 Base。</li>
+<li>关于虚函数表，尤其是第一个，GCC和VC++有很大的不一样。</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>讨论</strong>：<ul>
+<li>带有虚函数的类的sizeof问题  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="number">1.</span>  <span class="class"><span class="keyword">class</span> <span class="title">Base</span>&#123;</span></div><div class="line">    <span class="keyword">public</span>:</div><div class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun</span><span class="params">()</span></span>&#123;&#125;</div><div class="line">    <span class="keyword">private</span>:</div><div class="line">        <span class="keyword">int</span> a;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">很明显：  <span class="keyword">sizeof</span>(Base) = <span class="number">8</span></div><div class="line">原因：带有虚函数的类具有虚函数指针，然后再加上<span class="keyword">int</span></div><div class="line"></div><div class="line"><span class="number">2.</span>  class Base&#123;</div><div class="line">    <span class="keyword">public</span>:</div><div class="line">        <span class="keyword">virtual</span> <span class="keyword">void</span> fun()&#123;&#125;</div><div class="line">    <span class="keyword">private</span>:</div><div class="line">        <span class="keyword">int</span> a;</div><div class="line">        <span class="keyword">double</span> b;</div><div class="line">    &#125;;</div><div class="line">    </div><div class="line">乍一看  <span class="keyword">sizeof</span>(Base) = <span class="number">16</span>, 其实应该是 <span class="keyword">sizeof</span>(Base) = <span class="number">24</span></div><div class="line">为什么呢， 因为前面关于字节对齐中，提到过 类的隐藏对象不能影响其后的数据成员的对齐，所以一般隐藏对象都是最大对齐字节的整数倍。此时 最大对齐为<span class="number">8</span>，所以 虚函数表指针占<span class="number">4</span>个字节，但需要填充<span class="number">4</span>个。然后 <span class="keyword">int</span> 占 <span class="number">4</span> 个，再填充 <span class="number">4</span> 个，最后<span class="keyword">double</span>占<span class="number">8</span>个。一共<span class="number">24</span>个。</div><div class="line"></div><div class="line"><span class="number">3.</span>  class A &#123;</div><div class="line">        <span class="keyword">int</span> a;</div><div class="line">        <span class="keyword">virtual</span> ~A()&#123;&#125;</div><div class="line">    &#125;;</div><div class="line">    </div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">B</span>:</span><span class="keyword">virtual</span> <span class="keyword">public</span> A&#123;</div><div class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">funB</span><span class="params">()</span></span>&#123;&#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">C</span>:</span><span class="keyword">virtual</span> <span class="keyword">public</span> A&#123;</div><div class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">funC</span><span class="params">()</span></span>&#123;&#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">D</span>:</span><span class="keyword">public</span> B,<span class="keyword">public</span> C&#123;</div><div class="line">        <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">funD</span><span class="params">()</span></span>&#123;&#125;</div><div class="line">    &#125;;</div><div class="line">    </div><div class="line">    <span class="keyword">sizeof</span>(A) = <span class="number">8</span></div><div class="line">    <span class="keyword">sizeof</span>(B) = <span class="number">12</span></div><div class="line">    <span class="keyword">sizeof</span>(C) = <span class="number">12</span></div><div class="line">    <span class="keyword">sizeof</span>(D) = <span class="number">16</span></div><div class="line">    </div><div class="line">    A 中是虚函数指针 + <span class="keyword">int</span></div><div class="line">    B、C 虚继承A，大小为 A + 指向虚基类的指针，B、C虽然新定义了虚函数，但是共享A中的虚函数指针。</div><div class="line">    D 由于是普通继承 B、C，但是由于 B 、C是虚继承，所以D中保留A的一个副本。所以大小为 A + B指向虚基类的指针 + C指向虚基类的指针</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>* 最后给出一个上面讨论 2 的具体实例。在VS2013下查看内存布局如下：
+
+    ![](http://images2015.cnblogs.com/blog/1122912/201704/1122912-20170404223337910-1811795107.png)
+    ![](http://images2015.cnblogs.com/blog/1122912/201704/1122912-20170404223347285-1924906464.png)
+
+
+
+
+   上图中没有搞懂的部分，应该是随机数，系统随机的。不用管。
+</code></pre>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/虚函数/" rel="tag"># 虚函数</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/14/Cpp11新特性，对象移动，右值引用，移动构造函数/" rel="next" title="C++ 11新特性，对象移动，右值引用，移动构造函数">
+                <i class="fa fa-chevron-left"></i> C++ 11新特性，对象移动，右值引用，移动构造函数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/14/Cpp进制转换/" rel="prev" title="C++ 进制转换">
+                C++ 进制转换 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Jeff Lai" />
+          <p class="site-author-name" itemprop="name">Jeff Lai</p>
+           
+              <p class="site-description motion-element" itemprop="description">原来你是我最想留住的幸运</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jeff Lai</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
