@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="拷贝控制,析构函数," />
+  <meta name="keywords" content="递归," />
 
 
 
@@ -90,17 +90,17 @@
 
 
 
-<meta name="description" content="C++ 拷贝构造函数、拷贝赋值运算符、析构函数">
-<meta name="keywords" content="拷贝控制,析构函数">
+<meta name="description" content="n 皇后问题">
+<meta name="keywords" content="递归">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C++ 拷贝构造函数、拷贝赋值运算符、析构函数">
-<meta property="og:url" content="http://yoursite.com/2017/05/14/Cpp拷贝构造函数、拷贝赋值运算符、析构函数/index.html">
+<meta property="og:title" content="51.N-QueensII">
+<meta property="og:url" content="http://yoursite.com/2017/05/15/51-N-QueensII/index.html">
 <meta property="og:site_name" content="越努力 | 越幸运">
-<meta property="og:description" content="C++ 拷贝构造函数、拷贝赋值运算符、析构函数">
-<meta property="og:updated_time" content="2017-05-14T12:49:16.252Z">
+<meta property="og:description" content="n 皇后问题">
+<meta property="og:updated_time" content="2017-05-15T07:28:32.458Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C++ 拷贝构造函数、拷贝赋值运算符、析构函数">
-<meta name="twitter:description" content="C++ 拷贝构造函数、拷贝赋值运算符、析构函数">
+<meta name="twitter:title" content="51.N-QueensII">
+<meta name="twitter:description" content="n 皇后问题">
 
 
 
@@ -128,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/05/14/Cpp拷贝构造函数、拷贝赋值运算符、析构函数/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/05/15/51-N-QueensII/"/>
 
 
 
 
 
-  <title>C++ 拷贝构造函数、拷贝赋值运算符、析构函数 | 越努力 | 越幸运</title>
+  <title>51.N-QueensII | 越努力 | 越幸运</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -274,7 +274,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/14/Cpp拷贝构造函数、拷贝赋值运算符、析构函数/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/15/51-N-QueensII/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jeff Lai">
@@ -291,7 +291,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">C++ 拷贝构造函数、拷贝赋值运算符、析构函数</h1>
+          <h1 class="post-title" itemprop="name headline">51.N-QueensII</h1>
         
 
         <div class="post-meta">
@@ -303,8 +303,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-14T16:19:56+08:00">
-                2017-05-14
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-15T15:23:07+08:00">
+                2017-05-15
               </time>
             
 
@@ -326,8 +326,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index">
-                    <span itemprop="name">C++</span>
+                  <a href="/categories/Leetcode/" itemprop="url" rel="index">
+                    <span itemprop="name">Leetcode</span>
                   </a>
                 </span>
 
@@ -360,59 +360,14 @@
       
 
       
-        <p>C++ 拷贝构造函数、拷贝赋值运算符、析构函数<br><a id="more"></a></p>
-<h3 id="拷贝构造函数"><a href="#拷贝构造函数" class="headerlink" title="拷贝构造函数"></a>拷贝构造函数</h3><ul>
-<li>第一个参数必须是自身类类型的引用，且任何额外参数都有默认值。(为什么必须是引用？见后解释)</li>
-<li>合成拷贝构造函数：如果我们没有为一个类定义拷贝构造函数，则编译器会为我们定义一个。同合成的默认构造函数不同的是，即使我们定义了其他构造函数，编译器也会为我们合成一个拷贝构造函数。(一旦自己定义了构造函数，则不会合成默认构造函数)</li>
-<li><p>拷贝初始化与直接初始化</p>
-<ul>
-<li>直接初始化：要求编译器使用普通的函数匹配来选择与我们提供的参数最匹配的构造函数。</li>
-<li><p>拷贝初始化：要求编译器将右侧运算对象拷贝到正在创建的对象中，如果需要的话，还要进行类型转换。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="built_in">string</span> <span class="title">dots</span><span class="params">(<span class="number">10</span>, <span class="string">'.'</span>)</span></span>;               <span class="comment">//直接初始化</span></div><div class="line"><span class="function"><span class="built_in">string</span> <span class="title">s</span><span class="params">(dots)</span></span>;                     <span class="comment">//直接初始化</span></div><div class="line"><span class="built_in">string</span> s2 = dots;                   <span class="comment">//拷贝初始化</span></div><div class="line"><span class="built_in">string</span> null_book = <span class="string">"9-999-8999"</span>;    <span class="comment">//拷贝初始化</span></div><div class="line"><span class="built_in">string</span> nines = <span class="built_in">string</span>(<span class="number">100</span>, <span class="string">'9'</span>);    <span class="comment">//拷贝初始化</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>使用‘=’号的是拷贝初始化，不使用等号的是直接初始化。</p>
-</li>
-<li><p><strong>拷贝初始化发生在以下情况</strong></p>
-<pre><code>1. 用 = 定义变量时发生。
-2. 将一个对象作为实参传递给一个非引用类型的形参。
-3. 从一个返回类型为非引用类型的函数返回一个对象。
-4. 用花括号列表初始化一个数组中的元素或一个聚合类中的成员。(聚合类是指没有用户定义的构造函数，没有私有和保护的非静态数据成员，没有基类，没有虚函数)。
-</code></pre></li>
+        <p>n 皇后问题<br><a id="more"></a></p>
+<h3 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h3><p>Follow up for N-Queens problem.</p>
+<p>Now, instead outputting board configurations, return the total number of distinct solutions.</p>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ul>
+<li>递归方式</li>
+<li>主要是要判断当前位置是否是合理位置，参考isValid函数</li>
 </ul>
-</li>
-<li><p>拷贝构造函数第一个参数必须是引用原因：由于拷贝构造函数被用来初始化非引用类类型的参数。如果其自身参数不是引用类型，则调用永远也不会成功——为了调用拷贝构造函数，我们必须拷贝它的实参，但为了拷贝实参，我们又必须调用拷贝构造函数，如此无限循环。</p>
-</li>
-</ul>
-<h3 id="拷贝赋值运算符"><a href="#拷贝赋值运算符" class="headerlink" title="拷贝赋值运算符"></a>拷贝赋值运算符</h3><ul>
-<li><p>与类控制其对象如何初始化一样，类也可以控制器对象如何赋值：</p>
-  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Sales_data trans, accum;</div><div class="line">trans = accum;  <span class="comment">//使用Sales_data的拷贝赋值运算符</span></div></pre></td></tr></table></figure>
-<p>  与拷贝构造函数一样，如果类未定义自己的拷贝赋值运算符，编译器也会为它合成一个。</p>
-</li>
-<li><p>重载赋值运算符</p>
-<ul>
-<li>重载运算符本质上是函数，其名字由operator关键字后接表示要定义的运算符的符号组成。因此，赋值运算符就是一个名为operator=的函数。类似于任何其他函数，运算符函数也有一个返回类型和一个参数列表。</li>
-<li>如果是一个运算符是一个成员函数，其左侧运算对象就绑定到隐式的this参数。对于一个二元运算符，例如赋值运算符，其右侧运算对象作为显式参数传递。</li>
-<li><p>拷贝赋值运算符接受一个与其类相同类型的参数：</p>
-  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span>&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    Foo&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> Foo&amp;);  <span class="comment">//赋值运算符</span></div><div class="line">    <span class="comment">//...</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-<p>  为了与内置类型的赋值保持一致，赋值运算符通常返回一个指向其左侧运算对象的引用。注意，标准库通常要求保存在容器中的类型要有其赋值运算符，且其返回值是左侧运算对象的引用。</p>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="析构函数"><a href="#析构函数" class="headerlink" title="析构函数"></a>析构函数</h3><ul>
-<li><p>析构函是类的一个成员函数，名字由波浪号接类名构成。它没有返回值，也不接受参数：</p>
-  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span>&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    ~Foo();   <span class="comment">//析构函数</span></div><div class="line">    <span class="comment">//...</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-<p>  由于析构函数不接受参数，因此它不能被重载。对于一个给定类，只会由唯一一个析构函数。</p>
-</li>
-<li>在一个构造函数中，成员的初始化时在函数体执行之前完成的，且按照它们在类中出现的顺序进行初始化。在一个析构函数中，首先执行函数体，然后销毁成员。<strong>成员按初始化顺序的逆序进行销毁</strong>。</li>
-<li><p>无论何时一个对象被销毁，就会自动调用其析构函数：</p>
-<pre><code>1. 变量在离开其作用域时被销毁
-2. 当一个对象被销毁时，其成员被销毁
-3. 容器(无论是标准容器还是数组)被销毁时，其元素被销毁
-4. 对于动态分配的对象，当对指向它的指针应用delete运算符时被销毁
-5. 对于临时对象，当创建它的完整表达式结束时被销毁
-</code></pre></li>
-</ul>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">totalNQueens</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</div><div class="line">        <span class="keyword">if</span>(n == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">        </div><div class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; flag(n, <span class="built_in">string</span>(n, <span class="string">'.'</span>));</div><div class="line">        getResult(flag, n, <span class="number">0</span>, res);</div><div class="line">        </div><div class="line">        <span class="keyword">return</span> res;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">getResult</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; &amp;flag, <span class="keyword">int</span> n, <span class="keyword">int</span> rows, <span class="keyword">int</span> &amp;res)</span></span>&#123;</div><div class="line">        <span class="keyword">if</span>(rows == n)&#123;</div><div class="line">            res++;</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span>&#123;</div><div class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++i)&#123;</div><div class="line">                <span class="keyword">if</span>(isValid(flag, rows, i, n))&#123;</div><div class="line">                    flag[rows][i] = <span class="string">'Q'</span>;</div><div class="line">                    getResult(flag, n, rows + <span class="number">1</span>, res);</div><div class="line">                    flag[rows][i] = <span class="string">'.'</span>;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isValid</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; &amp;nums, <span class="keyword">int</span> rows, <span class="keyword">int</span> cols, <span class="keyword">int</span> n)</span></span>&#123;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; rows; ++i)</div><div class="line">            <span class="keyword">if</span>(nums[i][cols] == <span class="string">'Q'</span>) <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">            </div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = rows - <span class="number">1</span>, j = cols - <span class="number">1</span>; i &gt;= <span class="number">0</span> &amp;&amp; j &gt;= <span class="number">0</span>; --i, --j)</div><div class="line">            <span class="keyword">if</span>(nums[i][j] == <span class="string">'Q'</span>) <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">            </div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = rows - <span class="number">1</span>, j = cols + <span class="number">1</span>; i &gt;= <span class="number">0</span> &amp;&amp; j &lt; n; --i, ++j)</div><div class="line">            <span class="keyword">if</span>(nums[i][j] == <span class="string">'Q'</span>) <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">            </div><div class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -442,9 +397,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/拷贝控制/" rel="tag"># 拷贝控制</a>
-          
-            <a href="/tags/析构函数/" rel="tag"># 析构函数</a>
+            <a href="/tags/递归/" rel="tag"># 递归</a>
           
         </div>
       
@@ -457,15 +410,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/05/14/随笔1/" rel="next" title="想到哪，写到哪(一)">
+                <i class="fa fa-chevron-left"></i> 想到哪，写到哪(一)
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/05/14/Cpp拷贝控制和资源管理，智能指针的简单实现/" rel="prev" title="C++ 拷贝控制和资源管理，智能指针的简单实现">
-                C++ 拷贝控制和资源管理，智能指针的简单实现 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -614,7 +567,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#拷贝构造函数"><span class="nav-number">1.</span> <span class="nav-text">拷贝构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拷贝赋值运算符"><span class="nav-number">2.</span> <span class="nav-text">拷贝赋值运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#析构函数"><span class="nav-number">3.</span> <span class="nav-text">析构函数</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Description"><span class="nav-number">1.</span> <span class="nav-text">Description</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思路"><span class="nav-number">2.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">3.</span> <span class="nav-text">代码</span></a></li></ol></div>
             
 
           </div>
