@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="虚函数,进程和线程,数据结构," />
+  <meta name="keywords" content="B树,数据库," />
 
 
 
@@ -90,17 +90,17 @@
 
 
 
-<meta name="description" content="这算是一个系列吧，记录一下在准备秋招期间，所准备的C++面试题，望秋招顺利。所有的面试题均来源于各大论坛，网络。">
-<meta name="keywords" content="虚函数,进程和线程,数据结构">
+<meta name="description" content="B树是为磁盘或其他直接存取的辅助存储设备而设计的一种平衡搜索树。B树类似于红黑树，但它们在降低磁盘I/O操场数方面要更好一些。许多数据库系统使用B树或B树的变种来存储信息。">
+<meta name="keywords" content="B树,数据库">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C&#x2F;C++ 常考面试题(一)">
-<meta property="og:url" content="http://yoursite.com/2017/05/14/C、Cpp常考面试题-一/index.html">
+<meta property="og:title" content="B树及其变种树">
+<meta property="og:url" content="http://yoursite.com/2017/05/16/B树及其变种树/index.html">
 <meta property="og:site_name" content="越努力 | 越幸运">
-<meta property="og:description" content="这算是一个系列吧，记录一下在准备秋招期间，所准备的C++面试题，望秋招顺利。所有的面试题均来源于各大论坛，网络。">
-<meta property="og:updated_time" content="2017-05-14T12:48:04.630Z">
+<meta property="og:description" content="B树是为磁盘或其他直接存取的辅助存储设备而设计的一种平衡搜索树。B树类似于红黑树，但它们在降低磁盘I/O操场数方面要更好一些。许多数据库系统使用B树或B树的变种来存储信息。">
+<meta property="og:updated_time" content="2017-05-16T02:49:13.304Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C&#x2F;C++ 常考面试题(一)">
-<meta name="twitter:description" content="这算是一个系列吧，记录一下在准备秋招期间，所准备的C++面试题，望秋招顺利。所有的面试题均来源于各大论坛，网络。">
+<meta name="twitter:title" content="B树及其变种树">
+<meta name="twitter:description" content="B树是为磁盘或其他直接存取的辅助存储设备而设计的一种平衡搜索树。B树类似于红黑树，但它们在降低磁盘I/O操场数方面要更好一些。许多数据库系统使用B树或B树的变种来存储信息。">
 
 
 
@@ -128,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/05/14/C、Cpp常考面试题-一/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/05/16/B树及其变种树/"/>
 
 
 
 
 
-  <title>C/C++ 常考面试题(一) | 越努力 | 越幸运</title>
+  <title>B树及其变种树 | 越努力 | 越幸运</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -274,7 +274,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/14/C、Cpp常考面试题-一/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/16/B树及其变种树/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jeff Lai">
@@ -291,7 +291,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">C/C++ 常考面试题(一)</h1>
+          <h1 class="post-title" itemprop="name headline">B树及其变种树</h1>
         
 
         <div class="post-meta">
@@ -303,8 +303,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-14T20:41:34+08:00">
-                2017-05-14
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-16T10:47:52+08:00">
+                2017-05-16
               </time>
             
 
@@ -326,8 +326,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试面经/" itemprop="url" rel="index">
-                    <span itemprop="name">面试面经</span>
+                  <a href="/categories/数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构</span>
                   </a>
                 </span>
 
@@ -360,56 +360,43 @@
       
 
       
-        <p>这算是一个系列吧，记录一下在准备秋招期间，所准备的C++面试题，望秋招顺利。所有的面试题均来源于各大论坛，网络。</p>
-<a id="more"></a>
-<h3 id="C-C-常考面试题-一"><a href="#C-C-常考面试题-一" class="headerlink" title="C/C++常考面试题(一)"></a>C/C++常考面试题(一)</h3><ol>
-<li>常用的C++数据结构有哪些？<ul>
-<li>vector，序列式容器，相当于数组，顺序表；</li>
-<li>list, 双向链表</li>
-<li>deque,双端队列，queue，队列，stack，栈，priority_queue,优先级队列</li>
-<li>map,set,multimap,multiset</li>
-<li>hashtable,散列表</li>
-<li>图，树等等</li>
+        <p>B树是为磁盘或其他直接存取的辅助存储设备而设计的一种平衡搜索树。B树类似于红黑树，但它们在降低磁盘I/O操场数方面要更好一些。许多数据库系统使用B树或B树的变种来存储信息。<br><a id="more"></a></p>
+<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>常见的动态查找树包括：二叉查找树，平衡二叉查找树，红黑树，B tree、B<sup>+</sup>tree、B<sup>*</sup>tree。前三者是典型的二次查找树结构，其查找效率为O(lgN)，与树的深度相关，那么降低树的深度自然会提高查找效率。</p>
+<p>B树和红黑树的不同之处在于B树的节点可以有很多孩子，从数个到数千个。B树类似于红黑树，就是每颗含有n个节点的B树高度为O(lgn)。然而，一颗B树的严格高度可能比一颗红黑树的高度要小许多，这是因为它的分支因子，也就是表示高度的对数的底数可以非常大。因此，我们也可以使用B树在时间O(lgn)内完成一些动态集合的操作。</p>
+<h3 id="B树"><a href="#B树" class="headerlink" title="B树"></a>B树</h3><h4 id="用阶定义的B树"><a href="#用阶定义的B树" class="headerlink" title="用阶定义的B树"></a>用阶定义的B树</h4><p>B树又叫平衡多路查找树，一个m阶的B树的特性如下：</p>
+<ul>
+<li>树中的每个结点最多有m个孩子</li>
+<li><strong>除根和叶子节点外，其他节点至少有[ceil(m/2)]个孩子。ceil(x)是取上限的函数</strong></li>
+<li>若根节点不是叶子节点，则至少有两个孩子。(特殊情况，没有孩子的根节点，即根节点为叶子节点，整棵树只有一个根节点)</li>
+<li><strong>所有叶子节点都出现在同一层，叶子节点不包含任何关键字信息。</strong> 实际上，这些节点不存在，指向这些节点的指针都为NULL</li>
+<li>每个非终节点包含n个关键字信息(n, P<sub>0</sub>, K<sub>1</sub>,  P<sub>1</sub>, K<sub>2</sub>,…, P<sub>n-1</sub>, K<sub>n</sub>, P<sub>n</sub>)，其中：<ul>
+<li>K<sub>i</sub>(i = 1,2,…,n)为关键字，且关键字按顺序升序排列K<sub>i-1</sub> &lt; K<sub>i</sub></li>
+<li>P<sub>i</sub>指向子树根节点，其中P<sub>i-1</sub>指向的子树中的所有节点关键字都小于K<sub>i</sub>，但都大于K<sub>i-1</sub></li>
+<li>关键字个数n必须满足[ceil(m/2) - 1] &lt;= n &lt;= m - 1</li>
 </ul>
 </li>
-</ol>
+</ul>
+<h4 id="B树的类型和节点定义"><a href="#B树的类型和节点定义" class="headerlink" title="B树的类型和节点定义"></a>B树的类型和节点定义</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> m 1024</span></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">BTNode</span>;</span></div><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">BTNode</span> *<span class="title">pBTNode</span>;</span></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">BTNode</span>&#123;</span></div><div class="line">    <span class="keyword">int</span> keyNum;      <span class="comment">//关键字个数，keyNum &lt; m</span></div><div class="line">    pBTNode parent;   <span class="comment">//指向父节点</span></div><div class="line">    pBTNode *ptr;     <span class="comment">//子树指针向量ptr[0],ptr[1],...,ptr[keyNum]</span></div><div class="line">    keyType *key;     <span class="comment">//关键字向量,key[0], key[1],...,key[keyNum - 1]</span></div><div class="line">&#125;;</div><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">BTNode</span> *<span class="title">BTree</span>;</span></div></pre></td></tr></table></figure>
+<h4 id="B树的高度"><a href="#B树的高度" class="headerlink" title="B树的高度"></a>B树的高度</h4><p>B树上的大部分的操作所需的磁盘存取次数与B树的高度是成正比的。</p>
+<p>当B树中包含N个关键字时，B树的最大高度为h.(因为计算B树的高度是，叶节点所在层不计算在内): <strong>h = log<sub>(ceil(m/2))</sub>((N+1)/2) + 1</strong></p>
+<h3 id="B-树"><a href="#B-树" class="headerlink" title="B+树"></a>B<sup>+</sup>树</h3><h4 id="B-树与B树的异同"><a href="#B-树与B树的异同" class="headerlink" title="B+树与B树的异同"></a>B<sup>+</sup>树与B树的异同</h4><p>一棵m阶的B<sup>+</sup>树和m阶的B树的异同点在于：</p>
+<ul>
+<li>有n棵子树的节点中含有n-1个关键字</li>
+<li>所有的叶子节点中包含了全部的关键字信息及指向含有这些关键字记录的指针，且叶子节点本身依照关键字的大小顺序链接(而B树中叶子节点不包含任何关键字信息)。</li>
+<li>所有的非终节点可以看作是索引部分，节点中仅含有其子树根节点中最大或最小关键字。(而B树中的非终节点也包含需要查找的有效信息)。</li>
+</ul>
+<h4 id="B-树应用"><a href="#B-树应用" class="headerlink" title="B+树应用"></a>B<sup>+</sup>树应用</h4><p>为什么说B<sup>+</sup>树比B树更适合实际应用中操作系统的文件索引和数据库索引？</p>
 <ol>
-<li><p>什么是虚函数，多继承有什么问题</p>
-<ul>
-<li>被virtual关键字修饰的成员函数，就是虚函数</li>
-<li>多继承可能会发生重复继承的情况，从不同途径继承来的同名的数据成员在内存中有不同的拷贝造成数据不一致的问题，二义性的问题。解决办法虚继承</li>
-</ul>
-</li>
-<li><p>为什么要用虚析构函数，什么是多态</p>
-<ul>
-<li>在多态中，当用基类操作派生类，在析构时防止只析构基类而不析构派生类的状况发生</li>
-<li>多态可以简单地概括为“一个接口，多种方法”，在程序运行的过程中才决定调用的函数。多态性是面向对象编程领域的核心概念。多态性是允许你将父对象设置成为和它的一个或更多的子对象相等的技术，赋值之后，父对象就可以根据当前赋值给它的子对象的特性以不同的方式运作。简单地说就是一句话，允许将子类类型的指针赋值给父类类型的指针。多态性在C++中都是通过虚函数(Virtual Function)实现的。</li>
-</ul>
-</li>
+<li>B<sup>+</sup>树的磁盘读写代价更低</li>
+<li>B<sup>+</sup>树的查询效率更稳定</li>
 </ol>
-<ol>
-<li><p>进程和线程的区别和联系</p>
-<ul>
-<li><p>定义</p>
-<ul>
-<li>进程是程序的一次执行，是程序在一个数据集合上运行的过程，是一个动态概念，是系统进行资源分配和管理的基本单位。</li>
-<li>线程是进程的一个实体，是CPU调度和分派的基本单位，是比进程更小的能独立运行的基本单位，也称为轻型进程，是可执行的实体单元。</li>
-</ul>
-</li>
-<li><p>区别</p>
-<ul>
-<li>地址空间和其他资源：进程间相互独立，同一进程的各线程间共享。某进程的线程在其他进程中不可见。<ul>
-<li>每一个进程都有一个自己的地址空间，即进程空间。进程空间的大小只与机器位数有关。一个进程崩溃后，在保护模式下不会对其他进程产生影响。而线程只是一个进程中的不同执行路径，每一个线程有自己的堆栈和局部变量，但是没有自己独立的地址空间，每个线程共享其所属进程的资源。一个线程死掉等于整个进程死掉，所以多进程的程序要比多线程的程序健壮。</li>
-</ul>
-</li>
-<li>通信：进程间通信IPC，线程间可以直接读写进程数据段（如全局变量）来进行通信，但是需要相关同步和互斥手段的辅助，以保证数据的一致性。</li>
-<li>调度和切换：线程的上下文切换比进程的上下文切换快得多。</li>
-<li>一个程序至少有一个进程，一个进程至少有一个线程</li>
-<li>从逻辑角度来看，多线程的意义在于一个应用程序中，有多个执行部分可以同时执行。但操作系统并没有将多个线程看做多个独立的应用，来实现进程的调度和管理以及资源分配。这就是进程和线程的重要区别。</li>
-</ul>
-</li>
-</ul>
-</li>
+<p>数据库索引采用B<sup>+</sup>树的主要原因是B树在提高了磁盘I/O性能的同时并没有解决元素遍历的效率低下问题。正是为了解决这个问题，B<sup>+</sup>树应运而生。B<sup>+</sup>树只要遍历叶子节点就可以实现整棵树的遍历，而且在数据库中基于范围的查询是非常频繁的，而B树不支持这样的操作(或者说效率太低)。</p>
+<h3 id="B-树-1"><a href="#B-树-1" class="headerlink" title="B*树"></a>B<sup>*</sup>树</h3><h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p>B<sup><em> </em></sup>树是B<sup>+</sup>树的变体，在B<sup>+</sup>树的基础上(所有叶子节点包含全部关键字信息，及指向含有这些关键字记录的指针)。B<sup> </sup>树中的非根和非叶子节点再增加指向兄弟的指针。B<sup> <em></em></sup>树定义了非叶子节点关键字的个数至少为(2/3)  M,即块的最低使用率的2/3(代替B<sup>+</sup>树的1/2)</p>
+<h4 id="B-树的分裂"><a href="#B-树的分裂" class="headerlink" title="B+树的分裂"></a>B<sup>+</sup>树的分裂</h4><p>当一个节点满时，分配一个新的节点，并将原节点中的1/2复制到新节点，最后在新节点中增加指向新节点的指针；B<sup>+</sup>树的分裂只影响原节点和父节点，而不会影响兄弟节点，所以它不需要指向兄弟节点的指针</p>
+<h4 id="B-树的分裂-1"><a href="#B-树的分裂-1" class="headerlink" title="B*树的分裂"></a>B<sup>*</sup>树的分裂</h4><p>当一个节点满时，如果它的下一个兄弟节点未满，那么将一部分数据移到兄弟节点中，再在原节点上插入关键字，最后修改父节点中兄弟节点的关键字(因为兄弟节点的关键字范围改变了)；如果兄弟节点也满了，则在原节点与兄弟节点之间增加新节点，并各复制1/3的数据到新节点，最后在父节点中增加新节点的指针。所以，B<sup>*</sup>树分配新节点的概率比B<sup>+</sup>树低，空间使用率更高。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
+<li><a href="http://blog.csdn.net/v_JULY_v/article/details/6530142/" target="_blank" rel="external">从B树、B+树、B*树谈到R 树</a></li>
+<li>《算法导论》</li>
 </ol>
 
       
@@ -440,11 +427,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/虚函数/" rel="tag"># 虚函数</a>
+            <a href="/tags/B树/" rel="tag"># B树</a>
           
-            <a href="/tags/进程和线程/" rel="tag"># 进程和线程</a>
-          
-            <a href="/tags/数据结构/" rel="tag"># 数据结构</a>
+            <a href="/tags/数据库/" rel="tag"># 数据库</a>
           
         </div>
       
@@ -457,8 +442,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/14/Cpp进制转换/" rel="next" title="C++ 进制转换">
-                <i class="fa fa-chevron-left"></i> C++ 进制转换
+              <a href="/2017/05/15/53-Maximum-Subarray/" rel="next" title="53. Maximum Subarray">
+                <i class="fa fa-chevron-left"></i> 53. Maximum Subarray
               </a>
             
           </div>
@@ -466,10 +451,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/05/14/常考面试题2/" rel="prev" title="C/C++ 常考面试题(二)">
-                C/C++ 常考面试题(二) <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -618,7 +599,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#C-C-常考面试题-一"><span class="nav-number">1.</span> <span class="nav-text">C/C++常考面试题(一)</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#B树"><span class="nav-number">2.</span> <span class="nav-text">B树</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#用阶定义的B树"><span class="nav-number">2.1.</span> <span class="nav-text">用阶定义的B树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#B树的类型和节点定义"><span class="nav-number">2.2.</span> <span class="nav-text">B树的类型和节点定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#B树的高度"><span class="nav-number">2.3.</span> <span class="nav-text">B树的高度</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#B-树"><span class="nav-number">3.</span> <span class="nav-text">B+树</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#B-树与B树的异同"><span class="nav-number">3.1.</span> <span class="nav-text">B+树与B树的异同</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#B-树应用"><span class="nav-number">3.2.</span> <span class="nav-text">B+树应用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#B-树-1"><span class="nav-number">4.</span> <span class="nav-text">B*树</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义"><span class="nav-number">4.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#B-树的分裂"><span class="nav-number">4.2.</span> <span class="nav-text">B+树的分裂</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#B-树的分裂-1"><span class="nav-number">4.3.</span> <span class="nav-text">B*树的分裂</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
