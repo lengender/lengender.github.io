@@ -1,0 +1,851 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="红黑树," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="红黑树（Red Black Tree） 是一种自平衡二叉查找树，是在计算机科学中用到的一种数据结构。下面对红黑树，以及二叉查找树等相关概念作一个总结。">
+<meta name="keywords" content="红黑树">
+<meta property="og:type" content="article">
+<meta property="og:title" content="红黑树">
+<meta property="og:url" content="http://yoursite.com/2017/05/16/红黑树/index.html">
+<meta property="og:site_name" content="越努力 | 越幸运">
+<meta property="og:description" content="红黑树（Red Black Tree） 是一种自平衡二叉查找树，是在计算机科学中用到的一种数据结构。下面对红黑树，以及二叉查找树等相关概念作一个总结。">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170516170110791-1050430977.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170516170126119-682522790.png">
+<meta property="og:updated_time" content="2017-05-16T09:04:16.826Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="红黑树">
+<meta name="twitter:description" content="红黑树（Red Black Tree） 是一种自平衡二叉查找树，是在计算机科学中用到的一种数据结构。下面对红黑树，以及二叉查找树等相关概念作一个总结。">
+<meta name="twitter:image" content="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170516170110791-1050430977.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/05/16/红黑树/"/>
+
+
+
+
+
+  <title>红黑树 | 越努力 | 越幸运</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">越努力 | 越幸运</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/16/红黑树/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jeff Lai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力 | 越幸运">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">红黑树</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-16T17:03:04+08:00">
+                2017-05-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>红黑树（Red Black Tree） 是一种自平衡二叉查找树，是在计算机科学中用到的一种数据结构。下面对红黑树，以及二叉查找树等相关概念作一个总结。<br><a id="more"></a></p>
+<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><h4 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h4><p>所谓二叉查找树，可提供对数时间的元素插入和访问，二叉查找树的节点放置规则是：任何节点的键值一定大于其左子树中每一个节点的键值，并小于其右子树的每一个节点的键值。因此，从根节点一直往左走，指定无左路可走，即得最小元素；从根节点一直往右走，直至无右路可走，即得最大元素。</p>
+<h4 id="AVL树"><a href="#AVL树" class="headerlink" title="AVL树"></a>AVL树</h4><p>AVL树是一棵“加了额外平衡条件”的二叉搜索树。其平衡条件的建立时为了确保整棵树的深度为O(lgN);</p>
+<p>AVL树要求任何节点的左右子树高度相差最多为1.</p>
+<p>由于在插入和删除节点后，AVL可能会失去平衡，所以，此时需要对AVL树进行必要的旋转，使之保持平衡。</p>
+<h4 id="二叉搜索树的旋转"><a href="#二叉搜索树的旋转" class="headerlink" title="二叉搜索树的旋转"></a>二叉搜索树的旋转</h4><p>树的旋转分为左旋和右旋</p>
+<ul>
+<li>左旋：当在某个节点x上做左旋时，假设它的右孩子为y而不是T.nil; x可以为其右孩子不是T.nil节点的树内任意节点。左旋以x到y的链为“支轴”进行。它使y成为该子树新的根节点，x成为y的左孩子，y的左孩子成为x的右孩子。<br><img src="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170516170110791-1050430977.png" alt=""></li>
+</ul>
+<p>在LEFT-ROTATE的伪代码中， 假设x.right != T.nil且根节点的父节点为T.nil<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">LEFT-ROTATE(T, x)</div><div class="line">    y = x.right;       <span class="comment">//set y</span></div><div class="line">    x.right = y.left;   <span class="comment">//turn y's left subtree int x's right subtree</span></div><div class="line">    <span class="keyword">if</span> y.left != T.nil</div><div class="line">        y.left.p = x;</div><div class="line">    y.p = x.p;          <span class="comment">//link x's parent to y</span></div><div class="line">    <span class="keyword">if</span> x.p == T.nil</div><div class="line">        T.root = y;     </div><div class="line">    <span class="keyword">else</span> <span class="keyword">if</span> x == x.p.left</div><div class="line">        x.p.left = y;</div><div class="line">    <span class="keyword">else</span> x.p.right = y;</div><div class="line">    y.left = x;        <span class="comment">//put x on y's left</span></div><div class="line">    x.p = y;</div></pre></td></tr></table></figure></p>
+<p>下图给出了一个LEFT-ROTATE操作修改二叉搜索树的例子。RIGHT-ROTETE操作的代码是对称的。LEFT-ROTATE和RIGHT-ROTATE都在O(1)的时间内运行完成。在选择操作中只有指针改变，其他属性都保持不变。</p>
+<p> <img src="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170516170126119-682522790.png" alt=""></p>
+<h2 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h2><h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p>红黑树是一棵二叉搜索树，它在每个节点上增加了一个存储位来表示节点的颜色，可以是RED或者BLACK。通过对任何一条从根到叶子的简单路径上各个节点的颜色进行约束，红黑树确保没有一条路径会比其他路径长出2倍，因而是近似于平衡的。</p>
+<p>树中每个节点包含5个属性：color,key,left,right和p。如果一个节点没有子节点或父节点，则该节点相应指针属性值为NIL。我们可以把这些NIL视为指向二叉搜索树的叶节点(外部节点)的指针，而把带有关键字的节点视为树的内部节点。</p>
+<h4 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h4><p>一棵红黑树是满足下面红黑性质的二叉搜索树：</p>
+<ol>
+<li>每个节点或是红色的，或是黑色的</li>
+<li>根节点是黑色的</li>
+<li>每个叶节点(NIL)是黑色的</li>
+<li>如果一个节点是红色的，则它的两个子节点都是黑色的</li>
+<li>对于每个节点，从该节点到其所有后代叶节点的简单路径上，均包含相同数据的黑色节点</li>
+</ol>
+<p><strong>黑高</strong>：从某个节点x出发(不含有该节点)到达一个叶节点的任意一条简单路径上的黑色节点个数称为该节点的黑高，记为bh(x)。根据性质5，黑高的概念是明确的，因为从该节点出发的所有下降到其叶节点的简单路径的黑节点个数都相同。于是定义红黑树的黑高为其根节点的黑高。</p>
+<p><strong>引理</strong>：一棵有n个内部节点的红黑树的高度至多为2lg(n+1).</p>
+<h3 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h3><h4 id="直接插入"><a href="#直接插入" class="headerlink" title="直接插入"></a>直接插入</h4><p>如果要往红黑树中插入一个节点z，首先要找到节点z插入的位置，然后进行插入,最后应该将节点z着为红色。(为了满足性质5，所以新插入点为红色)。最后调整红黑树使之重新满足相关性质</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">RB-INSERT(T, z)</div><div class="line">    y = T.nil;</div><div class="line">    x = T.root;</div><div class="line">    <span class="keyword">while</span> x != T.nil</div><div class="line">        y = x;</div><div class="line">        <span class="keyword">if</span> z.key &lt; x.key</div><div class="line">            x = x.left;</div><div class="line">        <span class="keyword">else</span> x = x.right;</div><div class="line">    z.p = y;</div><div class="line">    <span class="keyword">if</span> y == T.nil</div><div class="line">        T.root = z;</div><div class="line">    <span class="keyword">else</span> <span class="keyword">if</span> z.key &lt; y.key</div><div class="line">        y.left = z;</div><div class="line">    <span class="keyword">else</span> y.right = z;</div><div class="line">    z.left = T.nil;</div><div class="line">    z.right = T.nil;</div><div class="line">    z.color = RED;</div><div class="line">    RB-INSERT-FIXUP(T, z);</div></pre></td></tr></table></figure>
+<h4 id="插入修复"><a href="#插入修复" class="headerlink" title="插入修复"></a>插入修复</h4><p>红黑树的插入可能出现的情况如下：<br><strong>特殊情况：</strong></p>
+<ol>
+<li>如果插入的是根节点，因为原树是空树，此情况只会违背性质2，所以直接将此节点涂黑即可。</li>
+<li>如果插入的父节点是黑色，由于此不会破坏性质2和性质4，红黑树没有被破坏，此时什么都不用做。</li>
+</ol>
+<p>但是当遇到下列三种情况时，需要做出相应调整：</p>
+<ol>
+<li>如果当前节点的父节点是红色，且祖父节点的另一个节点(叔叔节点)是红色</li>
+<li>当前节点的父节点是红色，叔叔节点为黑色，此节点是父节点的右子</li>
+<li>当前节点的父节点是红色，叔叔节点是黑色，此节点是父节点的左子</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">RB-INSERT-FIXUP(T, z)</div><div class="line">    <span class="keyword">while</span> z.p.color == RED</div><div class="line">        <span class="keyword">if</span> z.p == z.p.p.left</div><div class="line">            y = z.p.p.right;</div><div class="line">            <span class="keyword">if</span> y.color == RED</div><div class="line">                z.p.color = BLACK;        <span class="comment">//case 1</span></div><div class="line">                y.color = BLACK;          <span class="comment">//case 1</span></div><div class="line">                z.p.p.color = RED;        <span class="comment">//case 1</span></div><div class="line">                z = z.p.p;                <span class="comment">//case 1</span></div><div class="line">            <span class="keyword">else</span> <span class="keyword">if</span> z == z.p.right</div><div class="line">                z = z.p;                  <span class="comment">//case 2</span></div><div class="line">                LEFT-ROTATE(T, z);        <span class="comment">//case 2</span></div><div class="line">            z.p.color = BLACK;            <span class="comment">//case 3</span></div><div class="line">            z.p.p.color = RED;            <span class="comment">//case 3</span></div><div class="line">            RIGHT-ROTATE(T, z.p.p);       <span class="comment">//case 3</span></div><div class="line">        <span class="keyword">else</span> (same as then clause with <span class="string">"right"</span> <span class="keyword">and</span> <span class="string">"left"</span> exchanged)</div><div class="line">    T.root.color = BLACK;</div></pre></td></tr></table></figure>
+<p>对于上面三种情况的对应调整策略如下：<br>case 1： 当前节点的父节点是红色，且祖父节点的另一个子节点(叔叔节点)是红色：</p>
+<ul>
+<li>此时，父节点的父节点一定存在，否则插入前就已不再时红黑树</li>
+<li>与此同时，又分为父节点是祖父节点的左子还是右子，对于对称性，我们只要解释其中一个就可以了，所以，接下来都只考虑父节点是祖父节点的左子的情况。</li>
+<li>策略：将当前节点的父节点和叔叔节点涂黑，祖父节点涂红，把当前节点指向祖父节点，从新的当前节点重新开始算法。</li>
+</ul>
+<p>case2: 当前节点的父节点为红色，叔叔节点为黑色，当前节点是其父节点的右子</p>
+<ul>
+<li>策略：当前节点的父节点为新的当前节点，以当前节点为支点左旋</li>
+</ul>
+<p>case 3: 当前节点的父节点为红色，叔叔节点为黑色，当前节点为其父节点的左子</p>
+<ul>
+<li>策略：父节点变为黑色，祖父节点变为红色，以祖父节点为支点右旋(当前节点不变)</li>
+</ul>
+<h4 id="插入时间复杂度"><a href="#插入时间复杂度" class="headerlink" title="插入时间复杂度"></a>插入时间复杂度</h4><p>由于一棵有n个节点的红黑树的高度为O(lgn)，因此直接插入的过程需要花费O(lgn)的时间，在RB-INSERT-FIXUP中，仅当情况1发生，然后指针z沿树上升2层，while循环才会重复执行。所以while循环可能被执行的总次数为O(lgn)。因此，RB-INSERT总共花费O(lgn)时间。此外，该程序所做的旋转从不超过2次，因为只要执行了情况2或情况3，while循环就结束了。</p>
+<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><h4 id="二叉搜索树的删除"><a href="#二叉搜索树的删除" class="headerlink" title="二叉搜索树的删除"></a>二叉搜索树的删除</h4><p>二叉搜索树的删除，根据待删除的节点按照儿子的个数可以分为以下三种：</p>
+<ol>
+<li>没有儿子，即为叶子节点，直接把父节点的对应儿子指针置为NULL，完成</li>
+<li>只有一个儿子，把父节点的相应儿子指针指向该节点的独子，删除该节点，完成</li>
+<li>有两个儿子，这是最麻烦的情况。此时我们将该节点的直接后继的内容复制到该节点上，之后以同样的方式的删除它的直接后继，它的后继节点不可能是双子非空，因此此传递过程最多只进行一次。</li>
+</ol>
+<h4 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h4><ol>
+<li>辅助函数，将节点v迁移到节点u的位置上</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">RB-TRANSPLANT(T, u, v)</div><div class="line">    <span class="keyword">if</span> u.p == T.nil</div><div class="line">        T.root = v;</div><div class="line">    <span class="keyword">else</span> <span class="keyword">if</span> u == u.p.left</div><div class="line">        u.p.left = v;</div><div class="line">    <span class="keyword">else</span> u.p.right = v;</div><div class="line">    v.p = u.p;</div></pre></td></tr></table></figure>
+<ol>
+<li>红黑树中直接删除节点后，需要通过改变颜色和执行旋转来恢复红黑性质</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">RB-DELETE(T, z)</div><div class="line">    y = z;</div><div class="line">    y-original-color = y.color;</div><div class="line">    <span class="keyword">if</span> z.left == T.nil</div><div class="line">        x = z.right;</div><div class="line">        RB-TRANSPLANT(T, z, z.right);</div><div class="line">    <span class="keyword">else</span> <span class="keyword">if</span> z.right == T.nil</div><div class="line">        x = z.left;</div><div class="line">        RB-TRANSPLANT(T, z, z.left);</div><div class="line">    <span class="keyword">else</span> </div><div class="line">        y = TREE-MINIMUM(z.right);</div><div class="line">        y-original-color = y.color;</div><div class="line">        x = y.right;</div><div class="line">        <span class="keyword">if</span> y.p == z</div><div class="line">            x.p = y;</div><div class="line">        <span class="keyword">else</span></div><div class="line">            RB-TRANSPLANT(T, y, y.right);</div><div class="line">            y.right = z.right;</div><div class="line">            y.right.p = y</div><div class="line">        RB-TRANSPLANT(T, z, y);</div><div class="line">        y.left = z.left;</div><div class="line">        y.left.p = y;</div><div class="line">        y.color = z.color;</div><div class="line">    <span class="keyword">if</span> y-original-color == BLACK</div><div class="line">        RB-DELETE-FIXUP(T, x)</div></pre></td></tr></table></figure>
+<p>以下几点需要注意：</p>
+<ul>
+<li>始终维持节点y为从树中删除的节点或者移至树内的节点。</li>
+<li>由于节点y的颜色可能改变，变量y-original-color存储了发生变化前的y颜色</li>
+<li>如果y是黑色，需要调整。如果y是红色，当y删除或移动时，红黑性质仍然保持，原因如下：<ul>
+<li>树中的黑高没有变化</li>
+<li>不存在相邻的红节点</li>
+<li>如果y是红色，就不可能是根节点，所以根节点仍旧是黑色</li>
+</ul>
+</li>
+</ul>
+<h4 id="删除后调整"><a href="#删除后调整" class="headerlink" title="删除后调整"></a>删除后调整</h4><p>我们从被删除节点后来顶替它的那个节点开始调整，并认为它有额外的一重黑色。</p>
+<p>如果是以下情况，恢复比较简单：</p>
+<ol>
+<li>当前节点是红+黑。解法：直接把当前节点染成黑色，完成。</li>
+<li>当前节点是黑+黑，且是根节点。解法：什么都不用做，完成。</li>
+</ol>
+<p>如果是以下情况，则需要作出相应调整：</p>
+<ol>
+<li>当前节点是黑+黑，且兄弟节点为红，此时父节点与兄弟节点的子节点为黑</li>
+<li>当前节点是黑+黑，且兄弟节点为黑，且兄弟节点的两个子节点全部为黑</li>
+<li>当前节点是黑+黑，且兄弟节点为黑，兄弟左子为红，右子为黑</li>
+<li>当前节点是黑+黑，且兄弟节点为黑，兄弟右子为红，左子为任意色</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">RB-DELETE-FIXUP(T, x)</div><div class="line">    <span class="keyword">while</span> x != T.root <span class="keyword">and</span> x.color == BLACK</div><div class="line">        <span class="keyword">if</span> x == x.p.left</div><div class="line">            w = x.p.right;</div><div class="line">            <span class="keyword">if</span> w.color == RED</div><div class="line">                w.color = BLACK;                  <span class="comment">//case 1</span></div><div class="line">                x.p.color = RED;                  <span class="comment">//case 1</span></div><div class="line">                LEFT-ROTATE(T, x.p);              <span class="comment">//case 1</span></div><div class="line">                w = x.p.right;</div><div class="line">            <span class="keyword">if</span> w.left.color == BLACK <span class="keyword">and</span> w.right.color == BLACK</div><div class="line">                w.color = RED;                    <span class="comment">//case 2</span></div><div class="line">                x = x.p;                          <span class="comment">//case 2</span></div><div class="line">            <span class="keyword">else</span> </div><div class="line">                <span class="keyword">if</span> w.right.color == BLACK</div><div class="line">                    w.left.color = BLACK;             <span class="comment">//case 3</span></div><div class="line">                    w.color = RED;                    <span class="comment">//case 3</span></div><div class="line">                    RIGHT-ROTATE(T, w);               <span class="comment">//case 3</span></div><div class="line">                    w = x.p.right;                    <span class="comment">//case 3</span></div><div class="line">                <span class="keyword">else</span></div><div class="line">                    w.color = x.p.color;             <span class="comment">//case 4</span></div><div class="line">                    x.p.color = BLACK;               <span class="comment">//case 4</span></div><div class="line">                    w.right.color = BLACK;           <span class="comment">//case 4</span></div><div class="line">                    LEFT-ROTATE(T, x.p);             <span class="comment">//case 4</span></div><div class="line">                    x = T.root;                      <span class="comment">//case 4</span></div><div class="line">        <span class="keyword">else</span> (same as then clause with <span class="string">"right"</span> <span class="keyword">and</span> <span class="string">"left"</span> exchanged)</div><div class="line">    x.color = BLACK;</div></pre></td></tr></table></figure>
+<p>对于相关情况的调整策略，讨论当前节点是其父节点的左子节点，右子类推。<br>case 1: 当前节点黑+黑，且兄弟节点为红，此时父节点和兄弟节点的子节点必为黑</p>
+<ul>
+<li>策略：把父节点染成红色，兄弟节点染成黑色，以父节点左旋，之后重新进入算法。次变换后红黑树性质5不变，而是变为把兄弟节点转化为黑色的情况。</li>
+</ul>
+<p>case 2: 当前节点是黑+黑，兄弟节点是黑色，且兄弟节点的两个子节点为黑色</p>
+<ul>
+<li>策略：把当前节点和兄弟节点抽取一重黑色加到父节点上，把父节点变为新的当前节点，重新进行算法。(即把兄弟节点染红，变换当前节点为父节点)</li>
+</ul>
+<p>case 3: 当前节点是黑+黑，兄弟节点是黑色，兄弟左子为红，右子为黑</p>
+<ul>
+<li>策略：把兄弟节点染红，兄弟左子染黑，之后再以兄弟节点为支点右旋，之后重新进入算法</li>
+</ul>
+<p>case 4: 当前节点是黑+黑，兄弟节点是黑，兄弟右子为红，左子为任意色</p>
+<ul>
+<li>策略：把兄弟节点染成当前父节点的颜色，把当前节点父节点染成黑色，兄弟右子染黑，之后再以当前节点的父节点为支点左旋，此时算法结束。</li>
+</ul>
+<h4 id="删除的时间复杂度"><a href="#删除的时间复杂度" class="headerlink" title="删除的时间复杂度"></a>删除的时间复杂度</h4><p>因为含有n个节点的红黑树的高度为O(lgn)，不调用RB-DELETE-FIXUP时该过程的总时间代价为O(lgn)。在RB-DELETE-FIXUP中，情况1、3和4在个执行常数次数的颜色改变和至多3次旋转后终止。情况2是while循环可以重复执行的唯一情况，然后指针x沿树上升至多O(lgn)次，且不执行任何旋转操作。所以，过程RB-DELETE-FIXUP要花费O(lgn)时间，做至多3次旋转，因此RB-DELETE运行的总时间为O(lgn)。</p>
+<h3 id="C-实现红黑树"><a href="#C-实现红黑树" class="headerlink" title="C++实现红黑树"></a>C++实现红黑树</h3><p>在造STL轮子的时候，有实现过一个红黑树，并给出了相关测试用例，有兴趣的可以看看。</p>
+<p><a href="https://github.com/lengender/TinySTL" target="_blank" rel="external">红黑树的实现</a></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>红黑树的难点就在于插入和删除部分，重点在于理解不同的情况</li>
+<li>像学习红黑树这种硬货的时候，还是适合自己动手画画，写写代码。</li>
+<li>本文参考部分网上资料和算法导论，感谢大佬们！</li>
+</ul>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
+<li><a href="http://blog.csdn.net/v_JULY_v/article/details/6105630" target="_blank" rel="external">教你初步了解红黑树</a></li>
+<li>《算法导论》</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/红黑树/" rel="tag"># 红黑树</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/16/B树及其变种树/" rel="next" title="B树及其变种树">
+                <i class="fa fa-chevron-left"></i> B树及其变种树
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Jeff Lai" />
+          <p class="site-author-name" itemprop="name">Jeff Lai</p>
+           
+              <p class="site-description motion-element" itemprop="description">原来你是我最想留住的幸运</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/lengender" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/2664793953/profile?rightmod=1&wvr=6&mod=personinfo" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#二叉查找树"><span class="nav-number">1.1.</span> <span class="nav-text">二叉查找树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AVL树"><span class="nav-number">1.2.</span> <span class="nav-text">AVL树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二叉搜索树的旋转"><span class="nav-number">1.3.</span> <span class="nav-text">二叉搜索树的旋转</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#红黑树"><span class="nav-number"></span> <span class="nav-text">红黑树</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义"><span class="nav-number">0.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#性质"><span class="nav-number">0.2.</span> <span class="nav-text">性质</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插入"><span class="nav-number">1.</span> <span class="nav-text">插入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#直接插入"><span class="nav-number">1.1.</span> <span class="nav-text">直接插入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#插入修复"><span class="nav-number">1.2.</span> <span class="nav-text">插入修复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#插入时间复杂度"><span class="nav-number">1.3.</span> <span class="nav-text">插入时间复杂度</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除"><span class="nav-number">2.</span> <span class="nav-text">删除</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#二叉搜索树的删除"><span class="nav-number">2.1.</span> <span class="nav-text">二叉搜索树的删除</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#伪代码"><span class="nav-number">2.2.</span> <span class="nav-text">伪代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除后调整"><span class="nav-number">2.3.</span> <span class="nav-text">删除后调整</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除的时间复杂度"><span class="nav-number">2.4.</span> <span class="nav-text">删除的时间复杂度</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-实现红黑树"><span class="nav-number">3.</span> <span class="nav-text">C++实现红黑树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jeff Lai</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
