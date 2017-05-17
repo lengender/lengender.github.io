@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="线程池," />
 
 
 
@@ -90,15 +90,17 @@
 
 
 
-<meta name="description" content="原来你是我最想留住的幸运">
-<meta property="og:type" content="website">
-<meta property="og:title" content="越努力 | 越幸运">
-<meta property="og:url" content="http://yoursite.com/tags/移动构造函数/index.html">
+<meta name="description" content="前段时间面试的时候，遇到一个问题，线程池应该设置多少线程合适，怎么样估算出来。最近接触到一些相关资料，现作如下总结。">
+<meta name="keywords" content="线程池">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线程池大小设置">
+<meta property="og:url" content="http://yoursite.com/2017/05/17/线程池大小设置/index.html">
 <meta property="og:site_name" content="越努力 | 越幸运">
-<meta property="og:description" content="原来你是我最想留住的幸运">
+<meta property="og:description" content="前段时间面试的时候，遇到一个问题，线程池应该设置多少线程合适，怎么样估算出来。最近接触到一些相关资料，现作如下总结。">
+<meta property="og:updated_time" content="2017-05-17T13:13:56.708Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="越努力 | 越幸运">
-<meta name="twitter:description" content="原来你是我最想留住的幸运">
+<meta name="twitter:title" content="线程池大小设置">
+<meta name="twitter:description" content="前段时间面试的时候，遇到一个问题，线程池应该设置多少线程合适，怎么样估算出来。最近接触到一些相关资料，现作如下总结。">
 
 
 
@@ -126,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/移动构造函数/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/05/17/线程池大小设置/"/>
 
 
 
 
 
-  <title>标签: 移动构造函数 | 越努力 | 越幸运</title>
+  <title>线程池大小设置 | 越努力 | 越幸运</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -158,7 +160,7 @@
     
   
 
-  <div class="container sidebar-position-left  ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -262,44 +264,190 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h1>移动构造函数<small>标签</small>
-      </h1>
-    </div>
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/17/线程池大小设置/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jeff Lai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力 | 越幸运">
+    </span>
 
     
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">线程池大小设置</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-17T21:13:05+08:00">
+                2017-05-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/网络编程/" itemprop="url" rel="index">
+                    <span itemprop="name">网络编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
       
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+      
+        <p>前段时间面试的时候，遇到一个问题，线程池应该设置多少线程合适，怎么样估算出来。最近接触到一些相关资料，现作如下总结。<br><a id="more"></a></p>
+<p>最开始接触线程池的时候，没有想到就仅仅是设置一个线程池的大小居然还有这么多的学问，汗颜啊。</p>
+<p>首先，需要考虑到线程池所进行的工作的性质：</p>
+<ul>
+<li>IO密集型</li>
+<li>CPU密集型</li>
+</ul>
+<p>简单的分析来看，如果是CPU密集型的任务，我们应该设置数目较小的线程数，比如CPU数目加1。如果是IO密集型的任务，则应该设置可能多的线程数，由于IO操作不占用CPU，所以，不能让CPU闲下来。当然，如果线程数目太多，那么线程切换所带来的开销又会对系统的响应时间带来影响。</p>
+<p>在《linux多线程服务器端编程》中有一个思路，CPU计算和IO的<strong>阻抗匹配原则</strong>。</p>
+<p>如果线程池中的线程在执行任务时，密集计算所占的时间比重为P(0&lt;P&lt;=1)，而系统一共有C个CPU，为了让CPU跑满而又不过载，线程池的大小经验公式 T = C / P。在此，T只是一个参考，考虑到P的估计并不是很准确，T的最佳估值可以上下浮动50%。</p>
+<p>这个经验公式的原理很简单，T个线程，每个线程占用P的CPU时间，如果刚好占满C个CPU,那么必有 T * P = C。</p>
+<p>下面验证一下边界条件的正确性：</p>
+<p>假设C = 8，P = 1.0，线程池的任务完全是密集计算，那么T = 8。只要8个活动线程就能让8个CPU饱和，再多也没用了，因为CPU资源已经耗光了。</p>
+<p>假设C = 8，P = 0.5，线程池的任务有一半是计算，有一半在等IO上，那么T = 16.考虑操作系统能灵活，合理调度sleeping/writing/running线程，那么大概16个“50%繁忙的线程”能让8个CPU忙个不停。启动更多的线程并不能提高吞吐量，反而因为增加上下文切换的开销而降低性能。</p>
+<p>如果P &lt; 0.2，这个公式就不适用了，T可以取一个固定值，比如 5*C。另外公式里的C不一定是CPU总数，可以是“分配给这项任务的CPU数目”，比如在8核机器上分出4个核来做一项任务，那么C=4</p>
+<p>文章<a href="http://blog.csdn.net/u011519624/article/details/69263460" target="_blank" rel="external">如何合理设置线程池大小</a>里面提到了一个公式：</p>
+<pre><code>最佳线程数目 = （（线程等待时间+线程CPU时间）/线程CPU时间 ）* CPU数目
+</code></pre><p>比如平均每个线程CPU运行时间为0.5s，而线程等待时间（非CPU运行时间，比如IO）为1.5s，CPU核心数为8，那么根据上面这个公式估算得到：((0.5+1.5)/0.5)*8=32。这个公式进一步转化为：</p>
+<pre><code>最佳线程数目 = （线程等待时间与线程CPU时间之比 + 1）* CPU数目
+</code></pre><p>可以得出一个结论：<br><strong>线程等待时间所占比例越高，需要越多线程。线程CPU时间所占比例越高，需要越少线程</strong>。 </p>
+<p>以上公式与之前的CPU和IO密集型任务设置线程数基本吻合。</p>
 
-      <h2 class="post-title">
+      
+    </div>
+
+    <div>
+      
         
-            <a class="post-title-link" href="/2017/05/14/Cpp11新特性，对象移动，右值引用，移动构造函数/" itemprop="url">
-              
-                <span itemprop="name">C++ 11新特性，对象移动，右值引用，移动构造函数</span>
-              
-            </a>
+
+      
+    </div>
+
+    <div>
+      
         
-      </h2>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-05-14T20:03:06+08:00"
-              content="2017-05-14" >
-          05-14
-        </time>
-      </div>
+      
+    </div>
 
-    </header>
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/线程池/" rel="tag"># 线程池</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/16/54-Spiral-Matrix/" rel="next" title="54. Spiral Matrix">
+                <i class="fa fa-chevron-left"></i> 54. Spiral Matrix
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </article>
 
 
-    
-  </div>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -307,6 +455,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -529,6 +681,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
 
   
 
