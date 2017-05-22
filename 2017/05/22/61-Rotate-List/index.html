@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="线程池," />
+  <meta name="keywords" content="链表," />
 
 
 
@@ -90,17 +90,17 @@
 
 
 
-<meta name="description" content="前段时间面试的时候，遇到一个问题，线程池应该设置多少线程合适，怎么样估算出来。最近接触到一些相关资料，现作如下总结。">
-<meta name="keywords" content="线程池">
+<meta name="description" content="DescriptionGiven a list, rotate the list to the right by k places, where k is non-negative.">
+<meta name="keywords" content="链表">
 <meta property="og:type" content="article">
-<meta property="og:title" content="线程池大小设置">
-<meta property="og:url" content="http://yoursite.com/2017/05/17/线程池大小设置/index.html">
+<meta property="og:title" content="61. Rotate List">
+<meta property="og:url" content="http://yoursite.com/2017/05/22/61-Rotate-List/index.html">
 <meta property="og:site_name" content="越努力 | 越幸运">
-<meta property="og:description" content="前段时间面试的时候，遇到一个问题，线程池应该设置多少线程合适，怎么样估算出来。最近接触到一些相关资料，现作如下总结。">
-<meta property="og:updated_time" content="2017-05-17T13:13:56.708Z">
+<meta property="og:description" content="DescriptionGiven a list, rotate the list to the right by k places, where k is non-negative.">
+<meta property="og:updated_time" content="2017-05-22T14:32:16.684Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="线程池大小设置">
-<meta name="twitter:description" content="前段时间面试的时候，遇到一个问题，线程池应该设置多少线程合适，怎么样估算出来。最近接触到一些相关资料，现作如下总结。">
+<meta name="twitter:title" content="61. Rotate List">
+<meta name="twitter:description" content="DescriptionGiven a list, rotate the list to the right by k places, where k is non-negative.">
 
 
 
@@ -128,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/05/17/线程池大小设置/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/05/22/61-Rotate-List/"/>
 
 
 
 
 
-  <title>线程池大小设置 | 越努力 | 越幸运</title>
+  <title>61. Rotate List | 越努力 | 越幸运</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -274,7 +274,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/17/线程池大小设置/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/22/61-Rotate-List/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jeff Lai">
@@ -291,7 +291,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">线程池大小设置</h1>
+          <h1 class="post-title" itemprop="name headline">61. Rotate List</h1>
         
 
         <div class="post-meta">
@@ -303,8 +303,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-17T21:13:05+08:00">
-                2017-05-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-22T22:31:28+08:00">
+                2017-05-22
               </time>
             
 
@@ -326,8 +326,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/网络编程/" itemprop="url" rel="index">
-                    <span itemprop="name">网络编程</span>
+                  <a href="/categories/Leetcode/" itemprop="url" rel="index">
+                    <span itemprop="name">Leetcode</span>
                   </a>
                 </span>
 
@@ -360,27 +360,15 @@
       
 
       
-        <p>前段时间面试的时候，遇到一个问题，线程池应该设置多少线程合适，怎么样估算出来。最近接触到一些相关资料，现作如下总结。<br><a id="more"></a></p>
-<p>最开始接触线程池的时候，没有想到就仅仅是设置一个线程池的大小居然还有这么多的学问，汗颜啊。</p>
-<p>首先，需要考虑到线程池所进行的工作的性质：</p>
-<ul>
-<li>IO密集型</li>
-<li>CPU密集型</li>
+        <h3 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h3><p>Given a list, rotate the list to the right by k places, where k is non-negative.<br><a id="more"></a></p>
+<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><pre><code>Given 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;NULL and k = 2,
+return 4-&gt;5-&gt;1-&gt;2-&gt;3-&gt;NULL.
+</code></pre><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ul>
+<li>先遍历一遍链表，记录长度，同时记录最后一个节点</li>
+<li>修正k的大小，找到旋转后的头结点，和它的前一个节点</li>
+<li>按照题目要求重新链接链表</li>
 </ul>
-<p>简单的分析来看，如果是CPU密集型的任务，我们应该设置数目较小的线程数，比如CPU数目加1。如果是IO密集型的任务，则应该设置可能多的线程数，由于IO操作不占用CPU，所以，不能让CPU闲下来。当然，如果线程数目太多，那么线程切换所带来的开销又会对系统的响应时间带来影响。</p>
-<p>在《linux多线程服务器端编程》中有一个思路，CPU计算和IO的<strong>阻抗匹配原则</strong>。</p>
-<p>如果线程池中的线程在执行任务时，密集计算所占的时间比重为P(0&lt;P&lt;=1)，而系统一共有C个CPU，为了让CPU跑满而又不过载，线程池的大小经验公式 T = C / P。在此，T只是一个参考，考虑到P的估计并不是很准确，T的最佳估值可以上下浮动50%。</p>
-<p>这个经验公式的原理很简单，T个线程，每个线程占用P的CPU时间，如果刚好占满C个CPU,那么必有 T * P = C。</p>
-<p>下面验证一下边界条件的正确性：</p>
-<p>假设C = 8，P = 1.0，线程池的任务完全是密集计算，那么T = 8。只要8个活动线程就能让8个CPU饱和，再多也没用了，因为CPU资源已经耗光了。</p>
-<p>假设C = 8，P = 0.5，线程池的任务有一半是计算，有一半在等IO上，那么T = 16.考虑操作系统能灵活，合理调度sleeping/writing/running线程，那么大概16个“50%繁忙的线程”能让8个CPU忙个不停。启动更多的线程并不能提高吞吐量，反而因为增加上下文切换的开销而降低性能。</p>
-<p>如果P &lt; 0.2，这个公式就不适用了，T可以取一个固定值，比如 5*C。另外公式里的C不一定是CPU总数，可以是“分配给这项任务的CPU数目”，比如在8核机器上分出4个核来做一项任务，那么C=4</p>
-<p>文章<a href="http://blog.csdn.net/u011519624/article/details/69263460" target="_blank" rel="external">如何合理设置线程池大小</a>里面提到了一个公式：</p>
-<pre><code>最佳线程数目 = （（线程等待时间+线程CPU时间）/线程CPU时间 ）* CPU数目
-</code></pre><p>比如平均每个线程CPU运行时间为0.5s，而线程等待时间（非CPU运行时间，比如IO）为1.5s，CPU核心数为8，那么根据上面这个公式估算得到：((0.5+1.5)/0.5)*8=32。这个公式进一步转化为：</p>
-<pre><code>最佳线程数目 = （线程等待时间与线程CPU时间之比 + 1）* CPU数目
-</code></pre><p>可以得出一个结论：<br><strong>线程等待时间所占比例越高，需要越多线程。线程CPU时间所占比例越高，需要越少线程</strong>。 </p>
-<p>以上公式与之前的CPU和IO密集型任务设置线程数基本吻合。</p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Definition for singly-linked list.</div><div class="line"> * struct ListNode &#123;</div><div class="line"> *     int val;</div><div class="line"> *     ListNode *next;</div><div class="line"> *     ListNode(int x) : val(x), next(NULL) &#123;&#125;</div><div class="line"> * &#125;;</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function">ListNode* <span class="title">rotateRight</span><span class="params">(ListNode* head, <span class="keyword">int</span> k)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(k == <span class="number">0</span>) <span class="keyword">return</span> head;</div><div class="line">        <span class="keyword">if</span>(!head) <span class="keyword">return</span> <span class="literal">NULL</span>;</div><div class="line">        </div><div class="line">        ListNode *ptr = head, *tail = <span class="literal">NULL</span>;</div><div class="line">        <span class="keyword">int</span> len = <span class="number">0</span>;</div><div class="line">        <span class="comment">//找出链表的长度</span></div><div class="line">        <span class="keyword">while</span>(ptr)&#123;</div><div class="line">            len++;</div><div class="line">            tail = ptr;</div><div class="line">            ptr = ptr-&gt;next;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="comment">//修正k的值</span></div><div class="line">        k = k % len;</div><div class="line">        <span class="keyword">if</span>(k== <span class="number">0</span>) <span class="keyword">return</span> head;</div><div class="line">        </div><div class="line">        <span class="keyword">int</span> step = len - k + <span class="number">1</span>;</div><div class="line">        ListNode *fastPtr = head;</div><div class="line">        ptr = head;</div><div class="line">        <span class="keyword">while</span>(step - <span class="number">1</span> &gt; <span class="number">0</span>)&#123;</div><div class="line">            step--;</div><div class="line">            ptr = fastPtr;</div><div class="line">            fastPtr = fastPtr-&gt;next;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="keyword">if</span>(fastPtr)&#123;</div><div class="line">            tail-&gt;next = head;</div><div class="line">            ptr-&gt;next = <span class="literal">NULL</span>;</div><div class="line">            <span class="keyword">return</span> fastPtr;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="keyword">return</span> head;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -410,7 +398,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/线程池/" rel="tag"># 线程池</a>
+            <a href="/tags/链表/" rel="tag"># 链表</a>
           
         </div>
       
@@ -423,8 +411,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/16/54-Spiral-Matrix/" rel="next" title="54. Spiral Matrix">
-                <i class="fa fa-chevron-left"></i> 54. Spiral Matrix
+              <a href="/2017/05/22/HTTP长连接和短连接分析/" rel="next" title="HTTP长连接和短连接分析">
+                <i class="fa fa-chevron-left"></i> HTTP长连接和短连接分析
               </a>
             
           </div>
@@ -432,10 +420,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/05/17/55-Jump-Game/" rel="prev" title="55. Jump Game">
-                55. Jump Game <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -482,8 +466,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -565,6 +558,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Description"><span class="nav-number">1.</span> <span class="nav-text">Description</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example"><span class="nav-number">2.</span> <span class="nav-text">Example</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思路"><span class="nav-number">3.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">4.</span> <span class="nav-text">代码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
