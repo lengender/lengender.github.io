@@ -1,0 +1,826 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="HTTP,负载均衡,CDN," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="阿里实习面试的最后一个开放性问题：在浏览器输入一个网址回车后，发生了什么？">
+<meta name="keywords" content="HTTP,负载均衡,CDN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在浏览器输入一个网址回车后，发生了什么？">
+<meta property="og:url" content="http://yoursite.com/2017/05/26/在浏览器输入一个网址回车后，发生了什么？/index.html">
+<meta property="og:site_name" content="越努力 | 越幸运">
+<meta property="og:description" content="阿里实习面试的最后一个开放性问题：在浏览器输入一个网址回车后，发生了什么？">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170526154152185-1847048968.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170526154209966-1411595665.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170526154227763-2101239718.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170526154254138-853628871.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170526154311935-2125676495.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170526154323075-677218249.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170526154330544-1733309211.png">
+<meta property="og:updated_time" content="2017-05-26T07:52:31.352Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在浏览器输入一个网址回车后，发生了什么？">
+<meta name="twitter:description" content="阿里实习面试的最后一个开放性问题：在浏览器输入一个网址回车后，发生了什么？">
+<meta name="twitter:image" content="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170526154152185-1847048968.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/05/26/在浏览器输入一个网址回车后，发生了什么？/"/>
+
+
+
+
+
+  <title>在浏览器输入一个网址回车后，发生了什么？ | 越努力 | 越幸运</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">越努力 | 越幸运</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/26/在浏览器输入一个网址回车后，发生了什么？/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jeff Lai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力 | 越幸运">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">在浏览器输入一个网址回车后，发生了什么？</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-26T15:51:00+08:00">
+                2017-05-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试面经/" itemprop="url" rel="index">
+                    <span itemprop="name">面试面经</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>阿里实习面试的最后一个开放性问题：在浏览器输入一个网址回车后，发生了什么？<br><a id="more"></a></p>
+<p>答得并不是很好。所以也基本与阿里无缘了。一直以来，都没能系统的学习一下Web相关知识。所以对这个问题的回答也是稍显勉强。现借这个机会，将这个问题好好理一下吧。</p>
+<h3 id="大致流程"><a href="#大致流程" class="headerlink" title="大致流程"></a>大致流程</h3><p>当用户在浏览器输入www.taobao.com这个url时，将会发生很多操作：</p>
+<ol>
+<li>首先，它会请求DNS把这个域名解析成对应的IP地址</li>
+<li>然后，根据这个IP在互联网上找到对应的服务器，向服务器发起一个get请求，由这个服务器决定返回默认的数据资源给访问的用户</li>
+<li>在服务器端可能还有很复杂的业务逻辑：服务器可能有很多台，到底指定哪台服务器来处理请求，这需要一个负载均衡设备来平均分配所有用户的请求；</li>
+<li>还有请求的数据是存储在分布式缓存里还是一个静态文件中，或是数据库里；</li>
+<li>当数据返回浏览器时，浏览器解析数据发现还有一些静态资源(如CSS、JS或者图片)时，又会发起另外的HTTP请求，而这些请求很可能会在CDN上，那么CDN服务器又会处理这个用户的请求</li>
+<li>大体上一个用户请求会涉及这么多的操作，每一个细节都会影响这个请求最终是否会成功。</li>
+</ol>
+<p><img src="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170526154152185-1847048968.png" alt=""></p>
+<h3 id="HTTP-协议解析"><a href="#HTTP-协议解析" class="headerlink" title="HTTP 协议解析"></a>HTTP 协议解析</h3><p>B/S网络架构的核心是HTTP协议，掌握HTTP协议对一个从事互联网工作的程序员来说非常重要。</p>
+<p>要理解HTTP协议，最重要的就是熟悉HTTP协议中的HTTP Header， HTTP Header控制着互联网成千上万的用户的数据的传输。最关键的是，它控制着用户浏览器的渲染行为和服务器的执行逻辑。例如，当服务器没有用户请求的数据时会返回一个404状态码，告诉浏览器没有要请求的数据，通常浏览器就会展示一个非常不愿意看到的该页面不存在的错误信息。</p>
+<p><img src="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170526154209966-1411595665.png" alt=""></p>
+<h3 id="DNS域名解析"><a href="#DNS域名解析" class="headerlink" title="DNS域名解析"></a>DNS域名解析</h3><p>如图所示，当一个用户在浏览器中输入www.abc.com时，DNS解析将会有将近10个步骤，大致描述如下：</p>
+<ol>
+<li><p>浏览器会检查缓存中有没有这个域名对应的解析过的IP地址，如果缓存中有，这个解析过程就结束。浏览器缓存域名也是有限制的，不仅浏览器缓存大小有限制，而且缓存的时间也是有限制的，通常情况下为几分钟到几个小时不等，域名被缓存的时间限制可以通过TTL属性来设置。这个缓存时间太长或太短都不好，如果缓存时间够长，一旦域名被解析到的IP有变化，会导致被客户端缓存的域名无法解析到变化后的IP地址，以致该域名不能正常解析，这段时间内有可能会有一部分客户无法访问网站。如果设置时间太短，会导致用户每次访问网站都要重新解析一次域名。</p>
+</li>
+<li><p>如果用户的浏览器缓存中没有，浏览器会查找操作系统缓存中是否有域名对应的DNS解析结果。其实，操作系统也会有一个域名解析的过程，在Windows中可以通过C:\Windows\System32\drivers\etc\hosts文件来设置，你可以将任何域名解析到任何能够访问的IP地址。如果你在这里指定了一个域名对应的IP地址，那么浏览器会首先使用这个IP地址。正是因为有这种本地DNS解析的规程，所以黑客就有可能通过修改你的域名解析来把特定的域名解析到它指定的IP地址上，导致这些域名被劫持。</p>
+</li>
+</ol>
+<p>前两步在本机完成。如果本机中仍无法完成域名的解析，就会真正请求域名服务器来解析这个域名了。</p>
+<p><img src="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170526154227763-2101239718.png" alt=""></p>
+<ol>
+<li><p>如何、怎么知道域名服务器呢？在网络配置中都会有“DNS服务器地址”这一项，这个地址就用于解决前面所说的如果两个过程无法解析时要怎么办，操作系统会把这个域名发送给这类设置的LDNS，也就是本地区的域名服务器。这个DNS通常都提供给你互联网接入的一个DNS解析服务，例如你是在学习接入互联网，那么你的DNS服务器肯定在你的学校。如果你是在一个小区接入互联网的，那么这个DNS就是提供给你接入互联网的应用提供商，即电信或联通，也就是通常所说的SPA，那么这个DNS通常也会在你所在城市的某个角落，通常不会很远。LDNS主要承担了域名的解析工作。</p>
+</li>
+<li><p>如果LDNS仍然没有命中，就直接到Root Server域名服务器请求解析</p>
+</li>
+<li><p>根域名服务器返回给本地域名服务器一个所查询域的主域名服务器(gTLD Server)地址。gTLD是国际顶级域名服务器，如.com、.cn、.org等，全球只有13台左右</p>
+</li>
+<li><p>本地域名服务器(Local DNS Server)再向上一步返回的gTLD服务器发送请求</p>
+</li>
+<li><p>接受请求的gTLD服务器查找并返回此域名对应的Name Server域名服务器的地址，这个Name Server通常就是你注册的域名服务器，例如你在某个域名服务提供商申请的域名，那么这个域名解析任务就是由这个域名提供商的服务器来完成的</p>
+</li>
+<li><p>Name Server域名服务器会查询存储的域名和IP的映射关系表，正常情况下都会根据域名得到目标IP记录，连同一个TTL值返回给DNS Server域名服务器</p>
+</li>
+<li><p>返回该域名对应的IP和TTL值，Local DNS Server会缓存这个域名和IP的对应关系，缓存时间由TTL值控制</p>
+</li>
+<li><p>把解析的结果返回给用户，用户根据TTL值缓存在本地系统缓存中，域名解析过程结束</p>
+</li>
+</ol>
+<p>在实际的DNS解析过程中，可能还不止这10个步骤，如Name Server也可能有多级，或者有一个GTM来负载均衡控制，这都有可能会影响域名解析的过程。</p>
+<h3 id="CDN工作机制"><a href="#CDN工作机制" class="headerlink" title="CDN工作机制"></a>CDN工作机制</h3><p>CDN也就是内容分发网络(Content Delivery Network)，它是构筑在现有Internet上的一种先进的流量分配网络。其目的是通过在现有的Internet中增加一层新的网络架构，将网站的内容发布到最接近用户的网络“边缘”，使用户可以就近取得所需的内容，提高用户访问网站的响应速度。有别于镜像，它比镜像更智能，可以这样一个比喻：CDN = 镜像(Mirror) + 缓存(Cache) + 整体负载均衡(GSLB)。因而，CDN可以明显提高Internet中信息流动的效率。</p>
+<p>目前CDN都以缓存网站中的静态数据为主，如CSS、JS、图片和静态页面等数据。用户从主站服务器请求到动态内容后再从CDN上下载这些静态数据，从而加速网页数据内容的下载速度，如淘宝有90%以上的数据都是由CDN来提供的。</p>
+<h4 id="CDN-架构"><a href="#CDN-架构" class="headerlink" title="CDN 架构"></a>CDN 架构</h4><p>通常的CDN架构如下图所示：</p>
+<p><img src="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170526154254138-853628871.png" alt=""></p>
+<p>如图，一个用户访问某个静态文件(如CSS文件)，这个静态文件的域名假定是 <code>cdn.taobao.com</code>，那么首先要向Local DNS服务器发起请求，一般经过迭代器解析后回到这个域名的注册服务器去解析，一般每个公司都会有一个DNS解析服务器。这时这个DNS解析服务器通常会把它重新CNAME解析到另一个域名，而这个域名最终会执行CDN全局中的DNS负载均衡服务器，再由这个GTM来最终分配时哪个地方的访问用户，返回给离这个访问用户最近的CDN节点。</p>
+<p> 拿到DNS解析结果后，用户就直接去这个CDN节点访问这个静态文件了，如果这个节点中所请求的文件不存在，就会回到源站与获取这个文件，然后再返给用户。</p>
+<h3 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h3><p> 负载均衡(Load Balance)就是对工作任务进行平衡、分摊到多个操作单元上执行，如图片服务器、应用服务器等，共同完成工作任务。它可以提高服务器响应速度及利用效率，避免软件或硬件模块出现单点失效，解决网络拥塞问题，实现地理位置无关性，为用户提供较一致的访问质量。</p>
+<p> 通常由三种负载均衡架构，分别是链路负载均衡、集群负载均衡和操作系统负载均衡</p>
+<h4 id="链路负载均衡"><a href="#链路负载均衡" class="headerlink" title="链路负载均衡"></a>链路负载均衡</h4><p> 所谓链路负载均衡也就是通过DNS解析成不同的IP，然后用户根据这个IP来访问不同的目标服务器。负载均衡是由DNS的解析来完成的，用户最终访问哪个Web Server是由DNS Server来控制的，在这里就是由Global DNS Server来动态解析域名服务。这种DNS解析的优点是用户会直接访问目标服务器，而不需要经过其他的代理服务器，通常访问速度会更快。但是也有缺点，由于DNS在用户本地和Local DNS Server都有缓存，一旦某台Web Server挂掉，那么很难及时更新用户的域名解析结构。如果用户的域名没有及时更新，那么用户将无法访问这个域名，带来的后果非常严重。</p>
+<p><img src="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170526154311935-2125676495.png" alt=""></p>
+<h4 id="集群负载均衡"><a href="#集群负载均衡" class="headerlink" title="集群负载均衡"></a>集群负载均衡</h4><p>集群负载均衡是另外一种常见的负载均衡方式，它一般分为硬件负载均衡和软件负载均衡。</p>
+<p>硬件负载均衡一般使用一台专门硬件设备来转发请求，如图所示，硬件负载均衡的关键就是这台价格非常昂贵的设备，如F5，通常为了安全需要一主一备。它的优点很显然就是性能非常好，缺点就是非常贵，一般公司是用不起的，还有就是当访问量陡然增大超出服务极限时，不能进行动态扩容。</p>
+<p><img src="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170526154323075-677218249.png" alt=""></p>
+<p>软件负载均衡是使用最普遍的一种负载方式，它的特点是使用成本非常低，直接使用廉价的PC就可以搭建。缺点就是一般一次访问请求要经过多次代理服务器，会增加网络延时。</p>
+<p><img src="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170526154330544-1733309211.png" alt=""></p>
+<h4 id="操作系统负载均衡"><a href="#操作系统负载均衡" class="headerlink" title="操作系统负载均衡"></a>操作系统负载均衡</h4><p>利用操作系统级别的软中断或者硬件中断来达到负载均衡，如可以设置多队列网卡等来实现。</p>
+<p>这几种负载均衡方式不仅在CDN的集群中能使用，而且在Web服务或者分布式数据集群中同样也能使用，但是在这些地方后两种使用得要多一点。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/HTTP/" rel="tag"># HTTP</a>
+          
+            <a href="/tags/负载均衡/" rel="tag"># 负载均衡</a>
+          
+            <a href="/tags/CDN/" rel="tag"># CDN</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/26/65/" rel="next" title="65">
+                <i class="fa fa-chevron-left"></i> 65
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/27/哈希表的设计与实现/" rel="prev" title="哈希表的设计与实现">
+                哈希表的设计与实现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Jeff Lai" />
+          <p class="site-author-name" itemprop="name">Jeff Lai</p>
+           
+              <p class="site-description motion-element" itemprop="description">原来你是我最想留住的幸运</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/lengender" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/2664793953/profile?rightmod=1&wvr=6&mod=personinfo" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#大致流程"><span class="nav-number">1.</span> <span class="nav-text">大致流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-协议解析"><span class="nav-number">2.</span> <span class="nav-text">HTTP 协议解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DNS域名解析"><span class="nav-number">3.</span> <span class="nav-text">DNS域名解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CDN工作机制"><span class="nav-number">4.</span> <span class="nav-text">CDN工作机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CDN-架构"><span class="nav-number">4.1.</span> <span class="nav-text">CDN 架构</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#负载均衡"><span class="nav-number">5.</span> <span class="nav-text">负载均衡</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#链路负载均衡"><span class="nav-number">5.1.</span> <span class="nav-text">链路负载均衡</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#集群负载均衡"><span class="nav-number">5.2.</span> <span class="nav-text">集群负载均衡</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#操作系统负载均衡"><span class="nav-number">5.3.</span> <span class="nav-text">操作系统负载均衡</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jeff Lai</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

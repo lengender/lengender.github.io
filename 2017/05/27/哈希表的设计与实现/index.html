@@ -1,0 +1,791 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="哈希表," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="写在前面的话，本来看网上的面经就一直有关于哈希表的问题，再加之实验室同学头条面试的时候让实现一个unordered_map，本来已经把对哈希表的总结和实现提上日程了。奈何太懒，一天拖一天，直到自己面阿里的时候被面试官在哈希表上翻来覆去蹂躏的时候，真的是不得不感叹一句，活该！！！ 业精于勤..">
+<meta name="keywords" content="哈希表">
+<meta property="og:type" content="article">
+<meta property="og:title" content="哈希表的设计与实现">
+<meta property="og:url" content="http://yoursite.com/2017/05/27/哈希表的设计与实现/index.html">
+<meta property="og:site_name" content="越努力 | 越幸运">
+<meta property="og:description" content="写在前面的话，本来看网上的面经就一直有关于哈希表的问题，再加之实验室同学头条面试的时候让实现一个unordered_map，本来已经把对哈希表的总结和实现提上日程了。奈何太懒，一天拖一天，直到自己面阿里的时候被面试官在哈希表上翻来覆去蹂躏的时候，真的是不得不感叹一句，活该！！！ 业精于勤..">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170527173322560-1016086083.png">
+<meta property="og:updated_time" content="2017-05-27T09:42:25.542Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="哈希表的设计与实现">
+<meta name="twitter:description" content="写在前面的话，本来看网上的面经就一直有关于哈希表的问题，再加之实验室同学头条面试的时候让实现一个unordered_map，本来已经把对哈希表的总结和实现提上日程了。奈何太懒，一天拖一天，直到自己面阿里的时候被面试官在哈希表上翻来覆去蹂躏的时候，真的是不得不感叹一句，活该！！！ 业精于勤..">
+<meta name="twitter:image" content="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170527173322560-1016086083.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/05/27/哈希表的设计与实现/"/>
+
+
+
+
+
+  <title>哈希表的设计与实现 | 越努力 | 越幸运</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">越努力 | 越幸运</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/27/哈希表的设计与实现/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jeff Lai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力 | 越幸运">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">哈希表的设计与实现</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-27T17:40:02+08:00">
+                2017-05-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>写在前面的话，本来看网上的面经就一直有关于哈希表的问题，再加之实验室同学头条面试的时候让实现一个unordered_map，本来已经把对哈希表的总结和实现提上日程了。奈何太懒，一天拖一天，直到自己面阿里的时候被面试官在哈希表上翻来覆去蹂躏的时候，真的是不得不感叹一句，活该！！！</p>
+<p>业精于勤..<br><a id="more"></a></p>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>哈希表，也称散列表，是实现字典操作的一种有效的数据结构。尽管最坏情况下，散列表查找一个元素的时间与链表中查找的时间相同，达到了O(n)。然而在实际应用中，散列表查找的性能是极好的。在一些合理的假设下，在散列表中可以查找一个元素的平均时间是O(1)</p>
+<p>哈希表的精髓在于哈希二字上面，也就是数学里面常用到的映射关系。它是通过哈希函数将关键字映射到表中的某个位置上进行存放，以实现快速插入和查询的。</p>
+<p>为什么需要哈希函数？简单来讲，解决存储空间的考虑。试想，将100个关键字存入大小为100的数组里，此时肯定是不需要哈希函数的，一对一的放，肯定是可以实现的。但是当数据量增大，将1000个关键字，存入大小为100的数组里呢？此时一个一个的放，那剩下的怎么办呢，所以，我们需要某种计算方法，既能把这1000个关键字存进去，而且最主要是还能取出来。这就是哈希函数要做的事，给每一个关键字找一个合适的位置，让你既能存进去，还能把它取出来。<strong>注意，哈希表里一般存放的字典类型数据，即(key, value)的数据，是根据key去存取value。</strong></p>
+<h3 id="解决冲突的方法"><a href="#解决冲突的方法" class="headerlink" title="解决冲突的方法"></a>解决冲突的方法</h3><p>通过哈希函数去计算哈希值，难免会有冲突的时候，解决冲突的方法有如下几种：</p>
+<ul>
+<li>开放定址法: 依靠数组中的空位解决碰撞冲突<ul>
+<li>线性探测法：直接检测散列表的下一个位置(即索引值加1)，如果仍冲突，继续。</li>
+<li>二次探测法：即H + 1 <sup>2</sup>, H + 2<sup>2</sup>, H + 3<sup>2</sup>.。。</li>
+<li>伪随机探测</li>
+</ul>
+</li>
+<li>再哈希法：使用多个哈希函数，第一个冲突时，使用第二个哈希函数，直到不冲突为止</li>
+<li>链地址法：将所有哈希地址相同的关键字，都链接在同一个链表中。</li>
+</ul>
+<h3 id="散列函数"><a href="#散列函数" class="headerlink" title="散列函数"></a>散列函数</h3><p>在使用开链法解决冲突问题时，将哈希表内的元素称为桶(bucket)，大约意义是，表格内的每个单元，涵盖的不只是个节点(元素)，甚至可能是一“桶”节点。</p>
+<p>假设哈希表中共有M个元素(桶)，编号为0,1,..,M-1。 现在哈希函数要做的就是将关键字映射到这M个桶中，尽量保证均匀。</p>
+<p><strong>最常用的是除留余数法计算哈希值：用一个特定的质数来除所给定的关键字，所得余数即为该关键字的哈希值。</strong></p>
+<h3 id="哈希表设计"><a href="#哈希表设计" class="headerlink" title="哈希表设计"></a>哈希表设计</h3><p>在此，仿STL的hashtable实现一个简化版的哈希表，作为本文的结束。</p>
+<p>采用开链法处理冲突，然后hashtable以vector作为底层数组，键值类型的话，直接用template吧</p>
+<h4 id="哈希表节点"><a href="#哈希表节点" class="headerlink" title="哈希表节点"></a>哈希表节点</h4><p>哈希表节点定义如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">Value</span>&gt;</span></div><div class="line"><span class="title">struct</span> <span class="title">hashtable_node</span>&#123;</div><div class="line">    hashtable_node *next;</div><div class="line">    Value val;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>桶里的链表也自己实现，不使用STL里面提供的list，算是熟悉熟悉单链表吧。</p>
+<h4 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h4><p>首先理清哈希表需要的模板类型，Key, Value<br>只做最简单的(Key, Value), Key的类型考虑char, int, double, string</p>
+<p>下面给出哈希表的定义，本文只考虑几个比较常用的操作，即插入，删除，查找，返回大小，最后再加上一个打印哈希表的函数，具体定义如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">Key</span>, <span class="title">class</span> <span class="title">Value</span>&gt;</span></div><div class="line"><span class="title">class</span> <span class="title">hashtable</span>&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">	<span class="comment">//哈希表节点键值类型</span></div><div class="line">	<span class="keyword">typedef</span> pair&lt;Key, Value&gt; T;</div><div class="line"></div><div class="line">	<span class="comment">//表节点</span></div><div class="line">	<span class="keyword">typedef</span> hashtable_node&lt;T&gt; node;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">	<span class="comment">//构造函数</span></div><div class="line">	hashtable();</div><div class="line">	hashtable(hashtable&lt;Key, Value&gt; &amp;ht)</div><div class="line">		: buckets(ht.buckets), num_elements(ht.num_elements)</div><div class="line">	&#123;&#125;</div><div class="line"></div><div class="line">	<span class="comment">//插入一个关键字</span></div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">insert</span><span class="params">(T kv)</span></span>;   </div><div class="line"></div><div class="line">	<span class="comment">//根据键值删除关键字 </span></div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">erase</span><span class="params">(Key key)</span></span>;</div><div class="line"></div><div class="line">	<span class="comment">//判断关键字是否在哈希表中</span></div><div class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">find</span><span class="params">(Key key)</span></span>;  </div><div class="line"></div><div class="line">	<span class="comment">//返回哈希表中关键字个数</span></div><div class="line">	<span class="function"><span class="keyword">int</span> <span class="title">size</span><span class="params">()</span></span>&#123;</div><div class="line">		<span class="keyword">return</span> num_elements;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">printHashTable</span><span class="params">()</span></span>;</div><div class="line"><span class="keyword">private</span>:</div><div class="line">	<span class="comment">//根据传入大小判断是否需要重新分配哈希表</span></div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">resize</span><span class="params">(<span class="keyword">int</span> num_elements)</span></span>;</div><div class="line"></div><div class="line">	<span class="comment">//根据键值返回桶的编号</span></div><div class="line">	<span class="function"><span class="keyword">int</span> <span class="title">buckets_index</span><span class="params">(Key key, <span class="keyword">int</span> size)</span></span>&#123;</div><div class="line">		<span class="keyword">return</span> hash(key) % size;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">//根据节点返回键值</span></div><div class="line">	<span class="function">Key <span class="title">get_key</span><span class="params">(T  node)</span></span>&#123;</div><div class="line">		<span class="keyword">return</span> node.first;</div><div class="line">	&#125;</div><div class="line"><span class="keyword">private</span>:</div><div class="line">	<span class="comment">//使用STL list&lt;T&gt;作桶</span></div><div class="line">	<span class="built_in">vector</span>&lt;node*&gt; buckets;    </div><div class="line"></div><div class="line">	<span class="comment">//哈希表中元素个数</span></div><div class="line">	<span class="keyword">size_t</span> num_elements;</div><div class="line"></div><div class="line">	<span class="comment">//哈希函数</span></div><div class="line">	hashFunc&lt;Key&gt; hash;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="哈希函数"><a href="#哈希函数" class="headerlink" title="哈希函数"></a>哈希函数</h4><p>哈希函数的设计，由于只考虑了char, int, double, string四种类型，在使用模板类的话，可以通过template的偏特化特性直接为这四种类型设计特化版本。相关代码如下</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line"> * 哈希函数的设定，只考虑 4 种键值类型的哈希函数</div><div class="line"> * char, int , double , string</div><div class="line"> */</div><div class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">Key</span>&gt; <span class="title">struct</span> <span class="title">hashFunc</span>&#123;</span>&#125;;</div><div class="line"></div><div class="line"><span class="keyword">template</span>&lt;&gt; <span class="class"><span class="keyword">struct</span> <span class="title">hashFunc</span> &lt; char &gt; &#123;</span></div><div class="line">	<span class="keyword">size_t</span> <span class="keyword">operator</span>()(<span class="keyword">char</span> x) <span class="keyword">const</span> &#123; <span class="keyword">return</span> x; &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">template</span>&lt;&gt; <span class="class"><span class="keyword">struct</span> <span class="title">hashFunc</span> &lt; int &gt; &#123;</span></div><div class="line">	<span class="keyword">size_t</span> <span class="keyword">operator</span>()(<span class="keyword">int</span> x) <span class="keyword">const</span> &#123; <span class="keyword">return</span> x; &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">template</span>&lt;&gt; <span class="class"><span class="keyword">struct</span> <span class="title">hashFunc</span> &lt; double &gt; &#123;</span></div><div class="line">	<span class="keyword">size_t</span> <span class="keyword">operator</span>()(<span class="keyword">const</span> <span class="keyword">double</span> &amp; dValue) <span class="keyword">const</span></div><div class="line">	&#123;</div><div class="line">		<span class="keyword">int</span> e = <span class="number">0</span>;</div><div class="line">		<span class="keyword">double</span> tmp = dValue;</div><div class="line">		<span class="keyword">if</span> (dValue&lt;<span class="number">0</span>)</div><div class="line">		&#123;</div><div class="line">			tmp = -dValue;</div><div class="line">		&#125;</div><div class="line">		e = <span class="built_in">ceil</span>(<span class="built_in">log</span>(dValue));</div><div class="line">		<span class="keyword">return</span> <span class="keyword">size_t</span>((INT64_MAX + <span class="number">1.0</span>) * tmp * <span class="built_in">exp</span>(-e));</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">template</span>&lt;&gt; <span class="class"><span class="keyword">struct</span> <span class="title">hashFunc</span> &lt; string &gt; &#123;</span></div><div class="line">	<span class="keyword">size_t</span> <span class="keyword">operator</span>()(<span class="keyword">const</span> <span class="built_in">string</span> &amp; str) <span class="keyword">const</span></div><div class="line">	&#123;</div><div class="line">		<span class="keyword">size_t</span> h = <span class="number">0</span>; <span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i&lt;str.length(); ++i)</div><div class="line">		&#123;</div><div class="line">			h = (h &lt;&lt; <span class="number">5</span>) - h + str[i];</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> h; </div><div class="line">	&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="哈希表具体实现"><a href="#哈希表具体实现" class="headerlink" title="哈希表具体实现"></a>哈希表具体实现</h4><p>下面贴出哈希表的具体实现代码吧，关于各个函数的实现，都给出了相关注释，应该算是简单易懂的。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//将表格的大小设为质数，然后直接使用除留余数法求哈希值</span></div><div class="line"><span class="comment">//按照SGI STL中的原则，首先保存28个质数(逐渐呈现大约两倍的关系)，</span></div><div class="line"><span class="comment">//同时提供一个函数，用来查询在这28个质数中，最接近某数并大于某数的质数</span></div><div class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> num_primes = <span class="number">28</span>;</div><div class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">long</span> prime_list[num_primes] =</div><div class="line">&#123;</div><div class="line">	<span class="number">53</span>, <span class="number">97</span>, <span class="number">193</span>, <span class="number">389</span>, <span class="number">769</span>,</div><div class="line">	<span class="number">1543</span>, <span class="number">3079</span>, <span class="number">6151</span>, <span class="number">12289</span>, <span class="number">24593</span>,</div><div class="line">	<span class="number">49157</span>, <span class="number">98317</span>, <span class="number">196613</span>, <span class="number">393241</span>, <span class="number">786433</span>,</div><div class="line">	<span class="number">1572869</span>, <span class="number">3145739</span>, <span class="number">6291469</span>, <span class="number">12582917</span>, <span class="number">25165843</span>,</div><div class="line">	<span class="number">50331653</span>, <span class="number">100663319</span>, <span class="number">201326611</span>, <span class="number">402653189</span>, <span class="number">805306457</span>,</div><div class="line">	<span class="number">1610612741</span>, <span class="number">3221225473</span>, <span class="number">4294967291</span></div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">//找出最接近但大于的质数</span></div><div class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="title">next_prime</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">long</span> n)</span></span>&#123;</div><div class="line">	<span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">long</span> *first = prime_list;</div><div class="line">	<span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">long</span> *last = prime_list + num_primes;</div><div class="line">	<span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">long</span> *pos = lower_bound(first, last, n);</div><div class="line"></div><div class="line">	<span class="keyword">return</span> pos == last ? *(last - <span class="number">1</span>) : *pos;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//构造函数，初始化哈希表</span></div><div class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">Key</span>, <span class="title">class</span> <span class="title">Value</span>&gt;</span></div><div class="line"><span class="title">hashtable</span>&lt;Key, Value&gt;::hashtable()&#123;</div><div class="line">	<span class="keyword">const</span> <span class="keyword">int</span> n_buckets = next_prime(<span class="number">1</span>);</div><div class="line">	buckets.reserve(n_buckets);</div><div class="line">	buckets.insert(buckets.end(), n_buckets, (node*)<span class="number">0</span>);</div><div class="line">	num_elements = <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//插入一个关键字</span></div><div class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">Key</span>, <span class="title">class</span> <span class="title">Value</span>&gt;</span></div><div class="line"><span class="title">void</span> <span class="title">hashtable</span>&lt;Key, Value&gt;::insert(T kv)&#123;</div><div class="line">	<span class="comment">//在插入之前，调用resize函数，判断是否需要重建哈希表</span></div><div class="line">	resize(num_elements + <span class="number">1</span>);</div><div class="line">	<span class="comment">//计算出插入位置</span></div><div class="line">	<span class="keyword">int</span> pos = buckets_index(kv.first, buckets.size());</div><div class="line">	node *head = buckets[pos];	</div><div class="line"></div><div class="line">	<span class="comment">//判断键值是否已经存在，若存在，则直接返回，不插入</span></div><div class="line">	<span class="keyword">for</span> (node *cur = head; cur; cur = cur-&gt;next)&#123;</div><div class="line">		<span class="keyword">if</span> (cur-&gt;val.first == kv.first)</div><div class="line">			<span class="keyword">return</span>;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">//分配节点，插入</span></div><div class="line">	node *tmp = <span class="keyword">new</span> node(kv);</div><div class="line">	tmp-&gt;next = head;</div><div class="line">	buckets[pos] = tmp;</div><div class="line">	num_elements++; <span class="comment">//记录个数</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//根据键值删除关键字 </span></div><div class="line"><span class="keyword">template</span> &lt; <span class="class"><span class="keyword">class</span> <span class="title">Key</span>, <span class="title">class</span> <span class="title">Value</span>&gt; </span></div><div class="line"><span class="title">void</span> <span class="title">hashtable</span>&lt;Key, Value&gt;::erase(Key key)&#123;</div><div class="line">	<span class="comment">//找出桶的位置</span></div><div class="line">	<span class="keyword">int</span> pos = buckets_index(key, buckets.size());</div><div class="line">	node *head = buckets[pos];</div><div class="line">	node *pre = <span class="literal">NULL</span>; </div><div class="line">	<span class="keyword">while</span> (head)&#123;</div><div class="line">		<span class="comment">//查找到对应键，并删除</span></div><div class="line">		<span class="keyword">if</span> (head-&gt;val.first == key)&#123;</div><div class="line">			<span class="keyword">if</span> (pre == <span class="literal">NULL</span>)&#123;</div><div class="line">				buckets[pos] = head-&gt;next;</div><div class="line">				<span class="keyword">delete</span> head;</div><div class="line">				num_elements--;</div><div class="line">				<span class="keyword">return</span>;</div><div class="line">			&#125;</div><div class="line">			<span class="keyword">else</span>&#123;</div><div class="line">				pre-&gt;next = head-&gt;next;</div><div class="line">				<span class="keyword">delete</span> head;</div><div class="line">				num_elements--;</div><div class="line">				<span class="keyword">return</span>;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		pre = head;</div><div class="line">		head = head-&gt;next;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//根据键值，判断是否在哈希表中</span></div><div class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">Key</span>, <span class="title">class</span> <span class="title">Value</span>&gt;</span></div><div class="line"><span class="title">bool</span> <span class="title">hashtable</span>&lt;Key, Value&gt;::find(Key key)&#123;</div><div class="line">	<span class="keyword">int</span> pos = buckets_index(key, buckets.size());</div><div class="line">	node *head = buckets[pos];</div><div class="line"></div><div class="line">	<span class="keyword">while</span> (head)&#123;</div><div class="line">		<span class="keyword">if</span> (head-&gt;val.first == key)</div><div class="line">			<span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">		head = head-&gt;next;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">Key</span>, <span class="title">class</span> <span class="title">Value</span>&gt;</span></div><div class="line"><span class="title">void</span> <span class="title">hashtable</span>&lt;Key, Value&gt;::resize(<span class="keyword">int</span> num_elements)&#123;</div><div class="line">	<span class="comment">//当元素个数大于桶的个数时，重新分配哈希表</span></div><div class="line">	<span class="keyword">const</span> <span class="keyword">int</span> size = buckets.size();</div><div class="line">	<span class="keyword">if</span> (num_elements &lt;= size) <span class="keyword">return</span>;</div><div class="line"></div><div class="line">	<span class="comment">//找出下一个质数</span></div><div class="line">	<span class="keyword">const</span> <span class="keyword">int</span> next_size = next_prime(num_elements);</div><div class="line"></div><div class="line">	<span class="comment">//初始化新的哈希表</span></div><div class="line">	<span class="built_in">vector</span>&lt;node*&gt; tmp(next_size, (node*)<span class="number">0</span>);</div><div class="line"></div><div class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; ++i)&#123;</div><div class="line">		node *head = buckets[i];</div><div class="line">		<span class="keyword">while</span> (head)&#123;</div><div class="line">			<span class="keyword">int</span> new_pos = buckets_index(head-&gt;val.first, next_size);</div><div class="line">			buckets[i] = head-&gt;next;</div><div class="line">			head-&gt;next = tmp[new_pos];</div><div class="line">			tmp[new_pos] = head;</div><div class="line">			head = buckets[i];</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">//交换新旧哈希表</span></div><div class="line">	buckets.swap(tmp);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">Key</span>, <span class="title">class</span> <span class="title">Value</span>&gt;</span></div><div class="line"><span class="title">void</span> <span class="title">hashtable</span>&lt;Key, Value&gt;::printHashTable()&#123;</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"哈希表内容如下 :"</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; buckets.size(); ++i)&#123;</div><div class="line">		node *head = buckets[i];</div><div class="line">		<span class="keyword">while</span> (head)&#123;</div><div class="line">			<span class="built_in">cout</span> &lt;&lt; head-&gt;val.first &lt;&lt; <span class="string">"  "</span> &lt;&lt; head-&gt;val.second &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">			head = head-&gt;next;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="测试如下"><a href="#测试如下" class="headerlink" title="测试如下"></a>测试如下</h4><p>以下为测试代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"hashtable.h"</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">	<span class="comment">//(int, string) 测试如下：</span></div><div class="line">	hashtable&lt;<span class="keyword">int</span>, <span class="built_in">string</span>&gt; ht;</div><div class="line">	</div><div class="line">	ht.insert(pair&lt;<span class="keyword">int</span>, <span class="built_in">string</span>&gt;(<span class="number">12</span>, <span class="string">"this"</span>));</div><div class="line">	ht.insert(pair&lt;<span class="keyword">int</span>, <span class="built_in">string</span>&gt;(<span class="number">3</span>, <span class="string">"is"</span>));</div><div class="line">	ht.insert(pair&lt;<span class="keyword">int</span>, <span class="built_in">string</span>&gt;(<span class="number">58</span>, <span class="string">"a"</span>));</div><div class="line">	ht.insert(pair&lt;<span class="keyword">int</span>, <span class="built_in">string</span>&gt;(<span class="number">10</span>, <span class="string">"test"</span>));</div><div class="line">	ht.insert(pair&lt;<span class="keyword">int</span>, <span class="built_in">string</span>&gt;(<span class="number">23</span>, <span class="string">"hashtable"</span>));</div><div class="line"></div><div class="line">	ht.printHashTable();</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"删除(3, a)后，"</span>;</div><div class="line">	ht.erase(<span class="number">3</span>);</div><div class="line">	ht.printHashTable();</div><div class="line"></div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"插入(3, hahaha)后，"</span>;</div><div class="line">	ht.insert(pair&lt;<span class="keyword">int</span>, <span class="built_in">string</span>&gt;(<span class="number">3</span>, <span class="string">"hahaha"</span>));</div><div class="line">	ht.printHashTable();</div><div class="line"></div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"==================================="</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">	</div><div class="line">	<span class="comment">//(string, string) 测试如下</span></div><div class="line">	hashtable&lt;<span class="built_in">string</span>, <span class="built_in">string</span>&gt; strHt;</div><div class="line">	strHt.insert(pair&lt;<span class="built_in">string</span>, <span class="built_in">string</span>&gt;(<span class="string">"hello"</span>, <span class="string">"world"</span>));</div><div class="line">	strHt.insert(pair&lt;<span class="built_in">string</span>, <span class="built_in">string</span>&gt;(<span class="string">"other"</span>, <span class="string">"hash"</span>));</div><div class="line">	strHt.insert(pair&lt;<span class="built_in">string</span>, <span class="built_in">string</span>&gt;(<span class="string">"test"</span>, <span class="string">"china"</span>));</div><div class="line">	strHt.insert(pair&lt;<span class="built_in">string</span>, <span class="built_in">string</span>&gt;(<span class="string">"stl"</span>, <span class="string">"nimeiya"</span>));</div><div class="line"></div><div class="line">	strHt.printHashTable();</div><div class="line"></div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"判断 test 是否在哈希表中："</span> &lt;&lt; strHt.find(<span class="string">"test"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"返回此时哈希表中的元素个数："</span> &lt;&lt; strHt.size() &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"删除test后"</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">	strHt.erase(<span class="string">"test"</span>);</div><div class="line">	strHt.printHashTable();</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"判断 test 是否在哈希表中："</span> &lt;&lt; strHt.find(<span class="string">"test"</span>) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"返回此时哈希表中的元素个数："</span> &lt;&lt; strHt.size() &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>测试结果如图：</p>
+<p><img src="http://images2015.cnblogs.com/blog/1122912/201705/1122912-20170527173322560-1016086083.png" alt=""></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>本文对哈希表相关概念简要做了一个介绍，并实现了一个简单的哈希表</li>
+<li>相关代码可至 <a href="https://github.com/lengender/hashTable/tree/master" target="_blank" rel="external">hashTable</a> 下载</li>
+<li>下一篇文章希望可以总结一些哈希表相关面试题。</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/哈希表/" rel="tag"># 哈希表</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/26/在浏览器输入一个网址回车后，发生了什么？/" rel="next" title="在浏览器输入一个网址回车后，发生了什么？">
+                <i class="fa fa-chevron-left"></i> 在浏览器输入一个网址回车后，发生了什么？
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Jeff Lai" />
+          <p class="site-author-name" itemprop="name">Jeff Lai</p>
+           
+              <p class="site-description motion-element" itemprop="description">原来你是我最想留住的幸运</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/lengender" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/2664793953/profile?rightmod=1&wvr=6&mod=personinfo" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决冲突的方法"><span class="nav-number">2.</span> <span class="nav-text">解决冲突的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#散列函数"><span class="nav-number">3.</span> <span class="nav-text">散列函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#哈希表设计"><span class="nav-number">4.</span> <span class="nav-text">哈希表设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#哈希表节点"><span class="nav-number">4.1.</span> <span class="nav-text">哈希表节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#哈希表"><span class="nav-number">4.2.</span> <span class="nav-text">哈希表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#哈希函数"><span class="nav-number">4.3.</span> <span class="nav-text">哈希函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#哈希表具体实现"><span class="nav-number">4.4.</span> <span class="nav-text">哈希表具体实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试如下"><span class="nav-number">4.5.</span> <span class="nav-text">测试如下</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jeff Lai</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
