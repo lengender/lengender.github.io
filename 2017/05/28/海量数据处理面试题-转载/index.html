@@ -1,0 +1,891 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="海量数据,哈希,堆," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="海量数据即是指数据量特别大，导致的问题就是要么在短时间内无法解决，要么是无法一次性装入内存。">
+<meta name="keywords" content="海量数据,哈希,堆">
+<meta property="og:type" content="article">
+<meta property="og:title" content="海量数据处理面试题(转载)">
+<meta property="og:url" content="http://yoursite.com/2017/05/28/海量数据处理面试题-转载/index.html">
+<meta property="og:site_name" content="越努力 | 越幸运">
+<meta property="og:description" content="海量数据即是指数据量特别大，导致的问题就是要么在短时间内无法解决，要么是无法一次性装入内存。">
+<meta property="og:updated_time" content="2017-05-28T08:41:11.406Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="海量数据处理面试题(转载)">
+<meta name="twitter:description" content="海量数据即是指数据量特别大，导致的问题就是要么在短时间内无法解决，要么是无法一次性装入内存。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/05/28/海量数据处理面试题-转载/"/>
+
+
+
+
+
+  <title>海量数据处理面试题(转载) | 越努力 | 越幸运</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">越努力 | 越幸运</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/28/海量数据处理面试题-转载/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jeff Lai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力 | 越幸运">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">海量数据处理面试题(转载)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-28T16:39:57+08:00">
+                2017-05-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试面经/" itemprop="url" rel="index">
+                    <span itemprop="name">面试面经</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>海量数据即是指数据量特别大，导致的问题就是要么在短时间内无法解决，要么是无法一次性装入内存。<br><a id="more"></a></p>
+<p>解决办法有：</p>
+<ul>
+<li>针对时间问题：可以利用巧妙的算法和合适的数据结构，如hash/堆/bit-map/trie树等</li>
+<li>针对空间问题：采用大而化小，分而治之/hash映射，把大规模转换为小规模的。各个击破</li>
+</ul>
+<p>处理海量数据问题有6种方法模式：</p>
+<ol>
+<li>分而治之/hash映射 + hash统计 + 堆/快排/归并排序</li>
+<li>双层桶划分</li>
+<li>Bloom filter/Bitmap</li>
+<li>Trie树/数据库/倒排索引</li>
+<li>外排序</li>
+<li>分布式处理之Hadoop/Mapreduce</li>
+</ol>
+<h3 id="模式一：分而治之-Hash映射-Hash统计-堆-快排-归并排序"><a href="#模式一：分而治之-Hash映射-Hash统计-堆-快排-归并排序" class="headerlink" title="模式一：分而治之/Hash映射 + Hash统计 + 堆/快排/归并排序"></a>模式一：分而治之/Hash映射 + Hash统计 + 堆/快排/归并排序</h3><h4 id="1-海量日志数据，提取出某日访问百度次数最多的那个IP。"><a href="#1-海量日志数据，提取出某日访问百度次数最多的那个IP。" class="headerlink" title="1. 海量日志数据，提取出某日访问百度次数最多的那个IP。"></a>1. 海量日志数据，提取出某日访问百度次数最多的那个IP。</h4><p>这个思想就是：<strong>先映射，后统计，最后排序</strong></p>
+<ol>
+<li>分而治之/Hash映射：针对数据太大，内存受限，只能是把大文件化成(取模映射)小文件，即大而化小，各个击破，缩小规模，逐个解决</li>
+<li>Hash统计：当大文件转化为小文件，我们便可以采用常规的hash_map<ip,value>来进行频率统计</ip,value></li>
+<li>堆/快排：统计完了之后，便可进行排序，得到次数最多的IP</li>
+</ol>
+<p>具体做法为：首先把这一天访问百度的日志中的IP取出来，逐个写入到一个大文件中。注意到IP是32位的，最多有2<sup>32</sup>个IP。同样可以采用映射的方法，比如模1000，把整个大文件映射为1000个小文件，再找出每个小文中出现频率最大的IP（可以采用hash_map进行频率统计，然后再找出频率最大的几个）及相应的频率。然后再在这1000个最大的IP中，找出那个频率最大的IP，即为所求。</p>
+<h4 id="2-寻找热门查询，300万个查询字符串中统计最热门的10个查询"><a href="#2-寻找热门查询，300万个查询字符串中统计最热门的10个查询" class="headerlink" title="2. 寻找热门查询，300万个查询字符串中统计最热门的10个查询"></a>2. 寻找热门查询，300万个查询字符串中统计最热门的10个查询</h4><p>原题：搜索引擎会通过日志文件把用户每次检索使用的所有检索串都记录下来，每个查询串的长度为1-255字节。假设目前有一千万个记录（这些查询串的重复度比较高，虽然总数是1千万，但如果除去重复后，不超过3百万个。一个查询串的重复度越高，说明查询它的用户越多，也就是越热门），请你统计最热门的10个查询串，要求使用的内存不能超过1G。</p>
+<p>解答：数据大则划为小的，但如果数据规模比较小，能一次性装入内存呢? 比如此题，虽然有一千万个Query，但是由于重复度比较高，因此事实上只有300万的Query，每个Query255Byte，因此我们可以考虑把他们都放进内存中去（300万个字符串假设没有重复，都是最大长度，那么最多占用内存3M*1K/4=0.75G。所以可以将所有字符串都存放在内存中进行处理），而现在只是需要一个合适的数据结构，在这里，HashTable绝对是我们优先的选择。</p>
+<p><strong>我们省略分而治之/Hash映射的步骤，直接Hash统计，然后排序。针对此类的TOP K问题，采用的对策往往是：hashmap + 堆</strong>。如下所示：</p>
+<ol>
+<li>hash统计。先对这批海量数据进行预处理。即维护一个(query, count)的hahtable, 每次读取一个query,如果该字符串在hashtable中，count++,不在的话，count=1。最终，我们在O(N)的时间复杂度内完成hash统计</li>
+<li>堆排序。借助堆这个数据结构，找出TOP K，时间复杂度为O(Nlgk).</li>
+</ol>
+<p>所以，我们最终的时间复杂度为O(N) + N’*O(logk) (N为1000万，N’为300万)</p>
+<h4 id="3-有一个1G大小的一个文件，里面每一行是一个词，词的大小不超过16字节，内存限制大小是1M。返回频数最高的100个词。"><a href="#3-有一个1G大小的一个文件，里面每一行是一个词，词的大小不超过16字节，内存限制大小是1M。返回频数最高的100个词。" class="headerlink" title="3. 有一个1G大小的一个文件，里面每一行是一个词，词的大小不超过16字节，内存限制大小是1M。返回频数最高的100个词。"></a>3. 有一个1G大小的一个文件，里面每一行是一个词，词的大小不超过16字节，内存限制大小是1M。返回频数最高的100个词。</h4><ol>
+<li>hash映射：顺序读文件中，对于每个词x，取hash(x)%5000，然后按照该值存到5000个小文件中记为a<sub>0</sub>,a<sub>1</sub>,a<sub>2</sub>,…,a<sub>4999</sub>),，这样每个文件大概是200k左右。如果其中的有的文件超过了1M大小，还可以按照类似的方法继续往下分，直到分解得到的小文件的大小都不超过1M。</li>
+<li>hash统计：对每个小文件，统计每个文件中出现的词以及相应的频率（可以采用trie树/hash_map等）</li>
+<li>堆/归并排序：取出出现频率最大的100个词（可以用含100个结点的最小堆），并把100词及相应的频率存入文件，这样又得到了5000个文件。下一步就是把这5000个文件进行归并（类似与归并排序）的过程了。</li>
+</ol>
+<h4 id="4-海量数据分布在100台电脑中，想个办法高效统计出这批数据的TOP10。"><a href="#4-海量数据分布在100台电脑中，想个办法高效统计出这批数据的TOP10。" class="headerlink" title="4. 海量数据分布在100台电脑中，想个办法高效统计出这批数据的TOP10。"></a>4. 海量数据分布在100台电脑中，想个办法高效统计出这批数据的TOP10。</h4><p>此题与上面的第3题类似：</p>
+<ol>
+<li>堆排序：在每台电脑上求出TOP10，可以采用包含10个元素的堆完成（TOP10小，用最大堆，TOP10大，用最小堆）。比如求TOP10大，我们首先取前10个元素调整成最小堆，如果发现，然后扫描后面的数据，并与堆顶元素比较，如果比堆顶元素大，那么用该元素替换堆顶，然后再调整为最小堆。最后堆中的元素就是TOP10大。</li>
+<li>求出每台电脑上的TOP10后，然后把这100台电脑上的TOP10组合起来，共1000个数据，再利用上面类似的方法求出TOP10就可以了。</li>
+</ol>
+<h4 id="5-有10个文件，每个文件1G，每个文件的每一行存放的都是用户的query，每个文件的query都可能重复。要求你按照query的频度排序。"><a href="#5-有10个文件，每个文件1G，每个文件的每一行存放的都是用户的query，每个文件的query都可能重复。要求你按照query的频度排序。" class="headerlink" title="5. 有10个文件，每个文件1G，每个文件的每一行存放的都是用户的query，每个文件的query都可能重复。要求你按照query的频度排序。"></a>5. 有10个文件，每个文件1G，每个文件的每一行存放的都是用户的query，每个文件的query都可能重复。要求你按照query的频度排序。</h4><p>方案1：</p>
+<ol>
+<li><p>hash映射：顺序读取10个文件，按照hash(query)%10的结果将query写入到另外10个文件（记为a<sub>0</sub>,a<sub>1</sub>,a<sub>2</sub>,…,a<sub>9</sub>）中。这样新生成的文件每个的大小大约也1G（假设hash函数是随机的）。</p>
+</li>
+<li><p>hash统计：找一台内存在2G左右的机器，依次对用hash_map(query, query_count)来统计每个query出现的次数。</p>
+</li>
+<li>堆/快排：利用快速/堆/归并排序按照出现次数进行排序。将排序好的query和对应的query_cout输出到文件中，这样得到了10个排好序的文件(记为b<sub>0</sub>,b<sub>1</sub>,b<sub>2</sub>,…,b<sub>9</sub>)。最后对这10个文件进行归并排序（内排序与外排序相结合）。</li>
+</ol>
+<p>方案2：</p>
+<ul>
+<li>一般query的总量是有限的，只是重复的次数比较多而已，可能对于所有的query，一次性就可以加入到内存了。这样，我们就可以采用trie树/hash_map等直接来统计每个query出现的次数，然后按出现次数做快速/堆/归并排序就可以了。</li>
+</ul>
+<p>方案3：</p>
+<ul>
+<li>与方案1类似，但在做完hash，分成多个文件后，可以交给多个文件来处理，采用分布式的架构来处理（比如MapReduce），最后再进行合并。</li>
+</ul>
+<h4 id="6-给定a、b两个文件，各存放50亿个url，每个url各占64字节，内存限制是4G，让你找出a、b文件共同的url"><a href="#6-给定a、b两个文件，各存放50亿个url，每个url各占64字节，内存限制是4G，让你找出a、b文件共同的url" class="headerlink" title="6. 给定a、b两个文件，各存放50亿个url，每个url各占64字节，内存限制是4G，让你找出a、b文件共同的url?"></a>6. 给定a、b两个文件，各存放50亿个url，每个url各占64字节，内存限制是4G，让你找出a、b文件共同的url?</h4><p>可以估计每个文件安的大小为50G×64=320G，远远大于内存限制的4G。所以不可能将其完全加载到内存中处理。考虑采取分而治之的方法。</p>
+<ol>
+<li>hash映射：遍历文件a，对每个url求取hash(url)%1000，然后根据所取得的值将url分别存储到1000个小文件中(记为a<sub>0</sub>,a<sub>1</sub>,a<sub>2</sub>,…,a<sub>999</sub>),这样每个小文件的大约为300M。遍历文件b，采取和a相同的方式将url分别存储到1000各小文件(记为b<sub>0</sub>,b<sub>1</sub>,b<sub>2</sub>,…,b<sub>999</sub>)。这样处理后，所有可能相同的url都在对应的小文件(a<sub>0</sub>VSb<sub>0</sub>,a<sub>1</sub>VSb<sub>1</sub>,a<sub>2</sub>VSb<sub>2</sub>,…a<sub>999</sub>VSb<sub>999</sub>)中，不对应的小文件不可能有相同的url。然后我们只要求出1000对小文件中相同的url即可。</li>
+<li>hash统计：求每对小文件中相同的url时，可以把其中一个小文件的url存储到hash_set中。然后遍历另一个小文件的每个url，看其是否在刚才构建的hash_set中，如果是，那么就是共同的url，存到文件里面就可以了。</li>
+</ol>
+<p>方案2：</p>
+<ul>
+<li>如果允许有一定的错误率，可以使用Bloom filter，4G内存大概可以表示340亿bit。将其中一个文件中的url使用Bloom filter映射为这340亿bit，然后挨个读取另外一个文件的url，检查是否与Bloom filter，如果是，那么该url应该是共同的url（注意会有一定的错误率）。</li>
+</ul>
+<h4 id="7-怎么在海量数据中找出重复次数最多的一个"><a href="#7-怎么在海量数据中找出重复次数最多的一个" class="headerlink" title="7. 怎么在海量数据中找出重复次数最多的一个?"></a>7. 怎么在海量数据中找出重复次数最多的一个?</h4><p>方案1：</p>
+<ul>
+<li>先做hash，然后求模映射为小文件，求出每个小文件中重复次数最多的一个，并记录重复次数。然后找出上一步求出的数据中重复次数最多的一个就是所求（具体参考前面的题）。</li>
+</ul>
+<h4 id="8-上千万或上亿数据（有重复），统计其中出现次数最多的前N个数据。"><a href="#8-上千万或上亿数据（有重复），统计其中出现次数最多的前N个数据。" class="headerlink" title="8. 上千万或上亿数据（有重复），统计其中出现次数最多的前N个数据。"></a>8. 上千万或上亿数据（有重复），统计其中出现次数最多的前N个数据。</h4><p>方案1：</p>
+<ul>
+<li>上千万或上亿的数据，现在的机器的内存应该能存下。所以考虑采用hash_map/搜索二叉树/红黑树等来进行统计次数。然后就是取出前N个出现次数最多的数据了，可以用第6题提到的堆机制完成。</li>
+</ul>
+<h4 id="9-一个文本文件，大约有一万行，每行一个词，要求统计出其中最频繁出现的前10个词，请给出思想，给出时间复杂度分析。"><a href="#9-一个文本文件，大约有一万行，每行一个词，要求统计出其中最频繁出现的前10个词，请给出思想，给出时间复杂度分析。" class="headerlink" title="9. 一个文本文件，大约有一万行，每行一个词，要求统计出其中最频繁出现的前10个词，请给出思想，给出时间复杂度分析。"></a>9. 一个文本文件，大约有一万行，每行一个词，要求统计出其中最频繁出现的前10个词，请给出思想，给出时间复杂度分析。</h4><p>方案1：</p>
+<ul>
+<li>这题是考虑时间效率。用trie树统计每个词出现的次数，时间复杂度是O(n<em>le)（le表示单词的平均长度）。然后是找出出现最频繁的前10个词，可以用堆来实现，前面的题中已经讲到了，时间复杂度是O(n</em>lg10)。所以总的时间复杂度，是O(n<em>le)与O(n</em>lg10)中较大的那一个。</li>
+</ul>
+<h4 id="10-1000万字符串，其中有些是重复的，需要把重复的全部去掉，保留没有重复的字符串。请怎么设计和实现"><a href="#10-1000万字符串，其中有些是重复的，需要把重复的全部去掉，保留没有重复的字符串。请怎么设计和实现" class="headerlink" title="10. 1000万字符串，其中有些是重复的，需要把重复的全部去掉，保留没有重复的字符串。请怎么设计和实现?"></a>10. 1000万字符串，其中有些是重复的，需要把重复的全部去掉，保留没有重复的字符串。请怎么设计和实现?</h4><p>方案一：</p>
+<ul>
+<li>这题用trie树比较合适，hash_map也行</li>
+</ul>
+<p>方案二：</p>
+<ul>
+<li>1000W的数据规模插入操作完全不现实，以前试过在stl下100W元素插入set中已经慢得不能忍受，觉得基于hash的实现会比红黑树好太多，使用vector+sort+unique都要可行许多，建议先hash成小文件分开处理再综合</li>
+</ul>
+<h3 id="模式二：双层桶划分"><a href="#模式二：双层桶划分" class="headerlink" title="模式二：双层桶划分"></a>模式二：双层桶划分</h3><p>双层桶划分，其实本质上还是分而治之的思想，重在“分”的技巧上。<br>使用范围：第K大，中位数，不重复或重复的数字<br>基本原理及要点：因为元素范围很大，不能使用直接寻址表，所以通过多次划分，逐步确定范围，然后最后在一个可以接受的范围内进行，可以通过多次缩小，双层只是一个例子。</p>
+<h4 id="11-5亿个int找它们的中位数"><a href="#11-5亿个int找它们的中位数" class="headerlink" title="11. 5亿个int找它们的中位数"></a>11. 5亿个int找它们的中位数</h4><p>方案一：</p>
+<ul>
+<li>首先将int划分为2^16个区域，然后读取数据统计落到各个区域里的数的个数，之后我们根据统计结果就可以判断中位落到哪个区域，同时知道这个区域的第几个数刚好是中位数。然后第二次扫描我们只统计落在这个区域中的那些数就可以了。</li>
+<li>实际上，如果不是int是int64，我们可以经过3次这样的划分即可降低到可以接受的程度。即可以先将int64分为2^24个区域，然后确定区域的第几大数，再将该区域分成2^20个子区域，然后确定是子区域的第几大数，然后子区域里的数的个数只有2^20，就可以直接利用直接寻址表进行统计了。</li>
+</ul>
+<p>方案二：同样需要做两遍统计，如果数据存在硬盘上，就需要读取2次</p>
+<ul>
+<li>方法同基数排序有点像，开一个大小为65536的int数组，第一遍读取，统计int32的高16位的情况，也就是0-65535，但是算作是0. 65536 - 131071都算作1， 就相当于该数除以65536。int32除以65536的结果不会超过65536种情况，因此开一个65536的数组计数就可以。每读取一个数，数组中对应的计数加1。考虑有负数的情况，需要将结果加32768后，记录在相应数组中</li>
+<li>第一遍统计之后，遍历数组，逐个累加统计，看中位数处于哪个区间，比如处于区间k，那么 0 到k - 1的区间里数字的数量sum应该&lt;n/2(2.5亿)。而k+1到65535区间计数和也&lt;n/2。</li>
+<li>第二遍统计同上面的方法类似，但这次只统计处于区间k的情况，也就是说(x / 65536) + 32768 = k, 统计只统计低16位的情况。并利用刚才统计的sum,比如sum = 2.49亿，那么现在就是要在低16位里面找100万个数。这次计数之后，再统计一下，看中位数所处的区间，最后将高位和地位组合一下就是结果了。</li>
+</ul>
+<h3 id="模式三：Bitmap"><a href="#模式三：Bitmap" class="headerlink" title="模式三：Bitmap"></a>模式三：Bitmap</h3><h4 id="12-在2-5亿个整数中找出不重复的整数，内存不足以容纳这2-5亿个整数。"><a href="#12-在2-5亿个整数中找出不重复的整数，内存不足以容纳这2-5亿个整数。" class="headerlink" title="12. 在2.5亿个整数中找出不重复的整数，内存不足以容纳这2.5亿个整数。"></a>12. 在2.5亿个整数中找出不重复的整数，内存不足以容纳这2.5亿个整数。</h4><p>方案1：</p>
+<ul>
+<li>采用2-Bitmap（每个数分配2bit，00表示不存在，01表示出现一次，10表示多次，11无意义）进行，共需内存2^31 * 2 bit = 1GB内存，还可以接受。然后扫描这2.5亿个整数，查看Bitmap中相对应位，如果是00变01，01变10，10保持不变。所描完事后，查看bitmap，把对应位是01的整数输出即可。</li>
+</ul>
+<p>方案2：</p>
+<ul>
+<li>也可采用与第一题类似的方法，进行划分小文件的方法。然后在小文件中找出不重复的整数，并排序。然后再进行归并，注意去除重复的元素。</li>
+</ul>
+<h4 id="13-腾讯面试题：给40亿个不重复的unsigned-int的整数，没排过序，然后再给一个一个数，如何快速判断这个数是否在那40亿个数当中？"><a href="#13-腾讯面试题：给40亿个不重复的unsigned-int的整数，没排过序，然后再给一个一个数，如何快速判断这个数是否在那40亿个数当中？" class="headerlink" title="13.腾讯面试题：给40亿个不重复的unsigned int的整数，没排过序，然后再给一个一个数，如何快速判断这个数是否在那40亿个数当中？"></a>13.腾讯面试题：给40亿个不重复的unsigned int的整数，没排过序，然后再给一个一个数，如何快速判断这个数是否在那40亿个数当中？</h4><p>方案一：</p>
+<ul>
+<li>用位图/Bitmap的方法，申请512M的内存，一个bit位代表一个unsigned int值。读入40亿个数，设置相应的bit位，读入要查询的数，查看相应bit位是否为1，为1表示存在，为0表示不存在</li>
+</ul>
+<h3 id="模式四：Trie树-数据库-倒排索引"><a href="#模式四：Trie树-数据库-倒排索引" class="headerlink" title="模式四：Trie树/数据库/倒排索引"></a>模式四：Trie树/数据库/倒排索引</h3><h4 id="Trie树"><a href="#Trie树" class="headerlink" title="Trie树"></a>Trie树</h4><p>适用范围：数据量大，重复多，但是数据种类小可以放入内存<br>基本原理及要点：节点孩子的表示方式<br>扩展：压缩实现</p>
+<h4 id="数据库索引"><a href="#数据库索引" class="headerlink" title="数据库索引"></a>数据库索引</h4><p>适用范围：大数据量的增删改查<br>基本原理及要点：利用数据库的设计实现方法，对海量数据的增删改查进行处理</p>
+<h4 id="倒排索引-Inverted-index"><a href="#倒排索引-Inverted-index" class="headerlink" title="倒排索引(Inverted index)"></a>倒排索引(Inverted index)</h4><p>适用范围：搜索引擎，关键字查询<br>为何叫倒排索引？一种索引方法，被用来存储在全文搜索下某个单词在一个文档或一组文档中的存储位置的映射。</p>
+<p>以英文为例，下面是要被索引的文本：<br>T0 = “it is what it is”<br>T1 = “what is it”<br>T2 = “it is a banana”</p>
+<p>我们就能得到下面的反向文件索引：<br>“a”: {2}<br>“banana”: {2}<br>“is”: {0,1,2}<br>“it”: {0,1,2}<br>“what”: {0,1}</p>
+<p>检索的条件”what”,”is”和”it”将对应集合的交集。</p>
+<p>正向索引开发出来用来存储每个文档的单词的列表。正向索引的查询往往满足每个文档有序频繁的全文查询和每个单词在校验文档中的验证这样的查询。在正向索引中，文档占据了中心的位置，每个文档指向了一个它所包含的索引项的序号。也就是说文档指向了它包含的那些单词，而反向索引则是单词指向了包含它的文档，很容易看到这个反向的关系。</p>
+<p>问题实例：文档检索系统，查询那些文件包含了某单词，比如常见的学术论文的关键字搜索。</p>
+<h3 id="模式五：外排序"><a href="#模式五：外排序" class="headerlink" title="模式五：外排序"></a>模式五：外排序</h3><p>适用范围：大数据的排序，去重<br>基本原理及要点：外排序的归并方法，置换选择败者树原理，最优归并树</p>
+<p>问题实例：<br>有一个1G大小的一个文件，里面的每一行是一个词，词的大小不超过16个字节，内存限制大小是1M，返回频数最高的100个词</p>
+<p>这个数据具有明显的特点，词的大小为16个字节，但是内存只有1M做hash明显不够，所以可以用来排序，内存可以当输入缓冲区用</p>
+<p>关于多路归并算法及外排序的具体应用场景，参见<a href="http://blog.csdn.net/v_JULY_v/article/details/6451990" target="_blank" rel="external">程序员编程艺术：第十章、如何给10^7个数据量的磁盘文件排序</a></p>
+<h3 id="模式六：分布式处理之Mapreduce"><a href="#模式六：分布式处理之Mapreduce" class="headerlink" title="模式六：分布式处理之Mapreduce"></a>模式六：分布式处理之Mapreduce</h3><p>MapReduce是一种计算模型，简单的说就是将大批量的工作(数据)分解(Map)执行，然后再将结果合并成最终结果(Reduce)。这样做的好处是可以在任务被分解后，可以通过大量机器执行并行计算，减少整个操作的时间。</p>
+<p>适用范围：数据量大，但是数据种类小可以放入内存<br>基本原理及要点：将数据交给不同的机器去处理，数据划分，结果归约</p>
+<h4 id="13-一共有N个机器，每个机器上有N个数。每个机器最多存O-N-个数并对它们操作。如何找到N-2个数中的中数？"><a href="#13-一共有N个机器，每个机器上有N个数。每个机器最多存O-N-个数并对它们操作。如何找到N-2个数中的中数？" class="headerlink" title="13.一共有N个机器，每个机器上有N个数。每个机器最多存O(N)个数并对它们操作。如何找到N^2个数中的中数？"></a>13.一共有N个机器，每个机器上有N个数。每个机器最多存O(N)个数并对它们操作。如何找到N^2个数中的中数？</h4><p>方案1：</p>
+<ul>
+<li>先大体估计一下这些数的范围，比如这里假设这些数都是32位无符号整数（共有2^32个）。我们把0到2^32-1的整数划分为N个范围段，每个段包含（2^32）/N个整数。比如，第一个段位0到2^32/N-1，第二段为（2^32）/N到（2^32）/N-1，…，第N个段为（2^32）（N-1）/N到2^32-1。</li>
+<li>然后，扫描每个机器上的N个数，把属于第一个区段的数放到第一个机器上，属于第二个区段的数放到第二个机器上，…，属于第N个区段的数放到第N个机器上。注意这个过程每个机器上存储的数应该是O(N)的。</li>
+<li>下面我们依次统计每个机器上数的个数，一次累加，直到找到第k个机器，在该机器上累加的数大于或等于（N^2）/2，而在第k-1个机器上的累加数小于（N^2）/2，并把这个数记为x。那么我们要找的中位数在第k个机器中，排在第（N^2）/2-x位。然后我们对第k个机器的数排序，并找出第（N^2）/2-x个数，即为所求的中位数的复杂度是O（N^2）的。</li>
+</ul>
+<p>方案二：</p>
+<ul>
+<li>先对每台机器上的数进行排序。排好序后，我们采用归并排序的思想，将这N个机器上的数归并起来得到最终的排序。找到第（N^2）/2个便是所求。复杂度是O（N^2*lgN^2）的。</li>
+</ul>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ul>
+<li>本来想自己总结的，但是发现大佬总结得太好了，所以，就不浪费时间了。</li>
+<li>原文地址：<a href="http://blog.csdn.net/hnyysly/article/details/38922105" target="_blank" rel="external">十道海量数据处理面试题与十个方法大总结</a> 和 <a href="http://blog.csdn.net/v_july_v/article/details/6685962" target="_blank" rel="external">海量数据处理面试题集锦</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/海量数据/" rel="tag"># 海量数据</a>
+          
+            <a href="/tags/哈希/" rel="tag"># 哈希</a>
+          
+            <a href="/tags/堆/" rel="tag"># 堆</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/27/哈希表的设计与实现/" rel="next" title="哈希表的设计与实现">
+                <i class="fa fa-chevron-left"></i> 哈希表的设计与实现
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Jeff Lai" />
+          <p class="site-author-name" itemprop="name">Jeff Lai</p>
+           
+              <p class="site-description motion-element" itemprop="description">原来你是我最想留住的幸运</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">42</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/lengender" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/2664793953/profile?rightmod=1&wvr=6&mod=personinfo" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#模式一：分而治之-Hash映射-Hash统计-堆-快排-归并排序"><span class="nav-number">1.</span> <span class="nav-text">模式一：分而治之/Hash映射 + Hash统计 + 堆/快排/归并排序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-海量日志数据，提取出某日访问百度次数最多的那个IP。"><span class="nav-number">1.1.</span> <span class="nav-text">1. 海量日志数据，提取出某日访问百度次数最多的那个IP。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-寻找热门查询，300万个查询字符串中统计最热门的10个查询"><span class="nav-number">1.2.</span> <span class="nav-text">2. 寻找热门查询，300万个查询字符串中统计最热门的10个查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-有一个1G大小的一个文件，里面每一行是一个词，词的大小不超过16字节，内存限制大小是1M。返回频数最高的100个词。"><span class="nav-number">1.3.</span> <span class="nav-text">3. 有一个1G大小的一个文件，里面每一行是一个词，词的大小不超过16字节，内存限制大小是1M。返回频数最高的100个词。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-海量数据分布在100台电脑中，想个办法高效统计出这批数据的TOP10。"><span class="nav-number">1.4.</span> <span class="nav-text">4. 海量数据分布在100台电脑中，想个办法高效统计出这批数据的TOP10。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-有10个文件，每个文件1G，每个文件的每一行存放的都是用户的query，每个文件的query都可能重复。要求你按照query的频度排序。"><span class="nav-number">1.5.</span> <span class="nav-text">5. 有10个文件，每个文件1G，每个文件的每一行存放的都是用户的query，每个文件的query都可能重复。要求你按照query的频度排序。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-给定a、b两个文件，各存放50亿个url，每个url各占64字节，内存限制是4G，让你找出a、b文件共同的url"><span class="nav-number">1.6.</span> <span class="nav-text">6. 给定a、b两个文件，各存放50亿个url，每个url各占64字节，内存限制是4G，让你找出a、b文件共同的url?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-怎么在海量数据中找出重复次数最多的一个"><span class="nav-number">1.7.</span> <span class="nav-text">7. 怎么在海量数据中找出重复次数最多的一个?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-上千万或上亿数据（有重复），统计其中出现次数最多的前N个数据。"><span class="nav-number">1.8.</span> <span class="nav-text">8. 上千万或上亿数据（有重复），统计其中出现次数最多的前N个数据。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-一个文本文件，大约有一万行，每行一个词，要求统计出其中最频繁出现的前10个词，请给出思想，给出时间复杂度分析。"><span class="nav-number">1.9.</span> <span class="nav-text">9. 一个文本文件，大约有一万行，每行一个词，要求统计出其中最频繁出现的前10个词，请给出思想，给出时间复杂度分析。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-1000万字符串，其中有些是重复的，需要把重复的全部去掉，保留没有重复的字符串。请怎么设计和实现"><span class="nav-number">1.10.</span> <span class="nav-text">10. 1000万字符串，其中有些是重复的，需要把重复的全部去掉，保留没有重复的字符串。请怎么设计和实现?</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模式二：双层桶划分"><span class="nav-number">2.</span> <span class="nav-text">模式二：双层桶划分</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#11-5亿个int找它们的中位数"><span class="nav-number">2.1.</span> <span class="nav-text">11. 5亿个int找它们的中位数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模式三：Bitmap"><span class="nav-number">3.</span> <span class="nav-text">模式三：Bitmap</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#12-在2-5亿个整数中找出不重复的整数，内存不足以容纳这2-5亿个整数。"><span class="nav-number">3.1.</span> <span class="nav-text">12. 在2.5亿个整数中找出不重复的整数，内存不足以容纳这2.5亿个整数。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-腾讯面试题：给40亿个不重复的unsigned-int的整数，没排过序，然后再给一个一个数，如何快速判断这个数是否在那40亿个数当中？"><span class="nav-number">3.2.</span> <span class="nav-text">13.腾讯面试题：给40亿个不重复的unsigned int的整数，没排过序，然后再给一个一个数，如何快速判断这个数是否在那40亿个数当中？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模式四：Trie树-数据库-倒排索引"><span class="nav-number">4.</span> <span class="nav-text">模式四：Trie树/数据库/倒排索引</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Trie树"><span class="nav-number">4.1.</span> <span class="nav-text">Trie树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库索引"><span class="nav-number">4.2.</span> <span class="nav-text">数据库索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#倒排索引-Inverted-index"><span class="nav-number">4.3.</span> <span class="nav-text">倒排索引(Inverted index)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模式五：外排序"><span class="nav-number">5.</span> <span class="nav-text">模式五：外排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模式六：分布式处理之Mapreduce"><span class="nav-number">6.</span> <span class="nav-text">模式六：分布式处理之Mapreduce</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#13-一共有N个机器，每个机器上有N个数。每个机器最多存O-N-个数并对它们操作。如何找到N-2个数中的中数？"><span class="nav-number">6.1.</span> <span class="nav-text">13.一共有N个机器，每个机器上有N个数。每个机器最多存O(N)个数并对它们操作。如何找到N^2个数中的中数？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">6.2.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jeff Lai</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
