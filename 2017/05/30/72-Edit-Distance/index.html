@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="TCP," />
+  <meta name="keywords" content="动态规划," />
 
 
 
@@ -90,17 +90,17 @@
 
 
 
-<meta name="description" content="socket编程中，关于connect函数的分析。">
-<meta name="keywords" content="TCP">
+<meta name="description" content="DescriptionGiven two words word1 and word2, find the minimum number of steps required to convert word1 to word2. (each operation is counted as 1 step.)">
+<meta name="keywords" content="动态规划">
 <meta property="og:type" content="article">
-<meta property="og:title" content="connect函数">
-<meta property="og:url" content="http://yoursite.com/2017/05/14/connect函数/index.html">
+<meta property="og:title" content="72. Edit Distance">
+<meta property="og:url" content="http://yoursite.com/2017/05/30/72-Edit-Distance/index.html">
 <meta property="og:site_name" content="越努力 | 越幸运">
-<meta property="og:description" content="socket编程中，关于connect函数的分析。">
-<meta property="og:updated_time" content="2017-05-14T13:09:16.232Z">
+<meta property="og:description" content="DescriptionGiven two words word1 and word2, find the minimum number of steps required to convert word1 to word2. (each operation is counted as 1 step.)">
+<meta property="og:updated_time" content="2017-05-30T11:01:09.440Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="connect函数">
-<meta name="twitter:description" content="socket编程中，关于connect函数的分析。">
+<meta name="twitter:title" content="72. Edit Distance">
+<meta name="twitter:description" content="DescriptionGiven two words word1 and word2, find the minimum number of steps required to convert word1 to word2. (each operation is counted as 1 step.)">
 
 
 
@@ -128,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/05/14/connect函数/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/05/30/72-Edit-Distance/"/>
 
 
 
 
 
-  <title>connect函数 | 越努力 | 越幸运</title>
+  <title>72. Edit Distance | 越努力 | 越幸运</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -274,7 +274,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/14/connect函数/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/30/72-Edit-Distance/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jeff Lai">
@@ -291,7 +291,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">connect函数</h1>
+          <h1 class="post-title" itemprop="name headline">72. Edit Distance</h1>
         
 
         <div class="post-meta">
@@ -303,8 +303,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-14T21:07:19+08:00">
-                2017-05-14
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-30T19:00:31+08:00">
+                2017-05-30
               </time>
             
 
@@ -326,8 +326,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/网络编程/" itemprop="url" rel="index">
-                    <span itemprop="name">网络编程</span>
+                  <a href="/categories/Leetcode/" itemprop="url" rel="index">
+                    <span itemprop="name">Leetcode</span>
                   </a>
                 </span>
 
@@ -360,24 +360,15 @@
       
 
       
-        <p>socket编程中，关于connect函数的分析。<br><a id="more"></a></p>
-<ul>
-<li><p>TCP客户用connect函数来建立与TCP服务器的连接：</p>
-  <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#include&lt;sys/socket.h&gt;</div><div class="line">int connect(int sockfd, const struct sockaddr *servaddr, socklen_t addrlen)</div><div class="line">返回：若成功则为0，若出错则为-1</div></pre></td></tr></table></figure>
-</li>
-<li><p>sockfd是由socket函数返回的套接字描述符，第二个、第三个参数分别是一个指向套接字地址结构的指针和该结构的大小。套接字地址结构必须含有服务器的IP地址和端口号。</p>
-</li>
-<li>客户在调用connect之前不必非得调用bind函数，因为如果需要的话，内核会确定源IP地址并选择一个临时端口作为端口号。</li>
-<li><p><strong>如果是TCP套接字，调用connect函数将激发TCP的三次握手过程，而且仅在连接建立成功或出错时才返回</strong>，其中，出错返回的可能情况有以下几种：</p>
-<ul>
-<li>若TCP客户没有收到SYN分节的相应，则返回ETIMEDOUT错误。举例，调用connect函数时，4.4BSD内核发送一个SYN，若无响应则等待6s后再发送一个，若仍无响应则等待24s后再发送一个。若总共等待了75s后仍未收到响应则返回本错误。</li>
-<li>若对客户的SYN的响应是RST(表示复位)，则表明该服务器主机在我们指定的端口上没有进程在等待与之连接。这是一种硬错误，客户一收到RST就马上返回ECONNREFUSED错误。</li>
-<li>若客户发出的SYN在中间的某个路由器上引发了一个“destination unreachable”(目的地不可达)ICMP错误，则认为是一个软错误。客户主机内核保存该消息，并按第一种情况所述的时间间隔继续发送SYN。若在某个规定的时间内仍无响应，则把保存的信息(即ICMP错误)作为EHOSTUNREACH或ENETUNREACH错误返回给进程。以下两种情况是有可能的：一是按照本地系统的转发表，根本没有到达远程系统的路径；二是connect调用根本不等待就返回。</li>
+        <h3 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h3><p>Given two words word1 and word2, find the minimum number of steps required to convert word1 to word2. (each operation is counted as 1 step.)<br><a id="more"></a></p>
+<p>You have the following 3 operations permitted on a word:</p>
+<p>a) Insert a character<br>b) Delete a character<br>c) Replace a character</p>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ul>
+<li>动态规划，dp[i][j]表示words1[0..i]和words2[0..j]最小的编辑距离是多少</li>
+<li>dp[i][j] =min( min(dp[i - 1][j - 1] + count, dp[i - 1][j] + 1), dp[i][j - 1] + 1)</li>
+<li>其中当words1[i]==words2[j]时，count = 1; 否则,count = 0;</li>
 </ul>
-</li>
-<li><p>按照TCP状态转换图，connect函数导致当前套接字从CLOSED状态转移到SYN_SENT状态，若成功再转移到ESTABLISHED状态。若connect失败，则该套接字不再可用，必须关闭，我们不能对这样的套接字再次调用connect函数。</p>
-</li>
-</ul>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">  <span class="function"><span class="keyword">int</span> <span class="title">minDistance</span><span class="params">(<span class="built_in">string</span> word1, <span class="built_in">string</span> word2)</span> </span>&#123;</div><div class="line">		<span class="keyword">int</span> len1 = word1.size(), len2 = word2.size();</div><div class="line">		<span class="keyword">if</span> (len1 == <span class="number">0</span>) <span class="keyword">return</span> len2;</div><div class="line">		<span class="keyword">if</span> (len2 == <span class="number">0</span>) <span class="keyword">return</span> len1;</div><div class="line"></div><div class="line">		<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; dp(len1 + <span class="number">1</span>, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(len2 + <span class="number">1</span>, <span class="number">0</span>));</div><div class="line"></div><div class="line">		dp[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">0</span>;</div><div class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= len1; ++i)</div><div class="line">			dp[i][<span class="number">0</span>] = i;</div><div class="line">			</div><div class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= len2; ++j)</div><div class="line">			dp[<span class="number">0</span>][j] = j;</div><div class="line">			</div><div class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= len1; ++i)&#123;</div><div class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= len2; ++j)&#123;</div><div class="line">				<span class="keyword">int</span> count = (word1[i - <span class="number">1</span>] == word2[j - <span class="number">1</span>] ? <span class="number">0</span> : <span class="number">1</span>);</div><div class="line">				dp[i][j] = min(min(dp[i - <span class="number">1</span>][j - <span class="number">1</span>] + count, dp[i - <span class="number">1</span>][j] + <span class="number">1</span>), dp[i][j - <span class="number">1</span>] + <span class="number">1</span>) ;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		<span class="keyword">return</span> dp[len1][len2];</div><div class="line"></div><div class="line">	&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -407,7 +398,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/TCP/" rel="tag"># TCP</a>
+            <a href="/tags/动态规划/" rel="tag"># 动态规划</a>
           
         </div>
       
@@ -420,8 +411,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/14/TCP：传输控制协议/" rel="next" title="TCP：传输控制协议">
-                <i class="fa fa-chevron-left"></i> TCP：传输控制协议
+              <a href="/2017/05/30/71-Simplify-Path/" rel="next" title="71. Simplify Path">
+                <i class="fa fa-chevron-left"></i> 71. Simplify Path
               </a>
             
           </div>
@@ -429,10 +420,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/05/14/listen函数/" rel="prev" title="listen函数">
-                listen函数 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -479,8 +466,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -562,6 +558,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Description"><span class="nav-number">1.</span> <span class="nav-text">Description</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思路"><span class="nav-number">2.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">3.</span> <span class="nav-text">代码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
