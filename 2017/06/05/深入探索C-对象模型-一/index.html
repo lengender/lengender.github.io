@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="数据结构," />
+  <meta name="keywords" content="对象模型," />
 
 
 
@@ -90,17 +90,20 @@
 
 
 
-<meta name="description" content="DescriptionGiven an array of words and a length L, format the text such that each line has exactly L characters and is fully (left and right) justified.">
-<meta name="keywords" content="数据结构">
+<meta name="description" content="再读《深入探索C++对象模型》笔记。 关于对象">
+<meta name="keywords" content="对象模型">
 <meta property="og:type" content="article">
-<meta property="og:title" content="68. Text Justification">
-<meta property="og:url" content="http://yoursite.com/2017/05/30/68-Text-Justification/index.html">
+<meta property="og:title" content="深入探索C++对象模型(一)">
+<meta property="og:url" content="http://yoursite.com/2017/06/05/深入探索C-对象模型-一/index.html">
 <meta property="og:site_name" content="越努力 | 越幸运">
-<meta property="og:description" content="DescriptionGiven an array of words and a length L, format the text such that each line has exactly L characters and is fully (left and right) justified.">
-<meta property="og:updated_time" content="2017-05-30T07:22:45.529Z">
+<meta property="og:description" content="再读《深入探索C++对象模型》笔记。 关于对象">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170605112139778-564482188.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170605112158403-953769027.png">
+<meta property="og:updated_time" content="2017-06-05T03:29:59.686Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="68. Text Justification">
-<meta name="twitter:description" content="DescriptionGiven an array of words and a length L, format the text such that each line has exactly L characters and is fully (left and right) justified.">
+<meta name="twitter:title" content="深入探索C++对象模型(一)">
+<meta name="twitter:description" content="再读《深入探索C++对象模型》笔记。 关于对象">
+<meta name="twitter:image" content="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170605112139778-564482188.png">
 
 
 
@@ -128,13 +131,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/05/30/68-Text-Justification/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/06/05/深入探索C-对象模型-一/"/>
 
 
 
 
 
-  <title>68. Text Justification | 越努力 | 越幸运</title>
+  <title>深入探索C++对象模型(一) | 越努力 | 越幸运</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -274,7 +277,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/30/68-Text-Justification/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/05/深入探索C-对象模型-一/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jeff Lai">
@@ -291,7 +294,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">68. Text Justification</h1>
+          <h1 class="post-title" itemprop="name headline">深入探索C++对象模型(一)</h1>
         
 
         <div class="post-meta">
@@ -303,8 +306,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-30T15:21:53+08:00">
-                2017-05-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-05T11:25:59+08:00">
+                2017-06-05
               </time>
             
 
@@ -326,8 +329,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Leetcode/" itemprop="url" rel="index">
-                    <span itemprop="name">Leetcode</span>
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C++</span>
                   </a>
                 </span>
 
@@ -360,22 +363,47 @@
       
 
       
-        <h3 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h3><p>Given an array of words and a length L, format the text such that each line has exactly L characters and is fully (left and right) justified.<br><a id="more"></a></p>
-<p>You should pack your words in a greedy approach; that is, pack as many words as you can in each line. Pad extra spaces ‘ ‘ when necessary so that each line has exactly L characters.</p>
-<p>Extra spaces between words should be distributed as evenly as possible. If the number of spaces on a line do not divide evenly between words, the empty slots on the left will be assigned more spaces than the slots on the right.</p>
-<p>For the last line of text, it should be left justified and no extra space is inserted between words.</p>
-<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><p>For example,<br>words: <code>[&quot;This&quot;, &quot;is&quot;, &quot;an&quot;, &quot;example&quot;, &quot;of&quot;, &quot;text&quot;, &quot;justification.&quot;]</code><br>L: 16.</p>
-<p>Return the formatted lines as:</p>
-<pre><code>[
-    &quot;This    is    an&quot;,
-    &quot;example  of text&quot;,
-    &quot;justification.  &quot;
-]
-</code></pre><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ul>
-<li>首先，根据贪心策略，找到此次最多能包含的单词，注意，单词直接要加一个空格</li>
-<li>找出之后，根据长度的差值计算应该添加的空格的数目</li>
+        <p>再读《深入探索C++对象模型》笔记。</p>
+<h3 id="关于对象"><a href="#关于对象" class="headerlink" title="关于对象"></a>关于对象</h3><a id="more"></a>
+<p>C++在加入封装后(只含有数据成员和普通成员函数）的布局成本增加了多少？ </p>
+<ul>
+<li>答案是并没有增加布局成本。就像C struct一样，memeber functions虽然含在class的声明之内，却不出现在object中。每一个non-inline member function只会诞生一个函数实体。至于每一个“拥有零个或一个定义的” inline function则会在其每一个使用者(模块)身上产生一个函数实体。<br><br></li>
 </ul>
-<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">  <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; fullJustify(<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; words, <span class="keyword">int</span> maxWidth) &#123;</div><div class="line">		<span class="keyword">int</span> len = words.size();</div><div class="line">		<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; res;</div><div class="line">		<span class="keyword">if</span> (len == <span class="number">0</span>) <span class="keyword">return</span> res;</div><div class="line"></div><div class="line">		<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; nums(len, <span class="number">0</span>);</div><div class="line">		<span class="keyword">int</span> i = <span class="number">0</span>;</div><div class="line">		<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; len; ++i)</div><div class="line">			nums[i] = words[i].size();</div><div class="line"></div><div class="line">		i = <span class="number">0</span>;</div><div class="line">		<span class="keyword">int</span> count = <span class="number">0</span>;</div><div class="line">		<span class="keyword">while</span> (i &lt; len)&#123;</div><div class="line">			<span class="built_in">string</span> tmp;</div><div class="line"></div><div class="line">			<span class="keyword">int</span> start = i;</div><div class="line">			getPadSpaceNum(nums, i, len, maxWidth);</div><div class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = start; j &lt;= i; ++j)&#123;</div><div class="line">				tmp += words[j];</div><div class="line">				<span class="keyword">if</span> (j &lt; i )</div><div class="line">					tmp += <span class="built_in">string</span>(nums[j], <span class="string">' '</span>);</div><div class="line">			&#125;</div><div class="line">            <span class="keyword">if</span>(tmp.size() &lt; maxWidth)</div><div class="line">                tmp += <span class="built_in">string</span>(maxWidth - tmp.size(), <span class="string">' '</span>);</div><div class="line">                </div><div class="line">			res.push_back(tmp);</div><div class="line">			i++;</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		<span class="keyword">return</span> res;</div><div class="line">	&#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span>:</div><div class="line">    <span class="comment">//vector&lt;int&gt; nums, 传入时保存的是对应单词长度，</span></div><div class="line">    <span class="comment">//函数返回后保存的是对应单词其后加入的空格个数</span></div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">getPadSpaceNum</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> &amp;i, <span class="keyword">int</span> len, <span class="keyword">int</span> maxWidth)</span></span>&#123;</div><div class="line">		<span class="keyword">int</span> s = i;</div><div class="line">		<span class="keyword">int</span> sum = nums[i];</div><div class="line">		<span class="keyword">int</span> count = <span class="number">0</span>;</div><div class="line">		<span class="keyword">while</span> (i + <span class="number">1</span> &lt; len &amp;&amp; sum + <span class="number">1</span> + nums[i + <span class="number">1</span>] &lt;= maxWidth)&#123;</div><div class="line">			sum += <span class="number">1</span> + nums[i + <span class="number">1</span>];</div><div class="line">			i++;</div><div class="line">			count++;   <span class="comment">//count记录需要加入空格的位置的个数</span></div><div class="line">		&#125;</div><div class="line"></div><div class="line">		<span class="keyword">int</span> sub = maxWidth - sum;</div><div class="line">		<span class="keyword">if</span> (sub == <span class="number">0</span> || i == len - <span class="number">1</span>)&#123;</div><div class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = s; j &lt;= i; ++j)</div><div class="line">				nums[j] = <span class="number">1</span>;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">else</span>&#123;</div><div class="line">			<span class="keyword">int</span> tmp = <span class="number">0</span>;</div><div class="line">			<span class="keyword">if</span> (count)&#123;</div><div class="line">				tmp = sub / count + <span class="number">1</span>;</div><div class="line">				count = sub % count;</div><div class="line">			&#125;</div><div class="line">				</div><div class="line">			<span class="keyword">if</span> (tmp == <span class="number">0</span>) tmp = <span class="number">1</span>;</div><div class="line"></div><div class="line">			</div><div class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = s; j &lt;= i; ++j)&#123;</div><div class="line">				<span class="keyword">if</span> (count &gt; <span class="number">0</span>)&#123;</div><div class="line">					nums[j] = tmp + <span class="number">1</span>;</div><div class="line">					count--;</div><div class="line">				&#125;</div><div class="line">				<span class="keyword">else</span> nums[j] = tmp;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>C++在布局以及存取时间上主要的额外负担是由virtual引起的，包括：</p>
+<ul>
+<li>virtual funciton机制，用以支持一个有效率的“执行期绑定”（runtime binding）</li>
+<li>virtual base class，用以实现“多次出现在继承体系中的base class，有一个单一而被共享的实体”</li>
+</ul>
+<h4 id="C-对象模式-The-C-Object-Model"><a href="#C-对象模式-The-C-Object-Model" class="headerlink" title="C++ 对象模式(The C++ Object Model)"></a>C++ 对象模式(The C++ Object Model)</h4><p>在C++中，有两种class data members：static 和 nonstatic，以及三种class member functions：static、nonstatic和virtual。已知下面这个class Point声明：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span>&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    Point(<span class="keyword">float</span> xval);</div><div class="line">    <span class="keyword">virtual</span> ~Point();</div><div class="line">    <span class="function"><span class="keyword">float</span> <span class="title">x</span><span class="params">()</span> <span class="keyword">const</span></span>;</div><div class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">PointCount</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line"><span class="keyword">protected</span>:</div><div class="line">    <span class="function"><span class="keyword">virtual</span> ostream&amp; <span class="title">print</span><span class="params">(ostream &amp;os)</span> <span class="keyword">const</span></span>;</div><div class="line">    <span class="keyword">float</span> _x;</div><div class="line">    <span class="keyword">static</span> <span class="keyword">int</span> _point_count;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>C++对象模型中，nonstatic data members被配置于每一个class object之内，static data members则被存放在所有的class object之外。static和nonstatic function members也被放在所有的class object之外。virtual function则以两个步骤支持之：</p>
+<ol>
+<li>每个class产生出一堆指向virtual functions的指针，放在表格之中。这个表格被称为virtual table(vtbl)</li>
+<li>每一个class object被安插一个指针，指向相关的virtual table。通常这个指针被称为vptr。vptr的设定和重置都由每一个class的constructor、destructor和copy assignment运算符自动完成。每一个class所关联的type_info object(用以支持runtime type identification, RTTI)也经由virtual table被指出来，通常放在表格的第一个slot处</li>
+</ol>
+<p>故上面的声明所对应的对象模型如下：</p>
+<p><img src="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170605112139778-564482188.png" alt=""></p>
+<p>上图说明了C++对象模型如何应用于Point Class身上，这个模型的主要优点在于它的空间和存取时间的效率。主要缺点是：如果应用程序代码未曾改变，但所用到的class objects的nonstatic data members有所修改(有可能是增加、移除或更改)，那么应用程序代码同样得重新编译。</p>
+<p>继承关系可以指定为虚拟(virtual，也就是共享的意思)：在虚拟继承的情况下，base class不管在继承链中被派生(derived)多少次，永远只会存在一个实例(称为subobject)。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">istream</span> :</span> <span class="keyword">virtual</span> <span class="keyword">public</span> ios&#123; ... &#125;;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ostream</span> :</span> <span class="keyword">virtual</span> <span class="keyword">public</span> ios&#123; ... &#125;;</div></pre></td></tr></table></figure></p>
+<p><img src="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170605112158403-953769027.png" alt=""></p>
+<h4 id="对象的差异"><a href="#对象的差异" class="headerlink" title="对象的差异"></a>对象的差异</h4><p>C++以下列方法支持多态：</p>
+<ul>
+<li>经由一组隐式的转化操作。例如把一个derived class指针转化为一个指向其public base type的指针</li>
+<li>经由virtual function机制</li>
+<li>经由dynamic_cast和typeid运算符</li>
+</ul>
+<p>多态的主要用途是经由一个共同的接口来影响类型的封装，这个接口通常被定义在一个抽象的base class中。这个共享接口是以virtual function机制引发的，它可以在执行期根据object的真正类型解析出到底是哪一个函数实体被调用。<br><br></p>
+<p>需要多少内存才能表现一个class object?</p>
+<ul>
+<li>其nonstatic data members的总和大小</li>
+<li>加上任何由于aliginment的需求而填补上去的空间(可能存在于members之间，也可能存在于集合体边界)</li>
+<li>加上为了支持virtual而由内部产生的任何额外负担<br><br></li>
+</ul>
+<p><strong>一个指针(引用)，不管它指向哪一种数据结构，指针本身所需的内存大小是固定的。</strong> </p>
+<p>举例如下：一个指向ZooAnimal的指针是如何地与一个指向整数得指针或一个指向template Array的指针有所不同的呢？<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ZooAnimal *px;</div><div class="line"><span class="keyword">int</span> *pi;</div><div class="line">Array&lt;<span class="built_in">string</span>&gt; *pta;</div></pre></td></tr></table></figure></p>
+<p>以内存需求的观点来说，没有什么不同！它们三个都需要足够的内存来放置一个机器地址(通常是个word)。“指向不同类型的各指针”间的差异，既不在其指针表示法不同，也不在其内容(代表一个地址)不同，而是在其所寻址出来的object类型不同，也就是说，“指针类型”会教导编译器如何解释某个特定地址中的内存内容及其大小。</p>
+<p>转型(cast)其实是一种编译器指令。大部分情况下它并不改变一个指针所含的真正地址，它只影响“被指出之内存大大小和其内容”的解释方式。</p>
+<p>当一个base class object被直接初始化为(或被指定为)一个derived class object时，derived object就会被切割(sliced)以塞入较小的base type内存中，derived type将没有留下任何蛛丝马迹。多态于是不再呈现，而一个严格的编译器可以在编译器解析一个“通过此object而触发的virtual function调用操作”，因而回避virtual机制。如果virtual function被定义为inline，则更有效率上的大收获。</p>
 
       
     </div>
@@ -405,7 +433,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/数据结构/" rel="tag"># 数据结构</a>
+            <a href="/tags/对象模型/" rel="tag"># 对象模型</a>
           
         </div>
       
@@ -418,8 +446,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/30/67-Add-Binary/" rel="next" title="67. Add Binary">
-                <i class="fa fa-chevron-left"></i> 67. Add Binary
+              <a href="/2017/06/01/80-Remove-Duplicates-from-Sorted-Array-II/" rel="next" title="80. Remove Duplicates from Sorted Array II">
+                <i class="fa fa-chevron-left"></i> 80. Remove Duplicates from Sorted Array II
               </a>
             
           </div>
@@ -427,10 +455,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/05/30/69-Sqrt-x/" rel="prev" title="69. Sqrt(x)">
-                69. Sqrt(x) <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -579,7 +603,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Description"><span class="nav-number">1.</span> <span class="nav-text">Description</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example"><span class="nav-number">2.</span> <span class="nav-text">Example</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思路"><span class="nav-number">3.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">4.</span> <span class="nav-text">代码</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#关于对象"><span class="nav-number">1.</span> <span class="nav-text">关于对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#C-对象模式-The-C-Object-Model"><span class="nav-number">1.1.</span> <span class="nav-text">C++ 对象模式(The C++ Object Model)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对象的差异"><span class="nav-number">1.2.</span> <span class="nav-text">对象的差异</span></a></li></ol></li></ol></div>
             
 
           </div>
