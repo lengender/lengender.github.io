@@ -1,0 +1,872 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="对象模型," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Data 语义学">
+<meta name="keywords" content="对象模型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入探索C++对象模型(三)">
+<meta property="og:url" content="http://yoursite.com/2017/06/06/深入探索C-对象模型-三/index.html">
+<meta property="og:site_name" content="越努力 | 越幸运">
+<meta property="og:description" content="Data 语义学">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170606200103653-952964926.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170606200123293-1385954568.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170606200206356-2098528716.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170606200231543-59625386.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170606200502497-1291783471.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170606200635622-149295083.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170606200654215-1215324323.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170606200715559-930595859.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170606200802325-755912161.png">
+<meta property="og:updated_time" content="2017-06-06T12:10:48.319Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入探索C++对象模型(三)">
+<meta name="twitter:description" content="Data 语义学">
+<meta name="twitter:image" content="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170606200103653-952964926.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/06/06/深入探索C-对象模型-三/"/>
+
+
+
+
+
+  <title>深入探索C++对象模型(三) | 越努力 | 越幸运</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">越努力 | 越幸运</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/06/深入探索C-对象模型-三/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jeff Lai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力 | 越幸运">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">深入探索C++对象模型(三)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-06T20:09:29+08:00">
+                2017-06-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C++</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Data-语义学"><a href="#Data-语义学" class="headerlink" title="Data 语义学"></a>Data 语义学</h2><a id="more"></a>
+<p>一个class的data members，一般而言，可以表现这个class在程序执行时的某种状态。Nonstatic data members放置的是“个别的class object”感兴趣的数据，static data members则放置的是“整个class”感兴趣的数据。</p>
+<p>C++对象模型尽量以空间优化和存取速度优化的考虑来表现nonstatic data members，并且保持和C语言struct数据配置的兼容性。它们把数据直接存放在每一个class object之中。对于继承而来的nonstatic data members(不管是virtual还是nonvirtual base class)也是如此。不过没有强制定义其间的排列顺序。<br>至于static data members，则被放置在程序的一个global data segment中，不会影响个别class object的大小。在程序之中，不管该class被产生出多少个objects(经由直接产生或间接派生)，static data members永远只存在一份实例(甚至即使该class没有任何object实例，其static data members也已存在)。但是一个template class的static data members的行为稍有不同。</p>
+<h3 id="Data-Member的绑定-The-Binding-of-a-Data-Member"><a href="#Data-Member的绑定-The-Binding-of-a-Data-Member" class="headerlink" title="Data Member的绑定(The Binding of a Data Member)"></a>Data Member的绑定(The Binding of a Data Member)</h3><p>C++ Standard以“member scope resolution rules”来精炼这个“rewriting rule”，其效果是，如果一个inline函数在class声明之后立即被定义的话，那么就还是对齐评估求值(evaluae)。也就是说，当一个人写下这样的代码：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">extern</span> <span class="keyword">int</span> x;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point3d</span>&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="comment">//对于函数本身的分析将延迟直至class声明的右大括号出现才开始 </span></div><div class="line">    <span class="function"><span class="keyword">float</span> <span class="title">X</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> x; &#125;</div><div class="line">    <span class="comment">//...</span></div><div class="line"><span class="keyword">private</span>:</div><div class="line">    <span class="keyword">float</span> x;</div><div class="line">&#125;;</div><div class="line"><span class="comment">//事实上，分析在这里运行</span></div></pre></td></tr></table></figure></p>
+<p>时，对于member functions本身的分析，会直到整个class的声明都出现了才开始。<br>因此，在一个inline member function躯体之内的一个data member绑定操作，会在整个class声明之后才发生。</p>
+<h3 id="Data-Member的布局-Data-Member-Layout"><a href="#Data-Member的布局-Data-Member-Layout" class="headerlink" title="Data Member的布局(Data Member Layout)"></a>Data Member的布局(Data Member Layout)</h3><p>已知下面一组data members:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point3d</span>&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="comment">//...</span></div><div class="line"><span class="keyword">private</span>:</div><div class="line">    <span class="keyword">float</span> x;</div><div class="line">    <span class="keyword">static</span> List&lt;Point3d*&gt; *freeList;</div><div class="line">    <span class="keyword">float</span> y;</div><div class="line">    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> chunkSize = <span class="number">250</span>;</div><div class="line">    <span class="keyword">float</span> z;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>nonstatic data members在class object中的排列顺序和其被声明的顺序一样，任何中间介入的static data members，如freeList和chunkSize都不会被放进对象布局之中。在上述例子中，每一个Point3d对象是由三个float组成，次序是x，y，z。static data members存放在程序的data segment中，和个别的class objects无关。</p>
+<p>C++ Standard要求，在同一个access section(也就是private、public、protected等区段)中，members的排列只需符合“较晚出现的members在class object中有较高的地址”这一条件即可。也就是说，各个members并不一定连续排列。什么东西可能会介于被声明的members之间呢？members的边界调整(alignment)可能就需要填补一些bytes。对于C和C++ 而言这的确是真的，对目前的C++编译器实现情况而言，这也是真的。</p>
+<p>编译器还可能会合成一些内部使用的data members，以支持整个对象模型，vptr就是这样的东西，当前所有的编译器都把它安插在每一个“内含virtual function之class”的object内。</p>
+<h3 id="Data-Member的存取"><a href="#Data-Member的存取" class="headerlink" title="Data Member的存取"></a>Data Member的存取</h3><h4 id="Static-Data-Members"><a href="#Static-Data-Members" class="headerlink" title="Static Data Members"></a>Static Data Members</h4><p>static data members，按其字面意义，被编译器提出于class之外，并被视为一个global变量(但只在class生命范围内可见)。每一个member的存取许可(译注：private、protected或public)，以及与class的关联，并不会招致任何空间上或执行时间上的额外负担——不论是在个别的class objects还是在static data member本身</p>
+<p>每一个static data member只有一个实例，存放在程序的data segment之中。每次程序参阅(取用)static member时，就会被内部转化为对该唯一extern实例的直接参考操作。例如：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Point3d origin, *pt;</div><div class="line"></div><div class="line"><span class="comment">//origin.chunkSize = 250</span></div><div class="line">Point3d::chunkSize = <span class="number">250</span>;</div><div class="line"></div><div class="line"><span class="comment">//pt-&gt;chunkSize = 250</span></div><div class="line">Point3d::chunkSize = <span class="number">250</span>;</div></pre></td></tr></table></figure></p>
+<p>从指令执行的观点来看，这是C++语言中“通过一个指针和通过一个对象来存取member，结论完成相同”的唯一一种情况，这是因为“经由member selection operators(也就是’.’运算符)对一个static data member进行存取操作”只是语法上的一种便宜行事而已，member其实并不在class object之中，因此存取static membeers并不需要通过class object。</p>
+<p>若取一个static data member的地址，会得到一个指向其数据类型的指针，而不是一个指向其class member的指针，因为static member并不内含在一个class object之中。例如：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&amp;Point3d::chunkSize;</div></pre></td></tr></table></figure></p>
+<p>会获得类型如下的内存地址：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> <span class="keyword">int</span>*</div></pre></td></tr></table></figure></p>
+<p>如果有两个classes，每一个都声明了一个static member freeList，那么当它们都被放在程序的data segment时，就会导致名称冲突。编译器的解决方法是暗中对每一个static data member编码(对于这种手法有个很美的名称：name-mangling)，以获得一个独一无的程序识别代码。有多少个编译器，就有多少中name-manglint做法。任何name-mangling做法都有两个要点：</p>
+<ol>
+<li>一种算法，推导出独一无二的名称</li>
+<li>万一编译系统(或环境工具)必须和使用者交谈，那些独一无二的名称可以轻易被推导回原来的名称</li>
+</ol>
+<h4 id="Nonstatic-Data-Members"><a href="#Nonstatic-Data-Members" class="headerlink" title="Nonstatic Data Members"></a>Nonstatic Data Members</h4><p>Nonstatic data members直接存放在每一个class object之中。除非经由显式的(explicit)或隐式的(implicit)class object，否则没有办法直接存取它们。只要程序员在一个member function中直接处理一个nonstatic data member，所谓“implicit class object”就会发生。例如：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Point3d</div><div class="line">Point3d::translate(<span class="keyword">const</span> Point3d &amp;pt)&#123;</div><div class="line">    x += pt.x;</div><div class="line">    y += pt.y;</div><div class="line">    z += pt.z;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>表面上所看到的对于x，y，z的直接存取，事实上是经由一个”implicit class object”(由this指针表达)完成，实际上这个函数的参数是：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//member function的内部转化</span></div><div class="line">Point3d </div><div class="line">Point3d::translate(Point3d *<span class="keyword">const</span> <span class="keyword">this</span>, <span class="keyword">const</span> Point3d &amp;pt)&#123;</div><div class="line">    <span class="keyword">this</span>-&gt;x += pt.x;</div><div class="line">    <span class="keyword">this</span>-&gt;y += pt.y;</div><div class="line">    <span class="keyword">this</span>-&gt;z += pt.z;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>欲对一个nonstatic data member进行存取操作，编译器需要把class object的起始地址加上data member的偏移位置(offset)。如果：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">origin._y = <span class="number">0.0</span>;</div></pre></td></tr></table></figure></p>
+<p>那么地址<code>&amp;origin._y</code>将等于：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&amp;origin + (&amp;Point3d::_y - <span class="number">1</span>);</div></pre></td></tr></table></figure></p>
+<p>请注意其中的 -1 操作。指向data member的指针，其offset值总是被加上 1，这样可以使编译系统区分出“一个指向data member的指针，用以指出class的第一个member”和“一个指向data member的指针，没有指出任何member”两种情况。</p>
+<p>每一个nonstatic data member的偏移位置(offset)在编译时期即可获知，甚至如果member属于一个base class subobject(派生自单一或多重继承串链)也是一样的。因此，存取一个nonstatic data member，其效率和存取一个C struct member或一个nonderived class的member是一样的。</p>
+<h3 id="“继承”与Data-Member"><a href="#“继承”与Data-Member" class="headerlink" title="“继承”与Data Member"></a>“继承”与Data Member</h3><p>在C++ 继承模型中，一个derived class object所表现出来的东西，是其自己的members加上其base class members的总和。至于derived class members和base class members的排列顺序，则未在C++ standard中强制指定：理论上编译器可以自由安排之。在大部分编译器上头，base class members总是先出现，但属于virtual base class的除外。(一般而言，任何一条通则一旦碰上virtual base class就没有辙了，这里亦不例外)</p>
+<h4 id="只要继承不要多态-Inheritance-without-Polymorphism"><a href="#只要继承不要多态-Inheritance-without-Polymorphism" class="headerlink" title="只要继承不要多态(Inheritance without Polymorphism)"></a>只要继承不要多态(Inheritance without Polymorphism)</h4><p>一般而言，具体继承(concrete inheritance，译注：相对于虚拟继承virtual inheritance)并不会增加空间或存取时间上的额外负担。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point2d</span>&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    Point2d(<span class="keyword">float</span> x = <span class="number">0.0</span>, <span class="keyword">float</span> y = <span class="number">0.0</span>)</div><div class="line">        : _x(x), _y(y) &#123;&#125;</div><div class="line">        </div><div class="line">    <span class="function"><span class="keyword">float</span> <span class="title">x</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> _x; &#125;</div><div class="line">    <span class="function"><span class="keyword">float</span> <span class="title">y</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> _y; &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">x</span><span class="params">(<span class="keyword">float</span> newX)</span> </span>&#123; _x = newX; &#125;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">y</span><span class="params">(<span class="keyword">float</span> newY)</span> </span>&#123; _y = newY; &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">void</span> <span class="keyword">operator</span>+=(<span class="keyword">const</span> Point2d&amp; rhs)&#123;</div><div class="line">        _x += rhs.x();</div><div class="line">        _y += rhs.y();</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//... more members</span></div><div class="line"><span class="keyword">protected</span>:</div><div class="line">    <span class="keyword">float</span> _x, _y;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">//inheritance from concrete class</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point3d</span> :</span> <span class="keyword">public</span> Point2d&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    Point3d(<span class="keyword">float</span> x = <span class="number">0.0</span>, <span class="keyword">float</span> y = <span class="number">0.0</span>, <span class="keyword">float</span> z = <span class="number">0.0</span>)</div><div class="line">        : Point2d(x, y), _z(z) &#123; &#125;;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">float</span> <span class="title">z</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> _z; &#125;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">z</span><span class="params">(<span class="keyword">float</span> newZ)</span></span>&#123; _z = newZ; &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">void</span> <span class="keyword">operator</span>+=(<span class="keyword">const</span> Point3d&amp; rhs)&#123;</div><div class="line">        Point2d::<span class="keyword">operator</span>(rhs);</div><div class="line">        _z += rhs.z();</div><div class="line">    &#125;</div><div class="line"><span class="keyword">protected</span>:</div><div class="line">    <span class="keyword">float</span> _z;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>这样设计的好处就是可以把管理x和y坐标的程序代码局部化。此外这个设计明显表现出两个抽象类之间的紧密关系。当这两个classes独立的时候，Point2d object和Point3d object的声明和使用都不会有所改变，所以这两个抽象类的使用者不需要知道objects是否为独立的classes类型，或是彼此之间有继承的关系。</p>
+<p><img src="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170606200103653-952964926.png" alt=""></p>
+<p>把两个原本不想干的classes凑出一对“type/subtype”，并带有继承关系，会有什么易犯的错误呢？经验不足的人可能会重复设计一些相同操作的函数。第二个易犯的错误是，把一个class分解为两层或更多层，有可能会为了“表现class体系之抽象化”而膨胀所需空间。C++ 语言保证“出现在derived class中的base class subobject有其完整原样性”。举例如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Concrete</span>&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="comment">//...</span></div><div class="line"><span class="keyword">private</span>:</div><div class="line">    <span class="keyword">int</span> val;</div><div class="line">    <span class="keyword">char</span> c1;</div><div class="line">    <span class="keyword">char</span> c2;</div><div class="line">    <span class="keyword">char</span> c3;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>在一部32位机器中，每一个Concrete class object的大小都是8bytes，细分如下：</p>
+<ol>
+<li>val占用4bytes</li>
+<li>cl,c2,c3各占用1bytes</li>
+<li>alignment(调整到word边界)需要1bytes</li>
+</ol>
+<p>现在假设，经过某些分析之后，我们决定了一个更逻辑的表达方式，把Concrete分裂成三层结构：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Concrete1</span>&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="comment">//..</span></div><div class="line"><span class="keyword">private</span>:</div><div class="line">    <span class="keyword">int</span> val;</div><div class="line">    <span class="keyword">char</span> bit1;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Concrete2</span> :</span> <span class="keyword">public</span> Concrete1&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="comment">//...</span></div><div class="line"><span class="keyword">private</span>:</div><div class="line">    <span class="keyword">char</span> bit2;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Concrete3</span> :</span> <span class="keyword">public</span> Concrete2&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="comment">//...</span></div><div class="line"><span class="keyword">private</span>:</div><div class="line">    <span class="keyword">char</span> bit3;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>从设计的观点来看，这个结构可能更合理。但是从效率的观点来看，我们可能会受困于一个事实：现在Concrete3 object的大小是16bytes，比原先的设计多了一倍。</p>
+<p>怎么回事？还记得“base class subobject在derived class中的原样性”吗？</p>
+<p>Concrete1内含两个members: val和bit1, 加起来是5bytes。而一个Concrete1 object实际用掉8bytes，包括填补用的3bytes，以使object能够符合一个机器的word边界。Concrete2加了唯一一个nonstatic data member bit2，数据类型为char，轻率的程序员会认为它会和Concrete1捆绑在一起，占用原本用来填补的1bytes。然而Concrete2的bit2实际上却是被放在填补的3bytes之后，于是大小变成12bytes，而不是8bytes。其中有6bytes浪费在填补空间上。相同的道理是Concrete3 object的大小是16bytes，其中9bytes用于填补空间。</p>
+<p><img src="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170606200123293-1385954568.png" alt=""></p>
+<p>声明如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Concrete2 *pc2;</div><div class="line">Concrete1 *pc1_1, *pc1_2;</div></pre></td></tr></table></figure></p>
+<p>其中<code>pc1_1</code>和<code>pc1_2</code>两者都可以指向前述三种class objects。下面这个指定操作：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">*pc1_2 = *pc1_1;</div></pre></td></tr></table></figure></p>
+<p>应该执行一个默认“memberwise”复制操作(复制一个个的members)，对象是被指的object的Concrete1那一部分。如果pc1_1实际指向一个Concrete2 object或Concrete3 object，则上述操作应该将复制内容指定给其Concrete1 subobject。</p>
+<p>然而，如果C++ 语言把derived class members(也就是Concrete2::bit2 或Concrete3::bit3)和Concrete subobject捆绑在一起，去除填补空间，上面那些语意就无法保留了，如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">pc1_1 = pc2;    <span class="comment">//令pc1_1指向Concrete2对象</span></div><div class="line"></div><div class="line"><span class="comment">//derived class subobject被覆盖掉，于是bit2 member现有一个并非预期的数值</span></div><div class="line">*pc1_2 = *pc1_1;</div></pre></td></tr></table></figure></p>
+<p><img src="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170606200206356-2098528716.png" alt=""></p>
+<h4 id="加上多态-Adding-Polymorphism"><a href="#加上多态-Adding-Polymorphism" class="headerlink" title="加上多态(Adding Polymorphism)"></a>加上多态(Adding Polymorphism)</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point2d</span>&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    Point2d(<span class="keyword">float</span> x = <span class="number">0.0</span>, <span class="keyword">float</span> y = <span class="number">0.0</span>)</div><div class="line">        : _x(x), _y(y) &#123; &#125;;</div><div class="line">        </div><div class="line">    <span class="comment">//x和y的存取函数与前一版相同</span></div><div class="line">    <span class="comment">//由于对不同维度的点，这些函数的操作固定不变，所以不必设计为virtual</span></div><div class="line">    </div><div class="line">    <span class="comment">//加上z的保留空间(当前什么也不做)</span></div><div class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">float</span> <span class="title">z</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="number">0.0</span>; &#125;</div><div class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">z</span><span class="params">(<span class="keyword">float</span>)</span></span>&#123; &#125;;</div><div class="line">    </div><div class="line">    <span class="comment">//设定以下的运算符为virtual</span></div><div class="line">    <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="keyword">operator</span>+=(<span class="keyword">const</span> Point2d&amp; rhs)&#123;</div><div class="line">        _x += rhs.x();</div><div class="line">        _y += rhs.y();</div><div class="line">    &#125;</div><div class="line"><span class="keyword">protected</span>:  </div><div class="line">    <span class="keyword">float</span> _x, _y;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>这样的设计，给Point2d class带来空间和存储时间的额外负担：</p>
+<ul>
+<li>导入一个和Point2d有关的virtual table，用来存放它所声明的每一个virtual functions的地址。这个table的元素数目一般而言是被声明的virtual functions的数目，再加上一个或两个slots(用以支持runtime type identification)</li>
+<li>每一个class object中导入一个vptr，提供执行期的链接，使每一个object能够找到相应的virtual table.</li>
+<li>加强constructor，使它能够为vptr设定初值，让它指向class所对应的virtual table.</li>
+<li>加强destructor，使它能够抹消“指向class之相关virtual table”的vptr</li>
+</ul>
+<h4 id="多重继承-Multiple-Inheritance"><a href="#多重继承-Multiple-Inheritance" class="headerlink" title="多重继承(Multiple Inheritance)"></a>多重继承(Multiple Inheritance)</h4><p>单一继承提供了一种“自然多态(natural polymorphism)”形式，是关于classed体系中的base type和derived type之间的转换。</p>
+<p>多重继承既不像单一继承，也不容易模塑出其模型。多重继承的复杂度在于derived class和其上一个base class乃至于上上一个base class….之间的“非自然”关系。</p>
+<p>考虑下面这个多重继承所获得的class Vertex3d<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point2d</span>&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="comment">//...拥有virtual接口，所以，Point2d对象中会有vptr</span></div><div class="line"><span class="keyword">protected</span>:</div><div class="line">    <span class="keyword">float</span> _x, _y;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point3d</span> :</span> <span class="keyword">public</span> Point2d&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="comment">//...</span></div><div class="line"><span class="keyword">protected</span>:</div><div class="line">    <span class="keyword">float</span> _z;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Vertex</span>&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="comment">//... 拥有virtual接口，所以Vertex对象之中会有vptr</span></div><div class="line"><span class="keyword">protected</span>:</div><div class="line">    Vertex *next;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Vertex3d</span> :</span> <span class="keyword">public</span> Point3d, <span class="keyword">public</span> Vertex&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="comment">//...</span></div><div class="line"><span class="keyword">protected</span>: </div><div class="line">    <span class="keyword">float</span> mumble;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p><img src="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170606200231543-59625386.png" alt=""></p>
+<p>多重继承的问题主要发生于derived class objects和其第二或后继的base class object之间的转换。不论是直接转换如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">extern</span> <span class="keyword">void</span> <span class="title">mumble</span><span class="params">(<span class="keyword">const</span> Vertex&amp;)</span></span>;</div><div class="line">Vertex3d v;</div><div class="line">...</div><div class="line"><span class="comment">//将一个Vertex3d转换为一个Vertex，这是“不自然的”</span></div><div class="line">mumble(v);</div></pre></td></tr></table></figure></p>
+<p>或是经由其所支持的virtual function机制做转换。</p>
+<p>对一个多重派生对象，将其地址指定给“最左端(也就是第一个)base class的指针”，情况将和单一继承时相同，因为二者都指向相同的起始地址。需付出的成本只有地址的指定操作而已。至于第二个或后继的base class的地址指定操作，则需要将地址修改过：加上(或减去，如果downcast的话)介于中间的base class subobjects大小。例如：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Vertex3d v3d;</div><div class="line">Vertex *pv;</div><div class="line">Point2d *p2d;</div><div class="line">Point3d *p3d;</div></pre></td></tr></table></figure></p>
+<p>经过下面这个指定操作：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pv = &amp;v3d;</div></pre></td></tr></table></figure></p>
+<p>需要这样的内部转化：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pv = (Vertex*)(((<span class="keyword">char</span>*)&amp;v3d) + <span class="keyword">sizeof</span>(Point3d));</div></pre></td></tr></table></figure></p>
+<p>而下面的指定操作：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">p2d = &amp;v3d;</div><div class="line">p3d = &amp;v3d;</div></pre></td></tr></table></figure></p>
+<p>都只需要简单地拷贝其地址就行了。如果有两个指针如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Vertex3d *pv3d;</div><div class="line">Vertex *pv;</div></pre></td></tr></table></figure></p>
+<p>那么下面的指定操作：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pv = pv3d;</div></pre></td></tr></table></figure></p>
+<p>不能够只是简单地被转换为：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pv = (Vertex*)((<span class="keyword">char</span>*)pv3d) + <span class="keyword">sizeof</span>(Point3d);</div></pre></td></tr></table></figure></p>
+<p>因为如果pv3d为0，pv将获得sizeof(Point3d)的值，这是错误的。所以，对于指针，内部转换操作需要一个条件测试：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pv = pv3d ? (Vertex*)((<span class="keyword">char</span>*)pv3d) + <span class="keyword">sizeof</span>(Point3d) : <span class="number">0</span>  ;</div></pre></td></tr></table></figure></p>
+<p>至于reference，则不需要针对可能的0值做防卫，因为reference不可能参考到“无物”</p>
+<p><img src="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170606200502497-1291783471.png" alt=""></p>
+<p>如果要存取第二个(或后继)base class中的一个data member会是怎样的情况？需要付出额外的成本吗？ 不，members的位置在编译期就固定了，因此，存取members只是一个简单的offset运算，就像单一继承一样简单——不管是经由一个指针，一个reference或是一个object来存取。</p>
+<h4 id="虚拟继承-Virtual-Inheritance"><a href="#虚拟继承-Virtual-Inheritance" class="headerlink" title="虚拟继承(Virtual Inheritance)"></a>虚拟继承(Virtual Inheritance)</h4><p>多重继承的一个语意上的副作用就是，它必须支持某种形式的“shared subobject继承”。一个典型的例子就是最早的iostream library:</p>
+<p><img src="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170606200635622-149295083.png" alt=""></p>
+<p>不论是istream或ostream都内含一个ios subobject，然而在iostream的对象布局中，我们只需要一份ios subobject就好。语言层面的解决办法是导入所谓的虚拟继承。</p>
+<p>一般的实现方法如下所述：Class如果内含一个或多个virtual base class subobjects，像istream那样，将被分割为两部分：一个不变局部和一个共享局部。不变局部中的数据，不管后继如何衍化，总是拥有固定的offset(从object的开头算起)，所以这一部分数据可以被直接存取。至于共享局部，所表现的就是virtual base class subobject。这一部分的数据，其位置会因为每次的派生操作而有变化，所以它们只可以被间接存取。各家编译器实现技术之间的差异就在于间接存取的方法不同。</p>
+<p>以下说明三种主流策略，下面是Vertex3d虚拟继承的层次结构：</p>
+<p><img src="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170606200654215-1215324323.png" alt=""></p>
+<p>一般的布局策略是先安排好derived class的不变部分，然后再建立其共享部分。</p>
+<p><strong>如何能够存取class的共享部分呢？</strong></p>
+<p>cfont编译器会在每一个derived class object中安插一些指针，每个指针指向一个virtual base class。要存取继承得来的virtual base class members，可以使用相关指针间接完成。举例如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> Point3d::<span class="keyword">operator</span>+=(<span class="keyword">const</span> Point3d &amp;rhs)&#123;</div><div class="line">    _x += rhs._x;</div><div class="line">    _y += rhs._y;</div><div class="line">    _z += rhs._z;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在cfront策略下，这个运算会被内部转换为：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">_vbcPoint2d-&gt;_x += rhs._vbcPoint2d-&gt;_x;  <span class="comment">// vbc意指virtual base class</span></div><div class="line">_vbcPoint2d-&gt;_y += rhs._vbcPoint2d-&gt;_y;</div><div class="line">_z += rhs._z;</div></pre></td></tr></table></figure></p>
+<p>而一个derived class和一个base class的实例之间的转换，如<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Point2d *p2d = pv3d;</div></pre></td></tr></table></figure></p>
+<p>在cfront实现模型下，会变成：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Point2d *p2d = pv3d ? pv3d-&gt;_vbcPoint2d : <span class="number">0</span>;</div></pre></td></tr></table></figure></p>
+<p>这样的实现模型有两个主要的缺点：</p>
+<ol>
+<li>每一个对象必须针对每一个virtual base class背负一个额外的指针。然而理想上我们希望class object有固定的负担，不因为其virtual base classes的数目而有所变化。</li>
+<li>由于虚拟继承串链的加长，导致间接存取层次增加。比如，有三层虚拟衍化，就需要三次间接存取(经由三个virtual base class指针)，然而理想上我们却希望有固定的存取时间，不因为虚拟衍化的深度而改变。</li>
+</ol>
+<p>MetaWare和其他编译器使用cfront的原始模型来解决第二个问题，它们经由拷贝操作去的所有的nested virtual base class指针，放到derived class object中，这就解决了”固定存储时间”的问题。虽然付出了一些空间上的代价。下图说明了这种“以指针指向base class”的实现模型。</p>
+<p><img src="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170606200715559-930595859.png" alt=""></p>
+<p>对于第一个问题，一般有两个解决办法。Microsoft编译器引入所谓的virtual base class table。每一个class object如果有一个或多个virtual base classes，就会由编译器安插一个指针，指向virtual base class table。至于真正的virtual base class指针，当然是被放在表格中。</p>
+<p>第二个解决办法是在virtual function table中放置virtual base class的offset。下图显示了base class offset实现模型。</p>
+<p><img src="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170606200802325-755912161.png" alt=""></p>
+<p>在新近的Sun编译器中，virtual functon table可经由正值或负值来索引，如果是正值，很显然就是索引到virtual function；若为负值，则是索引到virtual base class offsets。在这样的策略下，Point3d的operator+=运算符必须被转换为以下形式：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">(<span class="keyword">this</span> + _vptr_Point3d[<span class="number">-1</span>])-&gt;_x += (&amp;rhs + rhs._vptr_Point3d[<span class="number">-1</span>])-&gt;_x;</div><div class="line">(<span class="keyword">this</span> + _vptr_Point3d[<span class="number">-1</span>])-&gt;_y += (&amp;rhs + rhs._vptr_Point3d[<span class="number">-1</span>])-&gt;_y;</div><div class="line">_z += rhs._z;</div></pre></td></tr></table></figure></p>
+<p>上述的每一种方法都是一种实现模型，而不是一种标准，每一种模型都是用来解决“存取shared subobject内的数据(其位置会因为每次派生操作而有变化)”所引发的问题。由于对virtual base class的支持带来额外的负担以及高度的复杂性，每一种模型多少有点不同，而且还会随着时间而进化。</p>
+<p>一般而言，virtual base class最有效的一种运用形式就是：一个抽象的virtual base class，没有任何data members</p>
+<h3 id="指向Data-members的指针-Pointer-to-Data-Members"><a href="#指向Data-members的指针-Pointer-to-Data-Members" class="headerlink" title="指向Data members的指针(Pointer to Data Members)"></a>指向Data members的指针(Pointer to Data Members)</h3><p>考虑下面的Point3d声明，其中有一个virtual function, 一个static data member，以及三个坐标值：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point3d</span>&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">virtual</span> ~Point3d();</div><div class="line">    <span class="comment">//...</span></div><div class="line"><span class="keyword">protected</span>:</div><div class="line">    <span class="keyword">static</span> Point3d origin;</div><div class="line">    <span class="keyword">float</span> x, y, z;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>取某个坐标成员的地址，代表什么意思？ 如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&amp;Point3d::z;</div></pre></td></tr></table></figure></p>
+<p>上述操作将得到z坐标的class object中的偏移量(offset)，最低限度其值将是x和y的大小总和，以为C++ 语言要求同一个access level中的members的排列次序应该和其声明次序相同。</p>
+<p>然而vptr的位置就没有限制，实际上vptr不是放在对象的头部，就是放在对象的尾部。每一个float是4bytes，所以我们应该期望刚才获得的值要不是8，就是12(在32位机器上一个vptr是4bytes)</p>
+<p>然而，这样的期望还少1bytes。</p>
+<p>如果vptr放在对象的尾端，则三个坐标值在对象布局中的offset分别是0，4，8。如果vptr放在对象的起头，则三个坐标值在对象布局中的offset分别是4,8,12。然而你若去取data members的地址，传回的值总是多1， 也就是1,5,9或9,5,13等等。</p>
+<p>如何区分一个“没有指向任何data member”的指针，和一个指向“第一个data member”的指针？考虑这样的例子：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">float</span> Point3d::*p1 = <span class="number">0</span>;</div><div class="line"><span class="keyword">float</span> Point3d::*p2 = &amp;Point3d::x;</div><div class="line"><span class="comment">//Point3d::*的意思是：“指向Point3d data member”的指针类型</span></div><div class="line"></div><div class="line"><span class="comment">//如何区分</span></div><div class="line"><span class="keyword">if</span>(p1 == p2)&#123;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"p1 &amp; p2 contain the same value --"</span> ;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">" they must address the same member!"</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>为了区分p1和p2, 每一个真正的member offset值都被加上1。因此，不论编译器或使用者都必须记住，在真正使用该值以指出一个member之前，请先减掉1</p>
+<p>认识“指向data members的指针”之后，我们发现，要解释：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&amp;Point3d::z;  </div><div class="line">&amp;origin.z;</div></pre></td></tr></table></figure></p>
+<p>之间的差异，就非常明确了。鉴于“取一个nonstatic data member的地址，将会得到它在class中的offset”，取一个“绑定于真正class object身上的data member”的地址，将会得到该member在内存中的真正地址。把<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&amp;origin.z</div></pre></td></tr></table></figure></p>
+<p>所得结果减z的偏移量(相对于origin的起始地址)，并加1,就会得到origin的起始地址。上一行的返回值类型应该是<code>float*</code>，而不是<code>float Point3d::*</code>。</p>
+<p>由于上述操作所参考的是一个特定实例，所以取一个static data member的地址，意义也相同。</p>
+<p>在多重继承中，若要将第二个(或后继)base class的指针，和一个“与derived class object绑定”的member结合起来，那么将会因为“需要加入offset值”而变得相当复杂。例如：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Base1</span>&#123;</span> <span class="keyword">int</span> val1; &#125;</div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Base2</span>&#123;</span> <span class="keyword">int</span> val2; &#125;</div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Derived</span> :</span> Base1, Base2&#123; ... &#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun1</span><span class="params">(<span class="keyword">int</span> Derived::*dmp, Derived *pd)</span></span>&#123;</div><div class="line">    <span class="comment">//期望第一个参数得到一个“指向derived class之member”的指针</span></div><div class="line">    <span class="comment">//如果传进来的却是一个"指向base class之member"的指针，会怎样</span></div><div class="line">    pd-&gt;*dmp;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun2</span><span class="params">(Derived *pd)</span></span>&#123;</div><div class="line">    <span class="comment">//bmp将成为1</span></div><div class="line">    <span class="keyword">int</span> Base2::*bmp = &amp;Base2::val2;</div><div class="line">    </div><div class="line">    <span class="comment">//bmp = 1</span></div><div class="line">    <span class="comment">//但是在Derived中，val2 = 5</span></div><div class="line">    fun1(bmp, pd);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>当bmp被作为fun1()的第一个参数时，它的值就必须因介入的Base1 class的大小而调整，否则fun1()中这样的操作：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pd-&gt;*dmp;</div></pre></td></tr></table></figure></p>
+<p>将存取Base1::val1，而非程序员所以为的Base2::val2。要解决这个问题，必须<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//经由编译器内部转换</span></div><div class="line">fun1(bmp + <span class="keyword">sizeof</span>(Base1), pd);</div></pre></td></tr></table></figure></p>
+<p>然而，一般而言，我们不能保证bmp不是0，因此必须特别留意之：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//内部转换</span></div><div class="line"><span class="comment">//防范bmp == 0</span></div><div class="line">fun1(bmp ? bmp + <span class="keyword">sizeof</span>(Base1) : <span class="number">0</span>, pd);</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/对象模型/" rel="tag"># 对象模型</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/06/深入探索C-对象模型-二/" rel="next" title="深入探索C++对象模型(二)">
+                <i class="fa fa-chevron-left"></i> 深入探索C++对象模型(二)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Jeff Lai" />
+          <p class="site-author-name" itemprop="name">Jeff Lai</p>
+           
+              <p class="site-description motion-element" itemprop="description">原来你是我最想留住的幸运</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">61</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">43</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/lengender" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/2664793953/profile?rightmod=1&wvr=6&mod=personinfo" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Data-语义学"><span class="nav-number">1.</span> <span class="nav-text">Data 语义学</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Member的绑定-The-Binding-of-a-Data-Member"><span class="nav-number">1.1.</span> <span class="nav-text">Data Member的绑定(The Binding of a Data Member)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Member的布局-Data-Member-Layout"><span class="nav-number">1.2.</span> <span class="nav-text">Data Member的布局(Data Member Layout)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Member的存取"><span class="nav-number">1.3.</span> <span class="nav-text">Data Member的存取</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Static-Data-Members"><span class="nav-number">1.3.1.</span> <span class="nav-text">Static Data Members</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Nonstatic-Data-Members"><span class="nav-number">1.3.2.</span> <span class="nav-text">Nonstatic Data Members</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#“继承”与Data-Member"><span class="nav-number">1.4.</span> <span class="nav-text">“继承”与Data Member</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#只要继承不要多态-Inheritance-without-Polymorphism"><span class="nav-number">1.4.1.</span> <span class="nav-text">只要继承不要多态(Inheritance without Polymorphism)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#加上多态-Adding-Polymorphism"><span class="nav-number">1.4.2.</span> <span class="nav-text">加上多态(Adding Polymorphism)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多重继承-Multiple-Inheritance"><span class="nav-number">1.4.3.</span> <span class="nav-text">多重继承(Multiple Inheritance)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#虚拟继承-Virtual-Inheritance"><span class="nav-number">1.4.4.</span> <span class="nav-text">虚拟继承(Virtual Inheritance)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指向Data-members的指针-Pointer-to-Data-Members"><span class="nav-number">1.5.</span> <span class="nav-text">指向Data members的指针(Pointer to Data Members)</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jeff Lai</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
