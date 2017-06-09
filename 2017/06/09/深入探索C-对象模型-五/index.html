@@ -1,0 +1,907 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="对象模型," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="构造、解构、拷贝语意学(Semantics of Construction,Destruction, and Copy)">
+<meta name="keywords" content="对象模型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入探索C++对象模型(五)">
+<meta property="og:url" content="http://yoursite.com/2017/06/09/深入探索C-对象模型-五/index.html">
+<meta property="og:site_name" content="越努力 | 越幸运">
+<meta property="og:description" content="构造、解构、拷贝语意学(Semantics of Construction,Destruction, and Copy)">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170609094428997-388556339.png">
+<meta property="og:updated_time" content="2017-06-09T01:49:13.304Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入探索C++对象模型(五)">
+<meta name="twitter:description" content="构造、解构、拷贝语意学(Semantics of Construction,Destruction, and Copy)">
+<meta name="twitter:image" content="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170609094428997-388556339.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/06/09/深入探索C-对象模型-五/"/>
+
+
+
+
+
+  <title>深入探索C++对象模型(五) | 越努力 | 越幸运</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">越努力 | 越幸运</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/09/深入探索C-对象模型-五/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jeff Lai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力 | 越幸运">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">深入探索C++对象模型(五)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-09T09:47:31+08:00">
+                2017-06-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C++</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="构造、解构、拷贝语意学-Semantics-of-Construction-Destruction-and-Copy"><a href="#构造、解构、拷贝语意学-Semantics-of-Construction-Destruction-and-Copy" class="headerlink" title="构造、解构、拷贝语意学(Semantics of Construction,Destruction, and Copy)"></a>构造、解构、拷贝语意学(Semantics of Construction,Destruction, and Copy)</h2><a id="more"></a>
+<p>一般而言，class的data member应该被初始化，并且只在constructor中或是在class的其他member functions中指定初值。其他任何操作都将破坏封装性质，使class的维护和修改更加困难。</p>
+<h3 id="纯虚函数的存在-Presence-of-a-Pure-Virtual-Function"><a href="#纯虚函数的存在-Presence-of-a-Pure-Virtual-Function" class="headerlink" title="纯虚函数的存在(Presence of a Pure Virtual Function)"></a>纯虚函数的存在(Presence of a Pure Virtual Function)</h3><p>C++ 新手常常很惊讶地发现，一个人竟然可以定义和调用(invoke)一个pure virtual function：不过它只能被静态地调用(invoked statically)，不能经由虚拟机制调用。例如，你可以合法地写下这段代码：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//定义pure virtual function但只能被静态地调用(invoked statically)</span></div><div class="line"><span class="keyword">inline</span> <span class="keyword">void</span> Abstract_base::interface() <span class="keyword">const</span>&#123;</div><div class="line">    <span class="comment">//请注意，先前曾声明这是一个pure virtual const</span></div><div class="line">function</div><div class="line">    <span class="comment">//...</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">inline</span> <span class="keyword">void</span> Concrete_derived::interface() <span class="keyword">const</span>&#123;</div><div class="line">    <span class="comment">//静态调用(static invocation) </span></div><div class="line">    Abastract_base::interface();</div><div class="line">          <span class="comment">//请注意，我们竟然能够调用一个pure virtual</span></div><div class="line">function</div><div class="line">    <span class="comment">//...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>要不要这样做，全由class设计者决定。唯一的例外就是pure virtual destructor: class设计者一定要定义它。为什么？ 因为每一个derived class destructor会被编译器加以扩展，以静态调用的方式调用其“每一个virtual base class”以及“上一层base class”的destructor。因此，只要缺乏任何一个base class destructor的定义，就会导致链接失败。</p>
+<h3 id="“无继承”情况下的对象构造"><a href="#“无继承”情况下的对象构造" class="headerlink" title="“无继承”情况下的对象构造"></a>“无继承”情况下的对象构造</h3><p>考虑下面的程序片段：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">(<span class="number">1</span>) Point global;</div><div class="line">(<span class="number">2</span>) </div><div class="line">(<span class="number">3</span>) <span class="function">Point <span class="title">foobar</span><span class="params">()</span></span></div><div class="line"><span class="params">(<span class="number">4</span>)</span> &#123;</div><div class="line">(<span class="number">5</span>)     Point local;</div><div class="line">(<span class="number">6</span>)     Point *heap = <span class="keyword">new</span> Point;</div><div class="line">(<span class="number">7</span>)     *head = local;</div><div class="line">(<span class="number">8</span>)     <span class="comment">//...  stuff ...</span></div><div class="line">(<span class="number">9</span>)     <span class="keyword">delete</span> heap;</div><div class="line">(<span class="number">10</span>)    <span class="keyword">return</span> local;</div><div class="line">(<span class="number">11</span>) &#125;</div></pre></td></tr></table></figure></p>
+<p>L1,L5,L6表现出三种不同的对象产生方式：global内存配置、local内存配置和heap内存配置。L7把一个class object指定给另一个，L10设定返回值，L9则明确地以delete运算符删除heap object.</p>
+<p>一个object的生命，是该object的一个执行期属性。local object的声明从L5的定义开始，到L10为止。global object的生命和整个程序的生命相同。heap object的生命从它被new运算符配置出来开始，到它被delete运算符摧毁为止。</p>
+<p>下面是Point的第一次声明，可以写成C程序，C++ standard说这是一种所谓的Plain old Data声明形式：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></div><div class="line">    <span class="keyword">float</span> x, y, z;</div><div class="line">&#125;Point;</div></pre></td></tr></table></figure></p>
+<p>如果以C++ 来编译这段码，会发生什么事？ 观念上，编译器会为Point声明一个trivial default constructor、一个trivial destructor、一个trivial copy constructor，以及一个trivial copy assignment operator。但实际上，编译器会分析这个声明，并为它贴上Plain of Data标签</p>
+<p>当编译器遇到这样的定义：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(<span class="number">1</span>) Point global;</div></pre></td></tr></table></figure></p>
+<p>时，观念上Point的trival constructor和destructor都会被产生并被调用，constructor在程序起始(startup)处被调用而destructor在程序的exit()处被调用。然而，事实上那些tirvial members要不是没被定义，就是没被调用，程序的行为一如它在C中的表现一样。</p>
+<p>只有一个小小的例外，在C中，global被视为一个“临时性的定义”，因为它没有明确的初始化操作。一个“临时性的定义”可以在程序中发生多次，那些实例会被链接器折叠起来，只留下单独一个实体，被放在程序data segment中的一个“特别保留给未初始化之global objects使用”的空间，由于历史的缘故，这段空间被称为BSS，这是Block Started by Symbol的缩写。</p>
+<p>C++ 并不支持“临时性的定义”，这是因为class构造行为的隐含应用之故。因此，global在C++ 中被视为完全定义(它会阻止第二个或更多个定义)。C和C++的一个差异就在于，BSS data segment在C++中相对地不重要。C++ 的所有全局对象都被当作“初始化过的数据”来对待。</p>
+<p>foobar() 函数中的L5,有一个Point object local，同样也是既没有被构造也没有被解构。当然啦，Point object local如果没有先经过初始化，可能会成为一个潜在的程序臭虫——万一第一次使用它就需要其赋初值的话(如L7)。至于heap object在L6的初始化操作：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(<span class="number">6</span>)  Point *heap = <span class="keyword">new</span> Point;</div></pre></td></tr></table></figure></p>
+<p>会被转换为对new运算符的调用：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Point *heap = _new(<span class="keyword">sizeof</span>(Point));</div></pre></td></tr></table></figure></p>
+<p>再一次强调，并没有default constructor施行与new运算符所传回的Point object身上。L7对此object有一个赋值(赋值，assign)操作，如果local曾被适当地初始化过，一切就没有问题：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(<span class="number">7</span>)  *heap = local;</div></pre></td></tr></table></figure></p>
+<p>事实上这一行会产生编译警告如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">warning,line <span class="number">7</span>, local is used before being initialized</div></pre></td></tr></table></figure></p>
+<p>观念上，这样的指定操作会触发trivial copy assignment operator进行拷贝搬运操作。然而实际上此object是一个Plain old data，所以赋值操作(assignment)将只是像C那样的纯粹位搬移操作。L9执行一个delete操作：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(<span class="number">9</span>) <span class="keyword">delete</span> heap;</div></pre></td></tr></table></figure></p>
+<p>会被转换为对delete运算符(由library提供)的调用：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">_delete(heap);</div></pre></td></tr></table></figure></p>
+<p>观念上，这样的操作会触发Point的trivial destructor。但是一如我们所见，destructor要不是没有被产生就是没有被调用。最后，函数以传值(by value)的方式将local当作返回值传回，这在观念上会触发trivial copy constructor，不过实际上return操作只是一个简单的位拷贝操作，因为对象是一个Plain old data。</p>
+<h4 id="抽象数据类型-Abstract-Data-Type"><a href="#抽象数据类型-Abstract-Data-Type" class="headerlink" title="抽象数据类型(Abstract Data Type)"></a>抽象数据类型(Abstract Data Type)</h4><p>以下是Point的第二次声明，在public接口之下多了private数据，提供完整的封装性，但是没有提供virtual function:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span>&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    Point(<span class="keyword">float</span> x = <span class="number">0.0</span>, <span class="keyword">float</span> y = <span class="number">0.0</span>, <span class="keyword">float</span> z = <span class="number">0.0</span>)</div><div class="line">        : _x(x), _y(y), _z(y) &#123; &#125;</div><div class="line">        </div><div class="line">    <span class="comment">//no copy constructor, copy operator or destructor defined</span></div><div class="line"><span class="keyword">private</span>:</div><div class="line">    <span class="keyword">float</span> _x, _y, _z;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>这个经过封装的Point class，其大小并没有改变，还是三个连续的float。是的，不论private、public存取层，或是member function的声明，都不会占用额外的对象空间。</p>
+<p>对于一个global实体：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Point global;    <span class="comment">//实施Point::Point(0.0, 0.0, 0.0)</span></div></pre></td></tr></table></figure></p>
+<p>现在有了default constructor作用于其上。由于global被定义在全局范畴中，其初始化操作将延迟到程序激活(startup)时才开始。</p>
+<p>如果要对class中的所有成员都设定常量初值，那么给予一个explicit initialization list会比较高效(比起意义相同的constructor的inline expansion而言)。甚至在local scope中也是如此。举例如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">mumble</span><span class="params">()</span></span>&#123;</div><div class="line">    Point local1 = &#123;<span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>&#125;;</div><div class="line">    </div><div class="line">    Plint local2;</div><div class="line">    </div><div class="line">    <span class="comment">//相当于一个inline expansion, explicit initialization会稍微快一些</span></div><div class="line">    local2._x = <span class="number">1.0</span>;</div><div class="line">    local2._y = <span class="number">1.0</span>;</div><div class="line">    local2._z = <span class="number">1.0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>local1的初始化操作会比local2的高效，这是因为当函数的activation record被放进程序堆栈时，上述initialization list中的常量就可以被放进local1内存中了。</p>
+<p>Explicit initialization list带来三项缺点：</p>
+<ol>
+<li>只有当class members都是public，此法才奏效</li>
+<li>只能指定常量，因为它们在编译时期就可以被评估求值(evaluated)</li>
+<li>由于编译器并没有自动施行之，所以初始化行为的失败可能性会高一些</li>
+</ol>
+<p>在编译器层面，会有一个优化机制用来识别inline constructors，后者简单地提供一个member-by-member的常量指定操作。然后编译器会抽取出那些值，并且对待它们就好像是explicit initialization list所供应的一样，而不会把constructor扩展成一系列的assignment指令。</p>
+<p>local Point object的定义如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    Point local;</div><div class="line">    <span class="comment">//...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>现在被附加上default Point constructor的inline expansion:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="comment">//inline expansion of default constructor</span></div><div class="line">    Point local;</div><div class="line">    local._x = <span class="number">0.0</span>, local._y = <span class="number">0.0</span>, local._z = <span class="number">0.0</span>;</div><div class="line">    <span class="comment">//...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>L6配置出一个heap Point object:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(<span class="number">6</span>)  Point *heap = <span class="keyword">new</span> Point;</div></pre></td></tr></table></figure></p>
+<p>现在则被附加一个“对default Point Constructor的有条件调用操作”：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Point *heap = _new(<span class="keyword">sizeof</span>(Point));</div><div class="line"><span class="keyword">if</span>(heap != <span class="number">0</span>)</div><div class="line">    heap-&gt;Point::Point();</div></pre></td></tr></table></figure></p>
+<p>然后又被编译器进行inline expansion操作，至于把heap指针指向local object：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(<span class="number">7</span>)  *heap = local;</div></pre></td></tr></table></figure></p>
+<p>则保持简单的位拷贝操作，以传值方式传回local object，情况也是一样：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(<span class="number">10</span>)  <span class="keyword">return</span> local;</div></pre></td></tr></table></figure></p>
+<p>L9删除heap所指之对象：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(<span class="number">9</span>)  <span class="keyword">delete</span> heap;</div></pre></td></tr></table></figure></p>
+<p>该操作并不会导致destructor被调用，因为我们并没有明确地提供一个destructor函数实体。</p>
+<p>观念上，我们的Point class有一个相关得default copy constructor,copy operator和destructor，然而它们都是无关痛痒的(trivial)，而且编译器实际上根本没有产生它们。</p>
+<h4 id="为继承做准备"><a href="#为继承做准备" class="headerlink" title="为继承做准备"></a>为继承做准备</h4><p>以下是第三个Point声明，将为“继承性质”以及某些操作的动态决议(dynamic resolution)做准备，当前我们限制对z成员进行存取操作：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span>&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    Point(<span class="keyword">float</span> x = <span class="number">0.0</span>, <span class="keyword">float</span> y = <span class="number">0.0</span>)</div><div class="line">        : _x(x), _y(y) &#123; &#125;</div><div class="line">        </div><div class="line">    <span class="comment">//no destructor, copy constructor or copy operator</span></div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">float</span> <span class="title">z</span><span class="params">()</span></span>;</div><div class="line"><span class="keyword">protected</span>:</div><div class="line">    <span class="keyword">float</span> _x, _y;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>再次强调，没有定义一个copy constructor、copy operator、destructor。我们所有的memebers都以数值来存储，因为在程序层面的默认语意之下，行为良好。</p>
+<p>virtual function的引入促使每一个Point object拥有一个virtual table pointer。这个指针提供给我们virtual接口的弹性，代价是：每一个object需要额外的一个word空间。</p>
+<p>除了每一个class object多负担一个vptr之外，virtual function的引入也引发编译器对于我们的Point class产生膨胀作用：</p>
+<ul>
+<li>我们所定义的constructor被附加了一些码，以便使vptr初始化。这些码必须附加在任何base class constructors的调用之后，但必须在任何由使用者(程序员)供应的码之前。如：  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">Point* Point::Point(Point *<span class="keyword">this</span>, <span class="keyword">float</span> x, <span class="keyword">float</span> y)</div><div class="line">    : _x(x), _y(y)&#123;</div><div class="line"></div><div class="line">    <span class="comment">//设定object的virtual table pointer</span></div><div class="line">    <span class="keyword">this</span>-&gt;_vptr_Point = _vtbl_Point;</div><div class="line">    </div><div class="line">    <span class="comment">//扩展member initialization list</span></div><div class="line">    <span class="keyword">this</span>-&gt;_x = x;</div><div class="line">    <span class="keyword">this</span>-&gt;_y = y;</div><div class="line">    </div><div class="line">    <span class="comment">//传回this对象</span></div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li>合成一个copy constructor和一个copy assignment operator，而且其操作不再是trivial(但implicit destructor仍然是trivial)。如果一个Point object被初始化或以一个derived class object赋值，那么以位为基础(bitwise)的操作可能会给vptr带来非法设定。  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//copy constructor的内部合成</span></div><div class="line"><span class="keyword">inline</span> Point* Point::Point(Point* <span class="keyword">this</span>, <span class="keyword">const</span> Point&amp; rhs)&#123;</div><div class="line">    <span class="comment">//设定object的virtual table pointer(vptr)</span></div><div class="line">    <span class="keyword">this</span>-&gt;_vptr_Point = _vtbl_Point;</div><div class="line">    </div><div class="line">    <span class="comment">//将rhs坐标中的位连续拷贝到this对象</span></div><div class="line">    <span class="comment">//或是经由member assignment提供一个member...</span></div><div class="line">    </div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>编译器在优化状态下可能会把object的连续内容拷贝到另一个object身上，而不会实现一个精确地“以成员为基础(memberwise)”的赋值操作。C++ Standard要求编译器尽量延迟nontrivial members的实际合成操作，直到真正遇到其使用场合为止。</p>
+<p>一般而言，如果你的设计之中有许多函数都需要以传值方式(by value)传回一个local class object，例如像如下形式的一个算术运算：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">T opeartor+(<span class="keyword">const</span> T&amp;, <span class="keyword">const</span> T&amp;)&#123;</div><div class="line">    T result;</div><div class="line">    <span class="comment">//真正的工作在此...</span></div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>此时提供一个copy constructor就比较合理——甚至即使default memberwise语意已经足够，它的出现会触发NRV优化。NRV优化后就不再需要调用copy constructor，因为运算结果已经被直接置于“将被传回的object”体内了。</p>
+<h3 id="继承体系下的对象构造"><a href="#继承体系下的对象构造" class="headerlink" title="继承体系下的对象构造"></a>继承体系下的对象构造</h3><p>当我们定义一个object如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">T object;</div></pre></td></tr></table></figure></p>
+<p>时，实际上会发生什么事情呢？ 如果T有一个constructor(不论是由user提供或是由编译器合成)，它会被调用。这很明显，比较不明显的是，constructor的调用真正伴随了什么？</p>
+<p>Constructor可能内带大量的隐藏码，因为编译器会扩充每一个constructor，扩充程度视class T的继承体系而定。一般而言编译器所做的扩充操作大约如下：</p>
+<ol>
+<li>记录在member initialization list中的data members初始化操作会被放进constructor的函数本身，并以members的声明顺序为顺序。</li>
+<li>如果有一个member并没有出现在member initialization list中，但它有一个default constructor，那么该default constructor必须被调用。</li>
+<li>在那之前，如果class object有virtual functions, 它们必须被设定初值，指向适当的virtual tables.</li>
+<li>在那之前，所有上一层的base class constructors必须被调用，以base class生声明顺序为顺序(与member initialization list中的顺序没有关联)：<ul>
+<li>如果base class被列于member initialization list中，那么任何明确指定的参数都应该被传递进去。、</li>
+<li>如果base class没有被列于member initialization list中，而它有default constructor(或default memberwise copy constructor),那么就调用之。</li>
+<li>如果base class是多重继承下的第二或后继的base class，那么this指针必须有所调整。</li>
+</ul>
+</li>
+<li>在那之前，所有virtual base class constructors必须被调用，从左到右，从最深到最浅<ul>
+<li>如果class被列于member initialization list中，那么如果有任何显式指定的参数，都应该传递过去。若没有列于list之中，而class有一个default constructor，亦应该调用之</li>
+<li>此外，class中的每一个virtual base class subobject的偏移位置(offset)必须在执行期可被存取</li>
+<li>如果class object是最底层(most-derived)的class，其constructors可能被调用，某些用以支持这一行为的机制必须被放进来。<br><br></li>
+</ul>
+</li>
+</ol>
+<p>在这一节中，我要从“C++ 语言对classes所保证的语意”这个角度来探讨constructors扩充的必要性。我再次以Point为例，并为它增加一个copy constructor、一个copy operator、一个virtual destructor如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span>&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    Point(<span class="keyword">float</span> x = <span class="number">0.0</span>, <span class="keyword">float</span> y = <span class="number">0.0</span>);</div><div class="line">    Point(<span class="keyword">const</span> Point&amp;);     <span class="comment">//copy constructor</span></div><div class="line">    Point&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> Point&amp;);   <span class="comment">//copy assignment operator</span></div><div class="line">    <span class="keyword">virtual</span> ~Point();       <span class="comment">//virtual destructor</span></div><div class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">float</span> <span class="title">z</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="number">0.0</span>; &#125;</div><div class="line"><span class="keyword">protected</span>:</div><div class="line">    <span class="keyword">float</span> _x, _y; </div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>Line class的声明和扩充结果如下，它由_begin和 _end两个点构成：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Line</span>&#123;</span></div><div class="line">    Point _begin, _end;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    Line(<span class="keyword">float</span> = <span class="number">0.0</span>, <span class="keyword">float</span> = <span class="number">0.0</span>, <span class="keyword">float</span> = <span class="number">0.0</span>, <span class="keyword">float</span> = <span class="number">0.0</span>);</div><div class="line">    Line(<span class="keyword">const</span> Point&amp;, <span class="keyword">const</span> Point&amp;);</div><div class="line">    </div><div class="line">    draw();</div><div class="line">    <span class="comment">//...</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>每一个explicit constructor都会被扩充以调用其两个member class objects的constructors。如果我们定义constructor如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Line::Line(<span class="keyword">const</span> Point&amp; begin, <span class="keyword">const</span> Point&amp; end)</div><div class="line">    : _end(end), _begin(begin) &#123;&#125;</div></pre></td></tr></table></figure></p>
+<p>它会被编译器扩充并转换为：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Line* Line::Line(Line *<span class="keyword">this</span>, <span class="keyword">const</span> Point&amp; begin, <span class="keyword">const</span> Point&amp; end)&#123;</div><div class="line">    <span class="keyword">this</span>-&gt;_begin.Point::Point(begin);</div><div class="line">    <span class="keyword">this</span>-&gt;_end.Point::Point(end);</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>由于Point声明了一个copy constructor、一个copy operator,以及一个destructor(本例为virtual)，所以Line class的implicit copy constructor、copy operator和destructor都将有实际功能。(nontrival)</p>
+<p>当程序员写下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Line a;</div></pre></td></tr></table></figure></p>
+<p>时，implicit Line destructor会被合成出来(如果Line派生自Point,那么合成出来的destructor将会是virtual。然而由于Line只是内带Point objects而非继承自Point，所以被合成出来的destructor只是nontrivial而已)。在其中，它的member class objects的destructor会被调用(以其构造的相反顺序):<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">inline</span> Line::~Line(Line *<span class="keyword">this</span>)&#123;</div><div class="line">    <span class="keyword">this</span>-&gt;_end.Point::~Point();</div><div class="line">    <span class="keyword">this</span>-&gt;_begin.Point::~Point();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>当然，如果Point destructor是inline函数，那么每一个调用操作会在调用地点被扩展出来。请注意，虽然Point destructor是virtual，但其调用操作(在containing class destructor之中)会被静态地决议出来(resolved statically)。</p>
+<h4 id="虚拟继承-Virtual-Inheritance"><a href="#虚拟继承-Virtual-Inheritance" class="headerlink" title="虚拟继承(Virtual Inheritance)"></a>虚拟继承(Virtual Inheritance)</h4><p>考虑下面这个虚拟继承：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point3d</span> :</span> <span class="keyword">public</span> <span class="keyword">virtual</span> Point&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    Point3d(<span class="keyword">float</span> x = <span class="number">0.0</span>, <span class="keyword">float</span> y = <span class="number">0.0</span>, <span class="keyword">float</span> z = <span class="number">0.0</span>)</div><div class="line">        : Point(x, y), _z(z) &#123; &#125;</div><div class="line">    Point3d(<span class="keyword">const</span> Point3d &amp;rhs)</div><div class="line">        : Point(rhs), _z(rhs._z)&#123; &#125;</div><div class="line">    ~Point3d();</div><div class="line">    Point3d&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> Point3d&amp;);</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">float</span> <span class="title">z</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> _z; &#125;</div><div class="line"><span class="keyword">protected</span>:</div><div class="line">    <span class="keyword">float</span> _z;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>传统的“constructor扩充现象”并没有用，这是因为virtual base class的“共享性”之故：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//不合法的constructor扩充内容</span></div><div class="line">Point3d* Point3d::Point3d(Point3d *<span class="keyword">this</span>, <span class="keyword">float</span> x, <span class="keyword">float</span> y, <span class="keyword">float</span> z)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">this</span>-&gt;Point::Point(x, y);</div><div class="line">    <span class="keyword">this</span>-&gt;_vptr_Point3d = _vtbl_Point3d;</div><div class="line">    <span class="keyword">this</span>-&gt;_vptr_Point3d_Point = _vtbl_Point3d_Point;</div><div class="line">    <span class="keyword">this</span>-&gt;_z = rhs._z;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>试想下面三种类派生情况：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Vertex</span> :</span> <span class="keyword">virtual</span> <span class="keyword">public</span> Point&#123; ... &#125;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Vertex3d</span> :</span> <span class="keyword">public</span> Point3d, <span class="keyword">public</span> Vertex&#123; ... &#125;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">PVertex</span> :</span> <span class="keyword">public</span> Vertex3d &#123; ... &#125;</div></pre></td></tr></table></figure></p>
+<p><img src="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170609094428997-388556339.png" alt=""></p>
+<p>Vertex的constructor必须调用Point的constructor。然而当Point3d和Vertex同为Vertetx3d的subobjects时，它们对Point constructor的调用操作一定不可以发生，取而代之的是，作为一个最底层的class，Vertex3d有责任将Point初始化，而更往后(往下)继承，则由PVertex(不再是Vertex3d)来负责完成“被共享之Point subobject”的构造。</p>
+<p>constructor的函数本身因而必须条件式地测试传进来的参数，然后决定调用或不调用相关的virtual base class constructors，下面就是Point3d的constructor扩充内容：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//在virtual base class情况下的constructor扩充内容</span></div><div class="line">Point3d* Point3d::Point3d(Point3d* <span class="keyword">this</span>, <span class="keyword">bool</span> _most_derived,</div><div class="line">            <span class="keyword">float</span> x, <span class="keyword">float</span> y, <span class="keyword">float</span> z)&#123;</div><div class="line"></div><div class="line">    <span class="keyword">if</span>(_most_derived != <span class="literal">false</span>)</div><div class="line">        <span class="keyword">this</span>-&gt;Point::Point(x, y);</div><div class="line">        </div><div class="line">    <span class="keyword">this</span>-&gt;_vptr_Point3d = _vtbl_Point3d;</div><div class="line">    <span class="keyword">this</span>-&gt;vptr_Point3d_Point = _vpbl_Point3d_Point;</div><div class="line">    <span class="keyword">this</span>-&gt;_z = rhs._z;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在更深层次的继承情况下，例如Vertex3d，当调用Point3d和Vertex的constructor时，总是会把_most_derived参数设为flase。于是就压制了两个constructors中对Point constructor的调用操作：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//在virtual base class情况下constructor扩充内容</span></div><div class="line">Vertex3d* Vertex3d::Vertex3d(Vertex3d *<span class="keyword">this</span>, <span class="keyword">bool</span> _most_derived,</div><div class="line">                <span class="keyword">float</span> x, <span class="keyword">float</span> y, <span class="keyword">float</span> z)&#123;</div><div class="line">    <span class="keyword">if</span>(_most_derived != <span class="literal">false</span>)</div><div class="line">        <span class="keyword">this</span>-&gt;Point::Point(x, y);</div><div class="line">        </div><div class="line">    <span class="comment">//调用上一层base classes</span></div><div class="line">    <span class="comment">//设定_most_derived为false</span></div><div class="line">    <span class="keyword">this</span>-&gt;Point3d::Point3d(<span class="literal">false</span>, x, y, z);</div><div class="line">    <span class="keyword">this</span>-&gt;Vertex::Vertex(<span class="literal">false</span>, x, y);</div><div class="line">    </div><div class="line">    <span class="comment">//设定vptrs</span></div><div class="line">    <span class="comment">//安插user code</span></div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这样的策略得以保证语意的正确无误。如：当我们定义<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Point3d origin;</div></pre></td></tr></table></figure></p>
+<p>时，Point3d constructor可以正确调用其Point virtual base class subobject。而当我们定义：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Vertex3d cv;</div></pre></td></tr></table></figure></p>
+<p>时，Vertex3d constructor正确调用Point constructor。Point3d和Vertex的constructors会做每一件该做的事情——对Point的调用操作除外。</p>
+<p>“virtual base class constructors的被调用”有着明确的定义：只有当一个完整的class object被定义出来时，它才会被调用；如果object只是某个完整object的subject，它就不会被调用</p>
+<h4 id="vptr初始化语意学-The-Semantics-of-the-vptr-Initialization"><a href="#vptr初始化语意学-The-Semantics-of-the-vptr-Initialization" class="headerlink" title="vptr初始化语意学(The Semantics of the vptr Initialization)"></a>vptr初始化语意学(The Semantics of the vptr Initialization)</h4><p>当我们定义一个PVertex object时，constructors的调用顺序是：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Point(x, y);</div><div class="line">Point(x, y, z);</div><div class="line">Vertex(x, y, z);</div><div class="line">Vertex3d(x, y, z);</div><div class="line">PVertex(x, y, z);</div></pre></td></tr></table></figure></p>
+<p>假设这个继承体系中的每一个class都定义了一个virtual function  size(),该函数赋值传回class的大小。我们写:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">PVertex pv;</div><div class="line">Point3d p3d;</div><div class="line"></div><div class="line">Point *pt = &amp;pv;</div></pre></td></tr></table></figure></p>
+<p>那么这个调用操作:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pt-&gt;size();</div></pre></td></tr></table></figure></p>
+<p>将传回PVertex的大小，而：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">pt = &amp;p3d;</div><div class="line">pt-&gt;size();</div></pre></td></tr></table></figure></p>
+<p>将传回Point3d的大小。</p>
+<p>C++ 语言规则告诉我们，在Point3d constructor中调用的size()函数，必须被决议为Point3d::size()而不是PVertex::size()。更一般地，在一个class(本例为Point3d)的constructor(和destructor)中，经由构造中的对象(本例为PVertex)来调用一个virtual function，其函数实例应该是在此class(本例为Point3d)中有作用的那个。由于各个constructors的调用顺序，上述情况是必要的。</p>
+<p>Constructors的调用顺序是：由根源而末端(bottom up)、由内而外(inside out)。当base class constructor执行时，derived实例还没有被构造起来。在PVertex constructor执行完毕之前，PVertex并不是一个完整的对象：Point3d constructor执行之后，只有Point3d subobject构造完毕。</p>
+<p>如果调用操作限制必须在constructor(或destructor)中直接调用，那么答案十分明显：将每一个调用操作以静态方式决议之，千万不要用到虚拟机制。</p>
+<p>vptr 初始化操作应该如何处理？ vptr初始化操作在base class constructors调用操作之后，但是在程序员供应的代码或是“memeber initialization list中所列的members初始化操作”之前。</p>
+<p>令每一个base class constructor设定其对象的vptr，使它指向相关的virtual table之后，构造中的对象就可以严格而正确地变成“构造过程所幻化出来的每一个class”的对象。也就是说，一个PVertex对象会先形成一个Point对象、一个Point3d对象、一个Vertex对象、一个Vertex3d对象，然后才成为一个PVeretex对象。在每一个base class constructors中，对象可以与constructors’s class 的完整对象作比较。对于对象而言，“个体发生学”概况了“系统发生学”。constructor的执行算法通常如下：</p>
+<ol>
+<li>在derived class constructor中，“所有virtual base classes”及“上一层base class”的constructors会被调用</li>
+<li>上述完成之后，对象的vptrs被初始化，指向相关的virtual tables</li>
+<li>如果有member initialization list的话，将在constructor体内扩展开来。这必须在vptr被设定之后才做，以免有一个virtual member function被调用。</li>
+<li>最后，执行程序员所提供的代码</li>
+</ol>
+<p>例如：已知下面这个由程序员定义的PVertex constructor:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">PVertex::PVertex(<span class="keyword">float</span> x, <span class="keyword">float</span> y, <span class="keyword">float</span> z)</div><div class="line">    : _next(<span class="number">0</span>), Vertex3d(x, y, z), Point(x, y)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span>(spyOn)&#123;</div><div class="line">        <span class="built_in">cerr</span> &lt;&lt; <span class="string">"Within PVertex::PVertex()"</span></div><div class="line">             &lt;&lt; <span class="string">"size: "</span> &lt;&lt; size() &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>它可能被扩展为：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//PVertex constructor的扩展结果</span></div><div class="line">PVertex* PVertex::PVertex(PVertex *<span class="keyword">this</span>, <span class="keyword">bool</span> _most_derived,</div><div class="line">            <span class="keyword">float</span> x, <span class="keyword">float</span> y, <span class="keyword">float</span> z)&#123;</div><div class="line">    <span class="comment">//条件式调用virtual base constructor</span></div><div class="line">    <span class="keyword">if</span>(_most_derived != <span class="literal">false</span>)</div><div class="line">        <span class="keyword">this</span>-&gt;Point::Point(x, y);</div><div class="line">    </div><div class="line">    <span class="comment">//无条件地调用上一层base</span></div><div class="line">    <span class="keyword">this</span>-&gt;Vertex3d::Vertex3d(x, y, z);</div><div class="line">    </div><div class="line">    <span class="comment">//将相关的vptr初始化</span></div><div class="line">    <span class="keyword">this</span>-&gt;_vptr_PVertex = _vtbl_PVertex;</div><div class="line">    <span class="keyword">this</span>-&gt;_vptr_Point_PVertex = _vtbl_Point_PVertex;</div><div class="line">    </div><div class="line">    <span class="comment">//程序员缩写代码</span></div><div class="line">    <span class="keyword">if</span>(spyOn)&#123;</div><div class="line">        <span class="built_in">cerr</span> &lt;&lt; <span class="string">"Within PVertex::PVertex()"</span></div><div class="line">                Point3d::Point3d(),</div><div class="line">             &lt;&lt; <span class="string">"size: "</span> </div><div class="line">             &lt;&lt; (*<span class="keyword">this</span>-&gt;_vptr_PVertex[<span class="number">3</span>].faddr)(<span class="keyword">this</span>) </div><div class="line">             &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="comment">//传回被构造的对象</span></div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>下面是vptr必须被设定的两种情况：</p>
+<ol>
+<li>当一个完整的对象被构造起来时，如果我们声明一个Point对象，Point constructor必须设定其vptr。</li>
+<li>当一个subobject constructor调用了一个virtual function(不管是直接调用还是间接调用时)。</li>
+</ol>
+<p>如果我们声明一个PVertex对象，然后由于我们对其base class constructors的最新定义，其vptr将不再需要在每一个base class constructors中被设定。解决之道是把constructor分裂为一个完整的object实体和一个subobject实体。在subobject实体中，vptr的设定可以省略(如果可以的话)。</p>
+<h3 id="对象复制语意学-Object-Copy-Semantics"><a href="#对象复制语意学-Object-Copy-Semantics" class="headerlink" title="对象复制语意学(Object Copy Semantics)"></a>对象复制语意学(Object Copy Semantics)</h3><p>一个class对于默认的copy assignment operator，在以下情况，不会表现出bitwise copy语意：</p>
+<ol>
+<li>当class内含一个member object，而其class有一个copy assignment operator时</li>
+<li>当一个class的base class有一个copy assignment operator时</li>
+<li>当一个class声明了任何virtual functions(我们一定不要拷贝右端class object的vptr地址，因为它可能是一个derived class object)时</li>
+<li>当class继承自一个virtual base class(不论base class有没有copy operator)时</li>
+</ol>
+<p>C++ Standard上说copy assignment operators并不表示bitwist copy semantics是nontrival。实际上，只有nontrivial instances才会被合成出来</p>
+<p>对于Point class定义如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span>&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    Point(<span class="keyword">float</span> x = <span class="number">0.0</span>, <span class="keyword">float</span> y = <span class="number">0.0</span>);</div><div class="line">    <span class="comment">//... 没有virtual function</span></div><div class="line"><span class="keyword">protected</span>:</div><div class="line">    <span class="keyword">float</span> _x, _y;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>当有如下赋值(assign)操作：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Point a, b;</div><div class="line">a = b;</div></pre></td></tr></table></figure></p>
+<p>由bitwise copy完成，把Point b拷贝到Point a，其间并没有copy assignment operator被调用。从语意或效率上考虑，这都是我们所需要的，注意，我们还是可能提供一个copy constructor，为的是把name return vale(NRV)优化打开，copy constructor的出现不应该让我们也一定要提供一个copy assignment operator。</p>
+<p>现在我要导入一个copy assignment operator，用以说明该opeartor在继承之下的行为：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">inline</span> Point&amp; Point::<span class="keyword">operator</span>=(<span class="keyword">const</span> Point&amp; p)&#123;</div><div class="line">    _x = p._x;</div><div class="line">    _y = p._y;</div><div class="line">    <span class="keyword">return</span> *<span class="keyword">this</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>现在派生一个Point3d class，(请注意是虚拟继承)<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point3d</span> :</span> <span class="keyword">virtual</span> <span class="keyword">public</span> Point&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    Point3d(<span class="keyword">float</span> x = <span class="number">0.0</span>, <span class="keyword">float</span> y = <span class="number">0.0</span>, <span class="keyword">float</span> z = <span class="number">0.0</span>);</div><div class="line">    <span class="comment">//...</span></div><div class="line"><span class="keyword">protected</span>:</div><div class="line">    <span class="keyword">float</span> _z;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>如果我们没有为Point3d定义一个copy assignment opeartor，编译器就必须合成一个(因为前述的第二项和第四项理由)，合成而得的东西可能看起来像这样：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//被合成的copy assignment operator</span></div><div class="line"><span class="keyword">inline</span> Point3d&amp; Point3d::<span class="keyword">operator</span>=(Point3d* <span class="keyword">const</span> <span class="keyword">this</span>, <span class="keyword">const</span> Point3d &amp;p)&#123;</div><div class="line">    <span class="comment">//调用base class的函数实体</span></div><div class="line">    <span class="keyword">this</span>-&gt;Point::<span class="keyword">operator</span>=(p);</div><div class="line">    </div><div class="line">    <span class="comment">//memberwise copy the derived class members</span></div><div class="line">    _z = p._z;</div><div class="line">    <span class="keyword">return</span> *<span class="keyword">this</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>下面是个Vertex copy operator，其中Vertex也是虚拟继承自Point:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//class Vertex : virtual public Point</span></div><div class="line"><span class="keyword">inline</span> Vertex&amp; Vertex::<span class="keyword">operator</span>=(<span class="keyword">const</span> Vertex&amp; v)&#123;</div><div class="line">    <span class="keyword">this</span>-&gt;Point::<span class="keyword">operator</span>=(v);</div><div class="line">    _next = v._next;</div><div class="line">    <span class="keyword">return</span> *<span class="keyword">this</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>这部分太难了，摸了半天没摸清楚，等下次再啃吧。</strong></p>
+<h3 id="析构语义学-Semantics-of-Destruction"><a href="#析构语义学-Semantics-of-Destruction" class="headerlink" title="析构语义学(Semantics of Destruction)"></a>析构语义学(Semantics of Destruction)</h3><p>如果class没有定义destructor，那么只有在class内含的member object(抑或class自己的base class)拥有destructor的情况下，编译器才会自动合成一个出来。否则，destructor被视为不需要，也就不需被合成。例如，我们的Point，默认情况下并没有被编译器合成出一个destructor——甚至虽然它拥有一个virtual function：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span>&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    Point(<span class="keyword">float</span> x = <span class="number">0.0</span>, <span class="keyword">float</span> y = <span class="number">0.0</span>);</div><div class="line">    Point(<span class="keyword">const</span> Point&amp;);</div><div class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">float</span> <span class="title">z</span><span class="params">()</span></span>;</div><div class="line"><span class="keyword">private</span>:</div><div class="line">    <span class="keyword">float</span> _x, _y;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>类似的道理，如果我们把两个Point对象组合成一个Line class:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Line</span>&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    Line(<span class="keyword">const</span> Point&amp;, <span class="keyword">const</span> Point&amp;);</div><div class="line">    <span class="comment">//...</span></div><div class="line">    <span class="function"><span class="keyword">virtual</span> <span class="title">draw</span><span class="params">()</span></span>;</div><div class="line">    <span class="comment">//...</span></div><div class="line"><span class="keyword">protected</span>:</div><div class="line">    Point _begin, _end;    </div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>Line也不会拥有一个被合成出来的destructor，因为Point并没有destructor。</p>
+<p>为了觉得class是否需要一个程序层面的destructor(或是constructor)，请你想想一个class object的生命在哪里结束(或开始)？需要什么样的操作才能保证对象的完整？这是你写程序时比较需要了解的(或是你的class使用者比较需要了解的)。这也是constructor和destructor什么时候起作用的关键。举个例子，已知：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    Point pt;</div><div class="line">    Point *p = <span class="keyword">new</span> Point3d;</div><div class="line">    foo(&amp;pt, p);</div><div class="line">    ...</div><div class="line">    <span class="keyword">delete</span> p;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>我们看到，pt和p在作为foo()函数的参数之前，都必须先初始化为某些坐标值，这时候需要一个constructor，否则使用者必须明确的提供坐标值。一般而言，class的使用者没有办法检验一个local变量和heap变量以知道它们是否被初始化。把constructor想象为程序的一个额外负担是错误的，因为它们的工作有其必要性。如果没有它们，抽象化(abstraction)的使用就会有错误的倾向。</p>
+<p>一个由程序员定义的destructor被扩展的方式类似constructors被扩展的方式，但顺序相反：</p>
+<ol>
+<li>destructor的函数本体现在被执行，也就是说vptr会在程序员的代码执行前被重设(reset)</li>
+<li>如果class拥有member class objects。而后者拥有destructors，那么它们会以其声明的顺序的相反顺序被调用</li>
+<li>如果object内含一个vptr，那么首先重设(reset)相关的virtual table</li>
+<li>如果有任何直接的(上一层)nonvirtual base classes拥有destructors，它们会以其声明顺序的相反顺序被调用</li>
+<li>如果有任何virtual base classes拥有destructor，而目前讨论的这个class是最尾端(most-derived)的class，那么它们会以其原来的构造顺序的相反顺序被调用</li>
+</ol>
+<p>就像constructor一样，目前对于destructor的一种最佳实现策略就是维护两份destructor实体：</p>
+<ol>
+<li>一个complete object实体，总是设定好vptr(s)，并调用virtual base class destructors</li>
+<li>一个base class subobject实体；除非在destructor函数中调用一个virtual function，否则它绝不会调用virtual base class destructors并设定vptr。</li>
+</ol>
+<p>一个object的生命结束于其destructor开始执行之时。由于每一个base class constructor都轮番被调用，所以derived object实际上变成了一个完整的object。例如一个PVertex对象归还其内存空间之前，会依次变成一个Vertex3d对象、一个Vertex对象、一个Point3d对象，最后成为一个Point对象。当我们在destructor中调用member functiions时，对象的蜕变会因为vptr的重新设定(在每一个destructor中，在程序员所供应的码执行之前)而受到影响。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/对象模型/" rel="tag"># 对象模型</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/07/深入探索C-对象模型-四/" rel="next" title="深入探索C++对象模型(四)">
+                <i class="fa fa-chevron-left"></i> 深入探索C++对象模型(四)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Jeff Lai" />
+          <p class="site-author-name" itemprop="name">Jeff Lai</p>
+           
+              <p class="site-description motion-element" itemprop="description">原来你是我最想留住的幸运</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">65</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">43</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/lengender" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/2664793953/profile?rightmod=1&wvr=6&mod=personinfo" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#构造、解构、拷贝语意学-Semantics-of-Construction-Destruction-and-Copy"><span class="nav-number">1.</span> <span class="nav-text">构造、解构、拷贝语意学(Semantics of Construction,Destruction, and Copy)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#纯虚函数的存在-Presence-of-a-Pure-Virtual-Function"><span class="nav-number">1.1.</span> <span class="nav-text">纯虚函数的存在(Presence of a Pure Virtual Function)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#“无继承”情况下的对象构造"><span class="nav-number">1.2.</span> <span class="nav-text">“无继承”情况下的对象构造</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#抽象数据类型-Abstract-Data-Type"><span class="nav-number">1.2.1.</span> <span class="nav-text">抽象数据类型(Abstract Data Type)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为继承做准备"><span class="nav-number">1.2.2.</span> <span class="nav-text">为继承做准备</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#继承体系下的对象构造"><span class="nav-number">1.3.</span> <span class="nav-text">继承体系下的对象构造</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#虚拟继承-Virtual-Inheritance"><span class="nav-number">1.3.1.</span> <span class="nav-text">虚拟继承(Virtual Inheritance)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vptr初始化语意学-The-Semantics-of-the-vptr-Initialization"><span class="nav-number">1.3.2.</span> <span class="nav-text">vptr初始化语意学(The Semantics of the vptr Initialization)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对象复制语意学-Object-Copy-Semantics"><span class="nav-number">1.4.</span> <span class="nav-text">对象复制语意学(Object Copy Semantics)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#析构语义学-Semantics-of-Destruction"><span class="nav-number">1.5.</span> <span class="nav-text">析构语义学(Semantics of Destruction)</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jeff Lai</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
