@@ -1,0 +1,863 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="对象模型," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="站在对象模型的尖端(On the Cusp of the Object Model)">
+<meta name="keywords" content="对象模型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入探索C++对象模型(七)">
+<meta property="og:url" content="http://yoursite.com/2017/06/13/深入探索C-对象模型-七/index.html">
+<meta property="og:site_name" content="越努力 | 越幸运">
+<meta property="og:description" content="站在对象模型的尖端(On the Cusp of the Object Model)">
+<meta property="og:updated_time" content="2017-06-13T12:52:41.773Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入探索C++对象模型(七)">
+<meta name="twitter:description" content="站在对象模型的尖端(On the Cusp of the Object Model)">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/06/13/深入探索C-对象模型-七/"/>
+
+
+
+
+
+  <title>深入探索C++对象模型(七) | 越努力 | 越幸运</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">越努力 | 越幸运</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/13/深入探索C-对象模型-七/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jeff Lai">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="越努力 | 越幸运">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">深入探索C++对象模型(七)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-13T20:51:23+08:00">
+                2017-06-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C++</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="站在对象模型的尖端-On-the-Cusp-of-the-Object-Model"><a href="#站在对象模型的尖端-On-the-Cusp-of-the-Object-Model" class="headerlink" title="站在对象模型的尖端(On the Cusp of the Object Model)"></a>站在对象模型的尖端(On the Cusp of the Object Model)</h2><a id="more"></a>
+<h3 id="Template"><a href="#Template" class="headerlink" title="Template"></a>Template</h3><p>下面是有关template的三个主要讨论方向：</p>
+<ol>
+<li>template的声明，基本上来说就是当你声明一个template class、template class member function等等，会发生什么事情。</li>
+<li>如何”具现(instantiates)”出class object以及inline nonmember，以及member template functions，这些是”每一个编译单元都会拥有的一份实体”的东西。</li>
+<li>如何“具现”出nonmember以及member templates functions，以及static template class members，这些都是”每一个可执行文件中只需要一份实体”的东西，这也就是一般而言template所带来的问题。</li>
+</ol>
+<h4 id="Template的”具现”行为-Template-Instantiation"><a href="#Template的”具现”行为-Template-Instantiation" class="headerlink" title="Template的”具现”行为(Template Instantiation)"></a>Template的”具现”行为(Template Instantiation)</h4><p>考虑下面的template Point class:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span></div><div class="line"><span class="title">class</span> <span class="title">Point</span>&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">enum</span> Status &#123; unallocated, normalized &#125;;</div><div class="line">    </div><div class="line">    Point(Type x = <span class="number">0.0</span>, Type y = <span class="number">0.0</span>, Type z = <span class="number">0.0</span>);</div><div class="line">    ~Point();</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">void</span> *<span class="keyword">operator</span> <span class="title">new</span><span class="params">(<span class="keyword">size_t</span> )</span></span>;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="keyword">operator</span> <span class="title">delete</span><span class="params">(<span class="keyword">void</span> *, <span class="keyword">size_t</span> )</span></span>;</div><div class="line">    <span class="comment">//...</span></div><div class="line"><span class="keyword">private</span>:</div><div class="line">    <span class="keyword">static</span> Point&lt;Type&gt; *freeList;</div><div class="line">    <span class="keyword">static</span> <span class="keyword">int</span> chunkSize;</div><div class="line">    Type _x, _y, _z;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>首先，当编译器看到template class声明时，它会做出什么反应？在实际程序中，什么反应也没有！也就是说，上述的static data members并不可用。nested enum或其enumerators也一样。</p>
+<p>虽然enum Status的真正类型在所有的Point instantiations中都一样，其enumerators也是，但它们每一个都只能通过template Point class的某个实体来存取或操作，因此我们可以这样写：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Point&lt;<span class="keyword">float</span>&gt;::Status s;</div></pre></td></tr></table></figure></p>
+<p>但是不能这样写：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//error</span></div><div class="line">Point::Status s;</div></pre></td></tr></table></figure></p>
+<p>同样的道理，freeList和chunkSize对程序而言也还不可用，我们不能够写：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//error</span></div><div class="line">Point::freeList;</div></pre></td></tr></table></figure></p>
+<p>我们必须明确地指定类型，才能使用freeList:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Point&lt;<span class="keyword">float</span>&gt;::freeList;</div></pre></td></tr></table></figure></p>
+<p>像上面这样使用static member，会使其一份实体与Point class的float instantiation在程序中产生关联，如果我们写：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//ok, 另一个实体(instance)</span></div><div class="line">Point&lt;<span class="keyword">double</span>&gt;::freeList;</div></pre></td></tr></table></figure></p>
+<p>就会出现第二个freeList实体，与Point class的double instantiation产生关联</p>
+<p>一个class object的定义，不论是由编译器暗中地做，或是由程序员像下面这样明确地做：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> Point&lt;<span class="keyword">float</span>&gt; origin;</div></pre></td></tr></table></figure></p>
+<p>都会导致template class的“具现”，也就是说，float instantiation的真正对象布局会被产生出来。</p>
+<p>member functions(至少对于那些未被使用过的)不应该被“实体”化，只有在member functions被使用的时候，C++ Standard才要求它们被“具现”出来。当前的编译器并不精确遵循这项要求，之所以由使用者来主导“具现”规则，有两个主要原因：</p>
+<ol>
+<li>空间和时间效率的考虑。如果class中有100个member functions，但你的程序只针对某个类型使用其中两个，针对另一个类型使用其中5个，那么其他193个函数都“具现”将花费大量的时间和空间。</li>
+<li>尚未实现的功能，并不是一个template具现出来的所有类型就一定能够支持一组member functions所需要的所有运算符。如果只“具现”那些真正用到的memeber functions，template就能够支持那些原本可能会造成编译时期错误的类型(types)。</li>
+</ol>
+<h4 id="Template中的名称决议方式-Name-Resolution-within-a-Template"><a href="#Template中的名称决议方式-Name-Resolution-within-a-Template" class="headerlink" title="Template中的名称决议方式(Name Resolution within a Template)"></a>Template中的名称决议方式(Name Resolution within a Template)</h4><p>你必须能够区分以下两种意义。一种是C++ Standard所谓的”Scope of the template definition”，也就是“定义出template”的程序。另一种是C++ Standard所谓的”scope of the template instantiation”，也就是说“具现出template”的程序。第一种情况举例如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//scope of the template definition</span></div><div class="line"><span class="function"><span class="keyword">extern</span> <span class="keyword">double</span> <span class="title">foo</span><span class="params">(<span class="keyword">double</span>)</span></span>; </div><div class="line"></div><div class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">type</span>&gt;</span></div><div class="line"><span class="title">class</span> <span class="title">ScopeRules</span>&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">invariant</span><span class="params">()</span></span>&#123;</div><div class="line">        _member = foo(val);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function">type <span class="title">type_dependent</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="keyword">return</span> foo(_member);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//...</span></div><div class="line"><span class="keyword">private</span>:</div><div class="line">    <span class="keyword">int</span> _val;</div><div class="line">    type _member;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>第二种情况举例如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//scope of the template instantiation</span></div><div class="line"><span class="function"><span class="keyword">extern</span> <span class="keyword">int</span> <span class="title">foo</span><span class="params">(<span class="keyword">int</span>)</span></span>;</div><div class="line"><span class="comment">//...</span></div><div class="line">ScopeRultes&lt;<span class="keyword">int</span>&gt; sr0;</div></pre></td></tr></table></figure></p>
+<p>在ScopeRules template中有两个foo()调用操作。在“scope of template definition”中，只有一个foo()函数声明位于scope之内。然而在“scope of template instantiation”中，两个foo()函数声明都位于scope之内。如果我们有一个函数调用操作：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//scope of the template instantiation</span></div><div class="line">sr0.invariant();</div></pre></td></tr></table></figure></p>
+<p>那么，在invariant()中调用的究竟是哪一个foo()函数实体呢？<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//调用的是哪一个foo()函数实体</span></div><div class="line">_member = foo(_val);</div></pre></td></tr></table></figure></p>
+<p>在调用操作的那一点上，程序中的两个函数实体是：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//scope of the template declaration</span></div><div class="line"><span class="function"><span class="keyword">extern</span> <span class="keyword">double</span> <span class="title">foo</span><span class="params">(<span class="keyword">double</span>)</span></span>;</div><div class="line"></div><div class="line"><span class="comment">//scope of the template instantiation</span></div><div class="line"><span class="function"><span class="keyword">extern</span> <span class="keyword">int</span> <span class="title">foo</span><span class="params">(<span class="keyword">int</span>)</span></span>;</div></pre></td></tr></table></figure></p>
+<p>而_val的类型是int，那么你认为选中的是哪一个呢？结果，被选中的是直觉以外的那一个：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//scope of the template declaration</span></div><div class="line"><span class="function"><span class="keyword">extern</span> <span class="keyword">double</span> <span class="title">foo</span><span class="params">(<span class="keyword">double</span>)</span></span>;</div></pre></td></tr></table></figure></p>
+<p>Template之中，对于一个nonmember name的决议结果是根据这个name的使用是否与“用以具现出该template的参数类型”有关而设定的。如果其使用互不相关，那么就以“scope of the template declaration”来决定name。如果其使用互有关联，那么就以“scope of template instantiation”来决定name。在第一个例子中，foo()与用以具现ScopeRules的参数类型无关：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//the resolution of foo() is not</span></div><div class="line"><span class="comment">//dependent on the template argument</span></div><div class="line">_member = foo(val);</div></pre></td></tr></table></figure></p>
+<p>这是因为_val的类型是int, _val是一个“类型不会变动”的template class member。也就是说，被用来具现出这个template的真正类型，对于 <em>val的类型并没有影响。此外，函数的决议结果只和函数的原型(signature)有关，和函数的返回值没有关联。因此， </em><br>member的类型并不会影响哪一个foo()实体被选中。foo()的调用与template参数毫无关联！ 所以调用操作必须根据”scope of the template declaration”来决议。在此scope中，只有一个foo()候选者。</p>
+<p>让我们另外看看”与类型相关”(type-dependent)的用法：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sr0.type_dependent();</div></pre></td></tr></table></figure></p>
+<p>这个函数的内容如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> foo(_member);</div></pre></td></tr></table></figure></p>
+<p>它究竟会调用哪一个foo()呢？</p>
+<p>这个例子很清楚地与template参数有关，因为该参数将决定_member得真正类型。所以，这一次foo()必须在”scope of the template instantiation”中决议，本例中这个scope有两个foo()函数声明。由于 _member的类型在本例中为int，所以应该是int版的foo()出线。如果ScopeRules是以unsigned int或long类型具现出来，那么foo()调用操作就暧昧不明。最后，如果ScopeRules是以某一个class类型具现出来，而该class没有针对int或double实现出convertion运算符，那么foo()调用操作会被标识为错误。不管如何改变，都是由”scope of the template instantiation”来决定，而不是由”scope of the template declaration”决定。</p>
+<p>这意味着一个编译器必须保持两个scope contexts:</p>
+<ol>
+<li>“Scope of the template declaration”，用以专注于一般的template class</li>
+<li>“Scope of the template instantiation”, 用以专注于特定的实体</li>
+</ol>
+<p>编译器的决议(resolution)算法必须决定哪一个才是适当的scope，然后在其中搜寻适当的name。</p>
+<h4 id="Member-Function的实例化行为-Member-function-instantiation"><a href="#Member-Function的实例化行为-Member-function-instantiation" class="headerlink" title="Member Function的实例化行为(Member function instantiation)"></a>Member Function的实例化行为(Member function instantiation)</h4><p>对于template的支持，最困难莫过于template function的具现(instantiation)，目前的编译器提供了两个策略：一个是编译时期策略，程序代码必须在program text file中备妥可用；另一个是链接时期策略，程序代码必须在meta-compliation工具可以导引编译器的具现行为(instantiation)。</p>
+<p>下面是编译器设计者必须回答的三个主要问题：</p>
+<ol>
+<li>编译器如何找出函数的定义？<br> 答案之一是包含template program text file，就好像它是个header文件一样，Borland编译器就是遵循这个策略。另一种方法是要求一个文件命名规则，例如，我们可以要求，在Point.h文件中发现的函数声明，其template program text一定要放置于文件Point.c或者Point.cpp中，以此类推。cfront就是遵循这个策略。Edison Desigin Group编译器对此两种策略都支持。</li>
+<li>编译器如何能够只具现出程序中用到的member functions?<br> 解决办法之一就是，根本忽略这项要求，把一个已经具现出来的class的所有member functions都产生出来。Borland就是这么做的——虽然它也提供#pragmas让你压制(或具现出)特定实体。另一种策略就是仿真链接操作，检测看看哪一个函数真正需要，然后只为它(们)产生实体。cfront就是这么做的，Edison Design Group编译器对此两种策略都支持。</li>
+<li>编译器如何阻止member definitions在多个 .o文件中都被具现呢？<br> 解决办法之一是产生多个实体，然后从链接器中提供支持，只留下其中一个实体，其余都忽略。另外一个办法就是由使用者来导引“仿真链接阶段”的具现策略，决定哪些实体(instances)才是所需求的。</li>
+</ol>
+<p>目前，不论是编译时期还是链接时期的实例化(instantiation)策略，均存在以下弱点：当template实例被产生出来时，有时候会大量增加编译时间。很显然，这将是template functions第一次实例化时的必要条件。然而当那些函数被非必要地再次实例化，或是当“决定那些函数是否需要再实例化”所花的代价太大时，编译器的表现令人失望</p>
+<p>C++支持template的原始意图可以想见是一个由使用者导引的自动实例化机制，既不需要使用者的介入，也不需要相同文件有多次的实例化行为。但是这已被证明是非常难以达成的任务，比任何人此刻所想象的还要难。</p>
+<h3 id="异常处理-Exception-Handing"><a href="#异常处理-Exception-Handing" class="headerlink" title="异常处理(Exception Handing)"></a>异常处理(Exception Handing)</h3><p>欲支持exception handling，编译器的主要工作就是找出catch子句，以处理被丢出来的exception。这多少需要追踪程序堆栈中的每一个函数当前作用区域(包括追踪函数中的local class objects当时的情况)。同时，编译器必须提供某种查询exception objects的方法，以知道其实际类型(这直接导致某种形式的执行期识别，也就是RTTI)。最后，还需要某种机制用以管理被丢出的object，包括它的产生、储存、可能的解构(如果有相关的destructor)、清理(clean up)以及一般存取，也可能有一个以上的objects同时起作用。</p>
+<p>一般而言，exception handling机制需要与编译器所产生的数据结构以及执行期的一个exception library紧密合作，在程序大小和执行速度之间，编译器必须有所抉择：</p>
+<ul>
+<li>为了维持执行速度，编译器可以在编译时期建立起用于支持的数据结构，这会使程序大小膨胀，但编译器可以几乎忽略这些结构，直到有个exception被丢出来。</li>
+<li>为了维持程序大小，编译器可以在执行期建立起用于支持的数据结构。这会影响程序的执行速度，但意味着编译器只有在必要的时候才建立那些数据结构(并且可以抛弃之)。</li>
+</ul>
+<h4 id="Exception-Handling-快速检阅"><a href="#Exception-Handling-快速检阅" class="headerlink" title="Exception Handling 快速检阅"></a>Exception Handling 快速检阅</h4><p>C++的exception handing由三个主要的语汇组件构成：</p>
+<ol>
+<li>一个throw子句。它在程序某处发出一个exception。被抛出去的expection可以是內建类型，也可以是使用者自定类型。</li>
+<li>一个或多个catch子句。每一个catch子句都是一个exception handler。它用来表示说，这个子句准备处理某种类型的exception，并且在封闭的大括号区段中提供实际的处理程序</li>
+<li>一个try区段。它被围绕以一系列的叙述句(statements)，这些叙述句可能会引发catch子句起作用</li>
+</ol>
+<p>当一个exception被丢出去时，控制权会从函数调用中被释放出来，并寻找一个吻合的catch子句。如果都没有吻合者，那么默认的处理例程terminate()会被调用。当控制权被抛弃后，堆栈中的每一个函数调用也就被推离(popped up)，这个程序称为unwinding the stack。在每一个函数被推离堆栈之前，函数的local class objects的destructor会被调用。</p>
+<h4 id="对Exception-Handling的支持"><a href="#对Exception-Handling的支持" class="headerlink" title="对Exception Handling的支持"></a>对Exception Handling的支持</h4><p>当一个exception发生时，编译系统必须完成以下事情：</p>
+<ol>
+<li>检验发生throw操作的函数；</li>
+<li>决定throw操场是否发生在try区段中；</li>
+<li>若是，编译系统必须把exception type拿来和每一个catch子句比较；</li>
+<li>如果比较吻合，流程控制应该交到catch子句手中；</li>
+<li>如果throw的发生并不在try区段中，并没有一个catch子句吻合，那么系统必须(a)摧毁所有active local objects，(b)从堆栈中将当前的函数”unwind”掉，(c)进行到程序堆栈中的下一个函数中去，然后重复上述步骤2~5</li>
+</ol>
+<p><strong>当一个实际对象在程序执行时被丢出，会发生什么事？</strong><br>当一个exception被丢出时，exception object会被产生出来并通常放置在相同形式的exception数据堆栈中，从throw端传染给catch子句的是exception object的地址、类型描述器(或是一个函数指针，该函数会传回与该exception type有关的类型描述器对象)，以及可能会有的exception object描述器(如果有人定义它的话)。</p>
+<p>考虑一个catch子句如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">catch</span>(exPoint p)&#123;</div><div class="line">    <span class="comment">//do something</span></div><div class="line">    <span class="keyword">throw</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>以及一个exception object，类型为exVertex，派生自exPoint。这两种类型都吻合，于是catch子句会作用起来。那么p会发生什么事？</p>
+<ul>
+<li>p将以exception object作为初值，就像是一个函数参数一样。这意味着如果定义有(或由编译器合成出)一个copy constructor和一个destructor的话，它们都会实施于local copy身上。</li>
+<li>由于p是一个object而不是一个reference，当其内容被拷贝的时候，这个exception object的non-exPoint部分会被切掉(sliced off)。此外，如果为了exception的继承而提供有virtual functions，那么p的vptr会被设为exPoint的virtual table；exception object的vptr不会被拷贝。</li>
+</ul>
+<p>当这个exception被再丢出一次时，会发生什么事情呢？p是一个local object，在catch子句的末端将被摧毁。丢出p需得产生另一个临时对象，并意味着丧失原来的exception的exVertex部分。原来的exception object被再一次丢出，任何对p的修改都会被抛弃。</p>
+<p>像下面这样的一个catch子句：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">catch</span>(exPoint &amp;rp)&#123;</div><div class="line">    <span class="comment">//do something</span></div><div class="line">    <span class="keyword">throw</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>则是参考到真正的exception object。任何虚拟调用都会被决议(resolved)为instances active for exVertex，也就是exception object的真正类型。任何对此object的改变都会被复制到下一个catch子句中。</p>
+<h3 id="执行期类型识别-Runtime-Type-Identification-RTTI"><a href="#执行期类型识别-Runtime-Type-Identification-RTTI" class="headerlink" title="执行期类型识别(Runtime Type Identification, RTTI)"></a>执行期类型识别(Runtime Type Identification, RTTI)</h3><p>在cfront中，用以表现出一个程序所谓的“内部类型体系”，看起来像：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//程序层次结构的根类 root class</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">node</span>&#123;</span> ... &#125;;</div><div class="line"></div><div class="line"><span class="comment">//root of 'type' subtree： basic types,</span></div><div class="line"><span class="comment">//'derived' types: points, arrays,</span></div><div class="line"><span class="comment">//functions, classes, enums, ...</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">type</span> :</span> <span class="keyword">public</span> node&#123; ... &#125;;</div><div class="line"></div><div class="line"><span class="comment">//two representations for functions</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">fct</span> :</span> <span class="keyword">public</span> type&#123; ... &#125;;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">gen</span> :</span> <span class="keyword">public</span> type&#123; ... &#125;;</div></pre></td></tr></table></figure></p>
+<p>其中gen是generic的简写，用来表现一个overloaded function。</p>
+<p>于是只要你有一个变量，或是类型为type*的成员(并知道它代表一个函数)，你就必须决定其特定的derived type是否为fct或是gen。</p>
+<h4 id="Type-Safe-Downcast-保证安全的向下转型操作"><a href="#Type-Safe-Downcast-保证安全的向下转型操作" class="headerlink" title="Type-Safe Downcast(保证安全的向下转型操作)"></a>Type-Safe Downcast(保证安全的向下转型操作)</h4><p>一个type-safe downcast(保证安全地向下转换操作)必须在执行期对指针有所查询，看看它是否指向它所展现(表达)之object的真正类型。因此，欲支持type-safe downcast在object空间和执行时间上都需要一些额外的负担：</p>
+<ul>
+<li>需要额外的空间以存储类型信息(type information)，通常是一个指针，指向某个类型信息节点</li>
+<li>需要额外的时间以决定执行期的类型(runtime type)，因为，正如其名所示，这需要再执行期才能决定</li>
+</ul>
+<p>冲突发生在两组使用者之间：</p>
+<ol>
+<li>程序员大量使用多态(polymorphism)，并因而需要正统而合法的大量downcast操作。</li>
+<li>程序员使用内建数据类型以及非多态设备，因而不受各种额外负担所带来的报应。</li>
+</ol>
+<p>理想的解决方案是：为两派使用者提供正统而合法的需要——虽然或许得牺牲一些设计上的纯度与优雅性。</p>
+<p>C++的RTTI机制提供一个安全的downcast设备，但只对那些展现”多态(也就是使用继承和动态绑定)”的类型有效。我们如何分辨这些？编译器能否光看class的定义就决定这个class用以表现一个独立的ADT或是一个支持多态的可继承子类型(subtype)?当然，策略之一就是导入一个新的关键词，优点是可以清楚地识别出支持新特性的类型，缺点则是必须翻新旧程序。</p>
+<p>另一个策略是经由声明一个或多个virtual functions来区别class声明。其优点是透明化地将旧有程序转化过来，只要重新编译就好。缺点则是可能会将一个其实并非必要的virtual function强迫导入继承体系的base class身上。在C++中，一个具备多态性质的class(所谓的polymorphic class)，正是内含继承而来(或是直接声明)的virtual functions。</p>
+<p>从编译器的角度来看，这个策略还有其他优点，就是大量降低额外负担。所有polymorphic classes的objects都维护了一个指针(vptr)，指向virtual function table，只要我们把与该class相关的RTTI object地址放进virtual table中(通常放在第一个slot)，那么额外负担就降低为：每一个class object只多花费一个指针。这个指针只需被设定一次，它是被编译器静态设定，而不是在执行期由class constructor设定(vptr才是这么设定)。</p>
+<h4 id="Type-Safe-Dynamic-cast-保证安全的动态转型"><a href="#Type-Safe-Dynamic-cast-保证安全的动态转型" class="headerlink" title="Type-Safe Dynamic cast(保证安全的动态转型)"></a>Type-Safe Dynamic cast(保证安全的动态转型)</h4><p>dynamic_cast运算符可以在执行期决定真正的类型。如果downcast是安全的(也就是说，如果base type pointer指向一个derived class object)，这个运算符会传回被适当转换过的指针。如果downcast不是安全地，这个运算符会传回0</p>
+<h4 id="References并不是Pointers"><a href="#References并不是Pointers" class="headerlink" title="References并不是Pointers"></a>References并不是Pointers</h4><p>程序中对一个class指针类型施以dynamic_cast运算符，会获得true或false：</p>
+<ul>
+<li>如果传回真正的地址，表示这个object的动态类型被确认了，一些与类型相关的操作现在可以施行于其上。</li>
+<li>如果传回0，表示没有指向任何object，意味应该以另一种逻辑施行于这个动态类型未确定的object身上。</li>
+</ul>
+<p>dynamic_cast运算符也适用于reference身上。然而对于一个non-type-safe cast，其结果不会与施行于指针的情况相同。为什么？一个reference不可以像指针那样”把自己设为0就代表了 no object”；若将一个reference设为0，会引起一个临时性对象(拥有被参考到的类型)被产生出来，该临时对象的初值为0，这个reference然后被设定成为该临时性对象的一个别名(alias)。</p>
+<p>因此当dynamic_cast运算符施行于一个reference时，不能够提供对等于指针情况下的那一组true/false。取而代之的是，会发生下列事情：</p>
+<ul>
+<li>如果reference真正参考到适当的derived class(包括下一层或下下一层或下下下一层或…)，downcast会被执行而程序可以继续执行。</li>
+<li>如果reference并不真正是某一种derived class，那么，由于不能传回0，遂丢出一个bad_cast exception.</li>
+</ul>
+<h4 id="Typeid运算符"><a href="#Typeid运算符" class="headerlink" title="Typeid运算符"></a>Typeid运算符</h4><p>typeid运算符传回一个const reference，类型为type_info。</p>
+<p>type_info object由什么组成？ C++ Standard中对type_info的定义如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">type_info</span>&#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">virtual</span> ~type_info();</div><div class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span>==(<span class="keyword">const</span> type_info&amp; ) <span class="keyword">const</span>;</div><div class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span>!=(<span class="keyword">const</span> type_info&amp; ) <span class="keyword">const</span>;</div><div class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">before</span><span class="params">(<span class="keyword">const</span> type_info&amp;)</span> <span class="keyword">const</span></span>;</div><div class="line">    <span class="function"><span class="keyword">bool</span> <span class="keyword">char</span>* <span class="title">name</span><span class="params">()</span> <span class="keyword">const</span></span>;  <span class="comment">//传回class原始名称</span></div><div class="line"><span class="keyword">private</span>:</div><div class="line">    <span class="comment">//prevent memberwise init and copy</span></div><div class="line">    type_info(<span class="keyword">const</span> type_info&amp; );</div><div class="line">    type_info&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> type_info&amp; );</div><div class="line">    <span class="comment">//data members</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>编译器必须提供的最小量信息是class的真实名称、以及在type_info objects之间的某些排序算法(这就是before()函数目的)、以及某些形式的描述器，用以表现explicit class type和这个class的任何subtype。</p>
+<p>虽然RTTI提供的type_info对于exception handling的支持来说是必要的，但对于exception handling的完整支持而言，还不够。如果再加上额外一些type_info derived classes，就可以在exception发生时提供有关于指针、函数及类等等的更详细信息。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/对象模型/" rel="tag"># 对象模型</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/12/深入探索C-对象模型-六/" rel="next" title="深入探索C++对象模型(六)">
+                <i class="fa fa-chevron-left"></i> 深入探索C++对象模型(六)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Jeff Lai" />
+          <p class="site-author-name" itemprop="name">Jeff Lai</p>
+           
+              <p class="site-description motion-element" itemprop="description">原来你是我最想留住的幸运</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">67</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">43</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/lengender" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/2664793953/profile?rightmod=1&wvr=6&mod=personinfo" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#站在对象模型的尖端-On-the-Cusp-of-the-Object-Model"><span class="nav-number">1.</span> <span class="nav-text">站在对象模型的尖端(On the Cusp of the Object Model)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Template"><span class="nav-number">1.1.</span> <span class="nav-text">Template</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Template的”具现”行为-Template-Instantiation"><span class="nav-number">1.1.1.</span> <span class="nav-text">Template的”具现”行为(Template Instantiation)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Template中的名称决议方式-Name-Resolution-within-a-Template"><span class="nav-number">1.1.2.</span> <span class="nav-text">Template中的名称决议方式(Name Resolution within a Template)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Member-Function的实例化行为-Member-function-instantiation"><span class="nav-number">1.1.3.</span> <span class="nav-text">Member Function的实例化行为(Member function instantiation)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异常处理-Exception-Handing"><span class="nav-number">1.2.</span> <span class="nav-text">异常处理(Exception Handing)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Exception-Handling-快速检阅"><span class="nav-number">1.2.1.</span> <span class="nav-text">Exception Handling 快速检阅</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对Exception-Handling的支持"><span class="nav-number">1.2.2.</span> <span class="nav-text">对Exception Handling的支持</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行期类型识别-Runtime-Type-Identification-RTTI"><span class="nav-number">1.3.</span> <span class="nav-text">执行期类型识别(Runtime Type Identification, RTTI)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Type-Safe-Downcast-保证安全的向下转型操作"><span class="nav-number">1.3.1.</span> <span class="nav-text">Type-Safe Downcast(保证安全的向下转型操作)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Type-Safe-Dynamic-cast-保证安全的动态转型"><span class="nav-number">1.3.2.</span> <span class="nav-text">Type-Safe Dynamic cast(保证安全的动态转型)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#References并不是Pointers"><span class="nav-number">1.3.3.</span> <span class="nav-text">References并不是Pointers</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Typeid运算符"><span class="nav-number">1.3.4.</span> <span class="nav-text">Typeid运算符</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jeff Lai</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
