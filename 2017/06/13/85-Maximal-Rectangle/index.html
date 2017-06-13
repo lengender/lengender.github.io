@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="右值引用,移动构造函数," />
+  <meta name="keywords" content="动态规划,栈," />
 
 
 
@@ -90,17 +90,17 @@
 
 
 
-<meta name="description" content="C++11新标准中的一个最主要的特性就是移动而非拷贝对象的能力。接下来简要介绍一下相关概念。">
-<meta name="keywords" content="右值引用,移动构造函数">
+<meta name="description" content="DescriptionGiven a 2D binary matrix filled with 0’s and 1’s, find the largest rectangle containing only 1’s and return its area.">
+<meta name="keywords" content="动态规划,栈">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C++ 11新特性，对象移动，右值引用，移动构造函数">
-<meta property="og:url" content="http://yoursite.com/2017/05/14/Cpp11新特性，对象移动，右值引用，移动构造函数/index.html">
+<meta property="og:title" content="85. Maximal Rectangle">
+<meta property="og:url" content="http://yoursite.com/2017/06/13/85-Maximal-Rectangle/index.html">
 <meta property="og:site_name" content="越努力 | 越幸运">
-<meta property="og:description" content="C++11新标准中的一个最主要的特性就是移动而非拷贝对象的能力。接下来简要介绍一下相关概念。">
-<meta property="og:updated_time" content="2017-05-14T12:49:01.914Z">
+<meta property="og:description" content="DescriptionGiven a 2D binary matrix filled with 0’s and 1’s, find the largest rectangle containing only 1’s and return its area.">
+<meta property="og:updated_time" content="2017-06-13T14:20:47.713Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C++ 11新特性，对象移动，右值引用，移动构造函数">
-<meta name="twitter:description" content="C++11新标准中的一个最主要的特性就是移动而非拷贝对象的能力。接下来简要介绍一下相关概念。">
+<meta name="twitter:title" content="85. Maximal Rectangle">
+<meta name="twitter:description" content="DescriptionGiven a 2D binary matrix filled with 0’s and 1’s, find the largest rectangle containing only 1’s and return its area.">
 
 
 
@@ -128,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/05/14/Cpp11新特性，对象移动，右值引用，移动构造函数/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/06/13/85-Maximal-Rectangle/"/>
 
 
 
 
 
-  <title>C++ 11新特性，对象移动，右值引用，移动构造函数 | 越努力 | 越幸运</title>
+  <title>85. Maximal Rectangle | 越努力 | 越幸运</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -274,7 +274,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/14/Cpp11新特性，对象移动，右值引用，移动构造函数/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/13/85-Maximal-Rectangle/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jeff Lai">
@@ -291,7 +291,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">C++ 11新特性，对象移动，右值引用，移动构造函数</h1>
+          <h1 class="post-title" itemprop="name headline">85. Maximal Rectangle</h1>
         
 
         <div class="post-meta">
@@ -303,8 +303,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-14T20:03:06+08:00">
-                2017-05-14
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-13T22:19:35+08:00">
+                2017-06-13
               </time>
             
 
@@ -326,8 +326,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index">
-                    <span itemprop="name">C++</span>
+                  <a href="/categories/Leetcode/" itemprop="url" rel="index">
+                    <span itemprop="name">Leetcode</span>
                   </a>
                 </span>
 
@@ -360,65 +360,20 @@
       
 
       
-        <p>C++11新标准中的一个最主要的特性就是移动而非拷贝对象的能力。接下来简要介绍一下相关概念。</p>
-<a id="more"></a>
-<ul>
-<li><p>右值引用</p>
-<ul>
-<li>所谓右值引用就是必须绑定到右值的引用。通过 &amp;&amp; 而不是 &amp; 来获得右值引用。右值引用有一个重要的性质 — 只能绑定到一个将要销毁的对象。因此我们可以自由的将一个右值引用的资源“移动”到另一个对象中。</li>
-<li><strong>一般而言，一个左值表达式表示的是一个对象的身份，而一个右值表达式表示的是对象的值。</strong></li>
-<li><p>类似任何引用，一个右值引用也不过是某个对象的一个名字而已。对于一个常规引用(左值引用)，不能将其绑定到要求转换的表达式、字面常量或是返回右值的表达式。右值引用则相反：可以将一个右值引用绑定到这类表达式上，但不能将一个右值引用直接绑定到一个左值上。</p>
-  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> i = <span class="number">42</span>;</div><div class="line"><span class="keyword">int</span> &amp;r = i;                 <span class="comment">//正确， r 引用 i, 左值引用</span></div><div class="line"><span class="keyword">int</span> &amp;&amp;r = i;                <span class="comment">//错误，不能将一个右值引用绑定到一个左值上</span></div><div class="line"><span class="keyword">int</span> &amp;r2 = i * <span class="number">42</span>;           <span class="comment">//错误， i * 42 是一个右值</span></div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;r3 = i * <span class="number">42</span>;     <span class="comment">//正确，可以将一个const的引用绑定到一个右值上</span></div><div class="line"><span class="keyword">int</span> &amp;&amp;rr2 = i * <span class="number">42</span>;         <span class="comment">//正确，将rr2绑定到乘法结果上</span></div></pre></td></tr></table></figure>
-<pre><code>1. 返回左值引用的函数，连同赋值、下标、解引用和前置递增、递减运算符，都是返回左值的表达式的例子。
-2. 返回非引用类型的函数，连同算术、关系、位以及后置递增、递减运算符，都生成右值。我们不能将一个左值引用绑定到这类表达式上，但我们可以将一个const的左值引用和一个右值引用绑定到这类表达式上。
-</code></pre></li>
-<li><p><strong>左值持久，右值短暂</strong></p>
-<ul>
-<li>左值有持久的状态，而右值要么是字面常量，要么是在表达式求值过程中创建的临时对象。</li>
-<li>右值引用指向将要被销毁的对象。因此，可以从绑定到右值引用的对象“窃取”状态，即使用右值引用的代码可以自由接管所引用的对象的资源。</li>
+        <h3 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h3><p>Given a 2D binary matrix filled with 0’s and 1’s, find the largest rectangle containing only 1’s and return its area.<br><a id="more"></a></p>
+<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><pre><code>Given the following matrix:
+
+    1 0 1 0 0
+    1 0 1 1 1
+    1 1 1 1 1
+    1 0 0 1 0
+
+Return 6.
+</code></pre><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ul>
+<li>把这个矩阵分成第一行，第一二行，第一二三行。。来看，</li>
+<li>然后用84中的栈的方法求出当前的最大矩阵即可。</li>
 </ul>
-</li>
-<li><p>变量是左值，不能将一个右值引用直接绑定到一个变量上，即使这个变量是右值引用类型也不行。</p>
-  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> &amp;&amp;rr1 = <span class="number">42</span>;             <span class="comment">//正确，字面常量是右值</span></div><div class="line"><span class="keyword">int</span> &amp;&amp;rr2 = rr1;            <span class="comment">//错误，表达式rr1是左值</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>标准库的 move 函数</p>
-<ul>
-<li><p>虽然不能将一个右值直接绑定到一个左值上，但可以显式地将一个左值转换为对应的右值引用类型。我们可以通过调用一个名为 move的新标准库函数来获得绑定到左值上的引用。头文件<utility></utility></p>
-  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> &amp;&amp;rr3 = <span class="built_in">std</span>::move(rr1);  <span class="comment">//ok</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>我们可以销毁一个移后源对象，也可以赋予它新值，但不能使用一个移后源对象的值。</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>移动构造函数和移动赋值运算符</p>
-<ul>
-<li>类似拷贝构造函数，移动构造函数的第一个参数是该类类型的一个引用。不同于拷贝构造函数的是，这个引用参数在移动构造函数中是一个右值引用。与拷贝构造函数相同，任何额外的参数都必须有默认实参。</li>
-<li>除了完成资源移动，移动构造函数还必须确保移后源对象处于这样一个状态 — 销毁它是无害的。特别是，一旦资源完成移动，源对象必须不再指向被移动的资源。这些资源的所有权已经归属于新创建的对象。</li>
-<li>移动操作、标准库容器和异常<ul>
-<li>由于移动操作“窃取”资源，它通常不会分配任何资源。因此，移动操作通常不会抛出任何异常。</li>
-<li>当编写一个不抛出异常的移动操作时，我们应该将此事通知标准库。除非标准库知道不会抛出异常，否则它会为了处理可能抛出异常这种可能性而做一些额外的工作。</li>
-<li>一种通知标准库的方法是将构造函数指明为 noexcept。这个关键字是新标准引入的。</li>
-<li><strong>不抛出异常的移动构造函数和移动赋值运算符都必须标记为noexcept.</strong></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>移后源对象必须可析构</p>
-<ul>
-<li>从一个对象移动数据并不会销毁此对象，但有时在移动操作完成后，源对象会被销毁。当我们编写一个移动操作时，必须确保移后源对象进入一个可析构的状态。即将移后源对象的指针成员置为nullptr来实现的。</li>
-<li>在移动操作之后，移后源对象必须保持有效的、可析构的状态，但是用户不能对其值进行任何假设。</li>
-</ul>
-</li>
-<li><p>合成的移动操作</p>
-<ul>
-<li>如果一个类定义了自己的拷贝构造函数、拷贝赋值运算符或者析构函数，编译器就不会为它合成移动构造函数和移动赋值运算符了。</li>
-<li>只有当一个类没有定义任何自己版本的拷贝控制成员，且类的每个非static数据都可以移动时，编译器才会为它合成移动构造函数和移动赋值运算符。</li>
-<li>定义了一个移动构造函数或移动赋值运算符的类必须也定义自己的拷贝操作。否则，这些成员默认被定义为删除的。</li>
-</ul>
-</li>
-</ul>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maximalRectangle</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;&gt;&amp; matrix)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> m = matrix.size();</div><div class="line">        <span class="keyword">if</span>(m == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">        <span class="keyword">int</span> n = matrix[<span class="number">0</span>].size();</div><div class="line">        <span class="keyword">if</span>(n == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">        </div><div class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; nums(n, <span class="number">0</span>);</div><div class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; ++i)&#123;</div><div class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; ++j)&#123;</div><div class="line">                <span class="keyword">if</span>(matrix[i][j] == <span class="string">'1'</span>)</div><div class="line">                    nums[j] += <span class="number">1</span>;</div><div class="line">                <span class="keyword">else</span> nums[j] = <span class="number">0</span>;</div><div class="line">            &#125;</div><div class="line">            res = max(res, maxRectangle(nums, n));</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="keyword">return</span> res;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxRectangle</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp;nums, <span class="keyword">int</span> len)</span></span>&#123;</div><div class="line">        <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; stk;</div><div class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</div><div class="line">        <span class="keyword">int</span> h = <span class="number">0</span>, t = <span class="number">0</span>;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; ++i)&#123;</div><div class="line">            <span class="keyword">while</span>(!stk.empty() &amp;&amp; nums[stk.top()] &gt; nums[i])&#123;</div><div class="line">                h = nums[stk.top()];</div><div class="line">                stk.pop();</div><div class="line">                </div><div class="line">                t = stk.empty() ? i : i - stk.top() - <span class="number">1</span>;</div><div class="line">                res = max(res, h * t);</div><div class="line">            &#125;</div><div class="line">            stk.push(i);</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="keyword">while</span>(!stk.empty())&#123;</div><div class="line">            h = nums[stk.top()];</div><div class="line">            stk.pop();</div><div class="line">            </div><div class="line">            t = stk.empty() ? len : len - stk.top() - <span class="number">1</span>;</div><div class="line">            res = max(res, h * t);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> res;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -448,9 +403,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/右值引用/" rel="tag"># 右值引用</a>
+            <a href="/tags/动态规划/" rel="tag"># 动态规划</a>
           
-            <a href="/tags/移动构造函数/" rel="tag"># 移动构造函数</a>
+            <a href="/tags/栈/" rel="tag"># 栈</a>
           
         </div>
       
@@ -463,8 +418,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/14/Cpp拷贝控制和资源管理，智能指针的简单实现/" rel="next" title="C++ 拷贝控制和资源管理，智能指针的简单实现">
-                <i class="fa fa-chevron-left"></i> C++ 拷贝控制和资源管理，智能指针的简单实现
+              <a href="/2017/06/13/84-Largest-Rectangle-in-Histogram/" rel="next" title="84. Largest Rectangle in Histogram">
+                <i class="fa fa-chevron-left"></i> 84. Largest Rectangle in Histogram
               </a>
             
           </div>
@@ -472,10 +427,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/05/14/Cpp虚函数相关，从头到尾捋一遍/" rel="prev" title="C++ 虚函数相关，从头到尾捋一遍">
-                C++ 虚函数相关，从头到尾捋一遍 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -522,8 +473,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -605,6 +565,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Description"><span class="nav-number">1.</span> <span class="nav-text">Description</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example"><span class="nav-number">2.</span> <span class="nav-text">Example</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思路"><span class="nav-number">3.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">4.</span> <span class="nav-text">代码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
