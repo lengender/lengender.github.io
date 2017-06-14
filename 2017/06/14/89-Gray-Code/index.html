@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="链表," />
+  <meta name="keywords" content="数学," />
 
 
 
@@ -90,17 +90,19 @@
 
 
 
-<meta name="description" content="DescriptionGiven a sorted linked list, delete all duplicates such that each element appear only once.">
-<meta name="keywords" content="链表">
+<meta name="description" content="DescriptionThe gray code is a binary numeral system where two successive values differ in only one bit.">
+<meta name="keywords" content="数学">
 <meta property="og:type" content="article">
-<meta property="og:title" content="83. Remove Duplicates from Sorted List">
-<meta property="og:url" content="http://yoursite.com/2017/06/06/83-Remove-Duplicates-from-Sorted-List/index.html">
+<meta property="og:title" content="89. Gray Code">
+<meta property="og:url" content="http://yoursite.com/2017/06/14/89-Gray-Code/index.html">
 <meta property="og:site_name" content="越努力 | 越幸运">
-<meta property="og:description" content="DescriptionGiven a sorted linked list, delete all duplicates such that each element appear only once.">
-<meta property="og:updated_time" content="2017-06-06T14:07:30.294Z">
+<meta property="og:description" content="DescriptionThe gray code is a binary numeral system where two successive values differ in only one bit.">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170614163606103-1713334537.png">
+<meta property="og:updated_time" content="2017-06-14T08:38:01.598Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="83. Remove Duplicates from Sorted List">
-<meta name="twitter:description" content="DescriptionGiven a sorted linked list, delete all duplicates such that each element appear only once.">
+<meta name="twitter:title" content="89. Gray Code">
+<meta name="twitter:description" content="DescriptionThe gray code is a binary numeral system where two successive values differ in only one bit.">
+<meta name="twitter:image" content="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170614163606103-1713334537.png">
 
 
 
@@ -128,13 +130,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/06/06/83-Remove-Duplicates-from-Sorted-List/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/06/14/89-Gray-Code/"/>
 
 
 
 
 
-  <title>83. Remove Duplicates from Sorted List | 越努力 | 越幸运</title>
+  <title>89. Gray Code | 越努力 | 越幸运</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -274,7 +276,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/06/83-Remove-Duplicates-from-Sorted-List/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/14/89-Gray-Code/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jeff Lai">
@@ -291,7 +293,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">83. Remove Duplicates from Sorted List</h1>
+          <h1 class="post-title" itemprop="name headline">89. Gray Code</h1>
         
 
         <div class="post-meta">
@@ -303,8 +305,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-06T22:06:48+08:00">
-                2017-06-06
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-14T16:37:09+08:00">
+                2017-06-14
               </time>
             
 
@@ -360,13 +362,21 @@
       
 
       
-        <h3 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h3><p>Given a sorted linked list, delete all duplicates such that each element appear only once.<br><a id="more"></a></p>
-<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><pre><code>Given 1-&gt;1-&gt;2, return 1-&gt;2.
-Given 1-&gt;1-&gt;2-&gt;3-&gt;3, return 1-&gt;2-&gt;3.
-</code></pre><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ul>
-<li>链表去重，一旦重复，留下一个节点</li>
+        <h3 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h3><p>The gray code is a binary numeral system where two successive values differ in only one bit.<br><a id="more"></a></p>
+<p>Given a non-negative integer n representing the total number of bits in the code, print the sequence of gray code. A gray code sequence must begin with 0.</p>
+<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><p>  For example, given n = 2, return [0,1,3,2]. Its gray code sequence is:</p>
+<pre><code>00 - 0
+01 - 1
+11 - 3
+10 - 2
+</code></pre><p>Note:<br>For a given n, a gray code sequence is not uniquely defined.</p>
+<p>For example, [0,2,3,1] is also a valid gray code sequence according to the above definition.</p>
+<p>For now, the judge is able to judge based on one instance of gray code sequence. Sorry about that.</p>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p><img src="http://images2015.cnblogs.com/blog/1122912/201706/1122912-20170614163606103-1713334537.png" alt=""></p>
+<ul>
+<li>图片截自<a href="http://blog.csdn.net/u012501459/article/details/46790683" target="_blank" rel="external">LeetCode89:Gray Code</a><h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3></li>
 </ul>
-<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Definition for singly-linked list.</div><div class="line"> * struct ListNode &#123;</div><div class="line"> *     int val;</div><div class="line"> *     ListNode *next;</div><div class="line"> *     ListNode(int x) : val(x), next(NULL) &#123;&#125;</div><div class="line"> * &#125;;</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function">ListNode* <span class="title">deleteDuplicates</span><span class="params">(ListNode* head)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(!head) <span class="keyword">return</span> <span class="literal">NULL</span>;</div><div class="line">        ListNode *ptr = head, *pNext = head-&gt;next;</div><div class="line">        ListNode *res = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</div><div class="line">        ListNode *h = res;</div><div class="line">        </div><div class="line">        <span class="keyword">while</span>(pNext)&#123;</div><div class="line">            <span class="keyword">if</span>(ptr-&gt;val == pNext-&gt;val)&#123;</div><div class="line">                <span class="keyword">do</span>&#123;</div><div class="line">                    ListNode *tmp = pNext;</div><div class="line">                    pNext = pNext-&gt;next;</div><div class="line">                    <span class="keyword">delete</span> tmp;</div><div class="line">                &#125;<span class="keyword">while</span>(pNext &amp;&amp; pNext-&gt;val == ptr-&gt;val);</div><div class="line">            &#125;</div><div class="line">            </div><div class="line">            res-&gt;next = ptr;</div><div class="line">            res = res-&gt;next;</div><div class="line">            ptr = pNext;</div><div class="line">            <span class="keyword">if</span>(ptr)</div><div class="line">                pNext = ptr-&gt;next;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="keyword">if</span>(ptr &amp;&amp; res &amp;&amp; res-&gt;val != ptr-&gt;val)&#123;</div><div class="line">            res-&gt;next = ptr;</div><div class="line">            res = res-&gt;next;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        res-&gt;next = <span class="literal">NULL</span>;</div><div class="line">        <span class="keyword">return</span> h-&gt;next;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; grayCode(<span class="keyword">int</span> n) &#123;</div><div class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; res(<span class="number">1</span>);</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++i)&#123;</div><div class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = res.size() - <span class="number">1</span>; j &gt;= <span class="number">0</span>; --j)</div><div class="line">                res.push_back((<span class="number">1</span> &lt;&lt; i) + res[j]);</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="keyword">return</span> res;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -396,7 +406,7 @@ Given 1-&gt;1-&gt;2-&gt;3-&gt;3, return 1-&gt;2-&gt;3.
       
         <div class="post-tags">
           
-            <a href="/tags/链表/" rel="tag"># 链表</a>
+            <a href="/tags/数学/" rel="tag"># 数学</a>
           
         </div>
       
@@ -409,8 +419,8 @@ Given 1-&gt;1-&gt;2-&gt;3-&gt;3, return 1-&gt;2-&gt;3.
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/06/82-Remove-Duplicates-from-Sorted-List-II/" rel="next" title="82. Remove Duplicates from Sorted List II">
-                <i class="fa fa-chevron-left"></i> 82. Remove Duplicates from Sorted List II
+              <a href="/2017/06/14/88-Merge-Sorted-Array/" rel="next" title="88. Merge Sorted Array">
+                <i class="fa fa-chevron-left"></i> 88. Merge Sorted Array
               </a>
             
           </div>
@@ -418,10 +428,6 @@ Given 1-&gt;1-&gt;2-&gt;3-&gt;3, return 1-&gt;2-&gt;3.
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/06/07/深入探索C-对象模型-四/" rel="prev" title="深入探索C++对象模型(四)">
-                深入探索C++对象模型(四) <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>

@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="链表," />
+  <meta name="keywords" content="数组," />
 
 
 
@@ -90,17 +90,17 @@
 
 
 
-<meta name="description" content="DescriptionGiven a sorted linked list, delete all duplicates such that each element appear only once.">
-<meta name="keywords" content="链表">
+<meta name="description" content="DescriptionGiven two sorted integer arrays nums1 and nums2, merge nums2 into nums1 as one sorted array.">
+<meta name="keywords" content="数组">
 <meta property="og:type" content="article">
-<meta property="og:title" content="83. Remove Duplicates from Sorted List">
-<meta property="og:url" content="http://yoursite.com/2017/06/06/83-Remove-Duplicates-from-Sorted-List/index.html">
+<meta property="og:title" content="88. Merge Sorted Array">
+<meta property="og:url" content="http://yoursite.com/2017/06/14/88-Merge-Sorted-Array/index.html">
 <meta property="og:site_name" content="越努力 | 越幸运">
-<meta property="og:description" content="DescriptionGiven a sorted linked list, delete all duplicates such that each element appear only once.">
-<meta property="og:updated_time" content="2017-06-06T14:07:30.294Z">
+<meta property="og:description" content="DescriptionGiven two sorted integer arrays nums1 and nums2, merge nums2 into nums1 as one sorted array.">
+<meta property="og:updated_time" content="2017-06-14T03:05:14.549Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="83. Remove Duplicates from Sorted List">
-<meta name="twitter:description" content="DescriptionGiven a sorted linked list, delete all duplicates such that each element appear only once.">
+<meta name="twitter:title" content="88. Merge Sorted Array">
+<meta name="twitter:description" content="DescriptionGiven two sorted integer arrays nums1 and nums2, merge nums2 into nums1 as one sorted array.">
 
 
 
@@ -128,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/06/06/83-Remove-Duplicates-from-Sorted-List/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/06/14/88-Merge-Sorted-Array/"/>
 
 
 
 
 
-  <title>83. Remove Duplicates from Sorted List | 越努力 | 越幸运</title>
+  <title>88. Merge Sorted Array | 越努力 | 越幸运</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -274,7 +274,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/06/83-Remove-Duplicates-from-Sorted-List/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/14/88-Merge-Sorted-Array/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jeff Lai">
@@ -291,7 +291,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">83. Remove Duplicates from Sorted List</h1>
+          <h1 class="post-title" itemprop="name headline">88. Merge Sorted Array</h1>
         
 
         <div class="post-meta">
@@ -303,8 +303,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-06T22:06:48+08:00">
-                2017-06-06
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-14T11:04:27+08:00">
+                2017-06-14
               </time>
             
 
@@ -360,13 +360,12 @@
       
 
       
-        <h3 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h3><p>Given a sorted linked list, delete all duplicates such that each element appear only once.<br><a id="more"></a></p>
-<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><pre><code>Given 1-&gt;1-&gt;2, return 1-&gt;2.
-Given 1-&gt;1-&gt;2-&gt;3-&gt;3, return 1-&gt;2-&gt;3.
-</code></pre><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ul>
-<li>链表去重，一旦重复，留下一个节点</li>
+        <h3 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h3><p>Given two sorted integer arrays nums1 and nums2, merge nums2 into nums1 as one sorted array.<br><a id="more"></a></p>
+<p>Note:<br>You may assume that nums1 has enough space (size that is greater or equal to m + n) to hold additional elements from nums2. The number of elements initialized in nums1 and nums2 are m and n respectively.</p>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ul>
+<li>没啥好说的，要么从后往前，要么从前往后，在从前往后的过程中，可能会有一个交换过程，即nums1[i]&gt;nums2[j], 交换两个的值，后i++,j不变</li>
 </ul>
-<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Definition for singly-linked list.</div><div class="line"> * struct ListNode &#123;</div><div class="line"> *     int val;</div><div class="line"> *     ListNode *next;</div><div class="line"> *     ListNode(int x) : val(x), next(NULL) &#123;&#125;</div><div class="line"> * &#125;;</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function">ListNode* <span class="title">deleteDuplicates</span><span class="params">(ListNode* head)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(!head) <span class="keyword">return</span> <span class="literal">NULL</span>;</div><div class="line">        ListNode *ptr = head, *pNext = head-&gt;next;</div><div class="line">        ListNode *res = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</div><div class="line">        ListNode *h = res;</div><div class="line">        </div><div class="line">        <span class="keyword">while</span>(pNext)&#123;</div><div class="line">            <span class="keyword">if</span>(ptr-&gt;val == pNext-&gt;val)&#123;</div><div class="line">                <span class="keyword">do</span>&#123;</div><div class="line">                    ListNode *tmp = pNext;</div><div class="line">                    pNext = pNext-&gt;next;</div><div class="line">                    <span class="keyword">delete</span> tmp;</div><div class="line">                &#125;<span class="keyword">while</span>(pNext &amp;&amp; pNext-&gt;val == ptr-&gt;val);</div><div class="line">            &#125;</div><div class="line">            </div><div class="line">            res-&gt;next = ptr;</div><div class="line">            res = res-&gt;next;</div><div class="line">            ptr = pNext;</div><div class="line">            <span class="keyword">if</span>(ptr)</div><div class="line">                pNext = ptr-&gt;next;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="keyword">if</span>(ptr &amp;&amp; res &amp;&amp; res-&gt;val != ptr-&gt;val)&#123;</div><div class="line">            res-&gt;next = ptr;</div><div class="line">            res = res-&gt;next;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        res-&gt;next = <span class="literal">NULL</span>;</div><div class="line">        <span class="keyword">return</span> h-&gt;next;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">merge</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums1, <span class="keyword">int</span> m, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums2, <span class="keyword">int</span> n)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> i = m - <span class="number">1</span>, j = n - <span class="number">1</span>, k = m + n - <span class="number">1</span>;</div><div class="line">        <span class="keyword">while</span>(i &gt;= <span class="number">0</span> &amp;&amp; j &gt;= <span class="number">0</span>)&#123;</div><div class="line">            <span class="keyword">if</span>(nums1[i] &gt;= nums2[j])&#123;</div><div class="line">                nums1[k--] = nums1[i--];</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span> nums1[k--] = nums2[j--];</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="keyword">while</span>(j &gt;= <span class="number">0</span>)</div><div class="line">            nums1[k--] = nums2[j--];</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -396,7 +395,7 @@ Given 1-&gt;1-&gt;2-&gt;3-&gt;3, return 1-&gt;2-&gt;3.
       
         <div class="post-tags">
           
-            <a href="/tags/链表/" rel="tag"># 链表</a>
+            <a href="/tags/数组/" rel="tag"># 数组</a>
           
         </div>
       
@@ -409,8 +408,8 @@ Given 1-&gt;1-&gt;2-&gt;3-&gt;3, return 1-&gt;2-&gt;3.
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/06/82-Remove-Duplicates-from-Sorted-List-II/" rel="next" title="82. Remove Duplicates from Sorted List II">
-                <i class="fa fa-chevron-left"></i> 82. Remove Duplicates from Sorted List II
+              <a href="/2017/06/14/87-Scramble-String/" rel="next" title="87. Scramble String">
+                <i class="fa fa-chevron-left"></i> 87. Scramble String
               </a>
             
           </div>
@@ -419,8 +418,8 @@ Given 1-&gt;1-&gt;2-&gt;3-&gt;3, return 1-&gt;2-&gt;3.
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/06/07/深入探索C-对象模型-四/" rel="prev" title="深入探索C++对象模型(四)">
-                深入探索C++对象模型(四) <i class="fa fa-chevron-right"></i>
+              <a href="/2017/06/14/89-Gray-Code/" rel="prev" title="89. Gray Code">
+                89. Gray Code <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -570,7 +569,7 @@ Given 1-&gt;1-&gt;2-&gt;3-&gt;3, return 1-&gt;2-&gt;3.
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Description"><span class="nav-number">1.</span> <span class="nav-text">Description</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example"><span class="nav-number">2.</span> <span class="nav-text">Example</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思路"><span class="nav-number">3.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">4.</span> <span class="nav-text">代码</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Description"><span class="nav-number">1.</span> <span class="nav-text">Description</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思路"><span class="nav-number">2.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">3.</span> <span class="nav-text">代码</span></a></li></ol></div>
             
 
           </div>
